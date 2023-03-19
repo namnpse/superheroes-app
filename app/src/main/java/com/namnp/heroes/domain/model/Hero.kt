@@ -7,6 +7,7 @@ import com.namnp.heroes.util.Constants.HERO_DATABASE_TABLE
 @Entity(tableName = HERO_DATABASE_TABLE)
 data class Hero(
     @PrimaryKey(autoGenerate = false)
+    val id: Int,
     val name: String,
     val image: String,
     val about: String,
