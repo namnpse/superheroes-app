@@ -1,4 +1,4 @@
-package com.namnp.heroes.presentation.screens
+package com.namnp.heroes.presentation.screens.splash
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

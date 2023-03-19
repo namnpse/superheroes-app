@@ -6,9 +6,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.namnp.heroes.presentation.screens.SplashScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.namnp.heroes.presentation.screens.splash.SplashScreen
+import com.namnp.heroes.presentation.screens.welcome.WelcomeScreen
 import com.namnp.heroes.util.Constants.DETAILS_HERO_KEY
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
@@ -19,7 +22,7 @@ fun SetupNavGraph(navController: NavHostController) {
             SplashScreen(navController = navController)
         }
         composable(route = Screen.WelcomeScreen.route) {
-
+            WelcomeScreen(navController = navController)
         }
         composable(route = Screen.HomeScreen.route) {
 
