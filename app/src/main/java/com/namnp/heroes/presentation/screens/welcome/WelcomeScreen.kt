@@ -26,6 +26,7 @@ import com.namnp.heroes.ui.theme.descriptionColor
 import com.namnp.heroes.ui.theme.titleColor
 import com.namnp.heroes.util.Constants.ON_BOARDING_PAGE_COUNT
 import com.namnp.heroes.R
+import com.namnp.heroes.util.Constants.LAST_ON_BOARDING_PAGE
 
 @OptIn(ExperimentalAnimationApi::class)
 @ExperimentalPagerApi
@@ -124,7 +125,7 @@ fun FinishButton(
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
+            visible = pagerState.currentPage == LAST_ON_BOARDING_PAGE
         ) {
             Button(
                 onClick = onClick,
