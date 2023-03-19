@@ -1,0 +1,14 @@
+package com.namnp.heroes.navigation
+
+sealed class Screen(val route: String) {
+    object SplashScreen : Screen("splash_screen")
+    object WelcomeScreen : Screen("welcome_screen")
+    object HomeScreen : Screen("home_screen")
+    object HeroDetailsScreen : Screen("details_screen/{heroId}") {
+        fun passHeroId(heroId: Int): String {
+            return "details_screen/$heroId"
+        }
+    }
+
+    object SearchScreen : Screen("search_screen")
+}
