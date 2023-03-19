@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.namnp.heroes.domain.model.OnBoardingPage
@@ -26,12 +27,16 @@ import com.namnp.heroes.ui.theme.descriptionColor
 import com.namnp.heroes.ui.theme.titleColor
 import com.namnp.heroes.util.Constants.ON_BOARDING_PAGE_COUNT
 import com.namnp.heroes.R
+import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.util.Constants.LAST_ON_BOARDING_PAGE
 
 @OptIn(ExperimentalAnimationApi::class)
 @ExperimentalPagerApi
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(
+    navController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf(
         OnBoardingPage.First,
         OnBoardingPage.Second,
@@ -46,6 +51,7 @@ fun WelcomeScreen(navController: NavHostController) {
             .background(color = MaterialTheme.colors.welcomeScreenBackgroundColor)
     ) {
         HorizontalPager(
+            modifier = Modifier.weight(10f),
             state = pagerState,
             count = ON_BOARDING_PAGE_COUNT,
             verticalAlignment = Alignment.Top
@@ -66,7 +72,9 @@ fun WelcomeScreen(navController: NavHostController) {
             modifier = Modifier.weight(1f),
             pagerState = pagerState
         ) {
-
+            navController.popBackStack()
+            navController.navigate(Screen.HomeScreen.route)
+            welcomeViewModel.saveOnBoardingState(completed = true)
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.namnp.heroes.presentation.screens.home.HomeScreen
 import com.namnp.heroes.presentation.screens.splash.SplashScreen
 import com.namnp.heroes.presentation.screens.welcome.WelcomeScreen
 import com.namnp.heroes.util.Constants.DETAILS_HERO_KEY
@@ -25,7 +26,7 @@ fun SetupNavGraph(navController: NavHostController) {
             WelcomeScreen(navController = navController)
         }
         composable(route = Screen.HomeScreen.route) {
-
+            HomeScreen()
         }
         composable(
             route = Screen.HeroDetailsScreen.route,
