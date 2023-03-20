@@ -2,7 +2,7 @@ package com.namnp.heroes.util
 
 object Constants {
 
-    const val BASE_URL = "http://10.0.2.2:8080"
+    const val BASE_URL = "http://10.124.58.225:8080"
 
     const val HERO_DATABASE = "hero_database"
     const val DETAILS_HERO_KEY = "hero_id"

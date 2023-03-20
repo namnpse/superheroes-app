@@ -1,5 +1,6 @@
 package com.namnp.heroes.data.paging_source
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -47,7 +48,8 @@ class HeroRemoteMediator @Inject constructor(
             }
 
             val response = heroApi.getAllHeroes(page = page)
-            if(response.data.isEmpty()) {
+//            Log.d("Remote", response.toString())
+            if(response.data.isNotEmpty()) {
                 heroDatabase.withTransaction {
                     if(loadType == LoadType.PREPEND) {
                         heroDao.deleteAllHeroes()
