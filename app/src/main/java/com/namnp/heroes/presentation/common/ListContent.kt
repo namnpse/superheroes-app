@@ -33,6 +33,7 @@ import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.util.Constants.BASE_URL
 import com.namnp.heroes.R
 import com.namnp.heroes.navigation.Screen
+import com.namnp.heroes.presentation.components.ShimmerEffect
 import com.namnp.heroes.ui.theme.*
 
 @ExperimentalCoilApi
@@ -76,7 +77,7 @@ fun handlePagingResult(
 
         return when {
             loadState.refresh is LoadState.Loading -> {
-//                ShimmerEffect()
+                ShimmerEffect()
                 false
             }
             error != null -> {

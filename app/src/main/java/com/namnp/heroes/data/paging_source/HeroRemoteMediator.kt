@@ -1,6 +1,5 @@
 package com.namnp.heroes.data.paging_source
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -20,6 +19,20 @@ class HeroRemoteMediator @Inject constructor(
 
     private val heroDao = heroDatabase.heroDao()
     private val heroRemoteKeysDao = heroDatabase.heroRemoteKeysDao()
+
+
+    override suspend fun initialize(): InitializeAction {
+        val currentTime = System.currentTimeMillis()
+        val lastUpdated = heroRemoteKeysDao.getRemoteKeys(heroId = 1)?.lastUpdated ?: 0L
+        val cacheTimeout = 1440 // 24h
+
+        val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
+        return if (diffInMinutes.toInt() <= cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Hero>): MediatorResult {
         return try {
@@ -48,7 +61,6 @@ class HeroRemoteMediator @Inject constructor(
             }
 
             val response = heroApi.getAllHeroes(page = page)
-//            Log.d("Remote", response.toString())
             if(response.data.isNotEmpty()) {
                 heroDatabase.withTransaction {
                     if(loadType == LoadType.PREPEND) {
@@ -62,6 +74,7 @@ class HeroRemoteMediator @Inject constructor(
                             id = hero.id,
                             prevPage = prevPage,
                             nextPage = nextPage,
+                            lastUpdated = response.lastUpdated
                         )
                     }
                     heroRemoteKeysDao.addAllRemoteKeys(heroRemoteKeys = keys)
