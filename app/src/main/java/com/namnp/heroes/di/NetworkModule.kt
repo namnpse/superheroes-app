@@ -2,7 +2,10 @@ package com.namnp.heroes.di
 
 import androidx.paging.ExperimentalPagingApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.namnp.heroes.data.local.HeroDatabase
 import com.namnp.heroes.data.remote.HeroApi
+import com.namnp.heroes.data.repository.RemoteDataSourceImpl
+import com.namnp.heroes.domain.repository.RemoteDataSource
 import com.namnp.heroes.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -46,5 +49,17 @@ object NetworkModule {
     @Singleton
     fun provideHeroApi(retrofit: Retrofit): HeroApi {
         return retrofit.create(HeroApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteDataSource(
+        heroApi: HeroApi,
+        heroDatabase: HeroDatabase
+    ): RemoteDataSource {
+        return RemoteDataSourceImpl(
+            heroApi = heroApi,
+            heroDatabase = heroDatabase
+        )
     }
 }
