@@ -6,7 +6,6 @@ object Constants {
     const val BASE_URL = "http://192.168.1.4:8080"
 
     const val HERO_DATABASE = "hero_database"
-    const val DETAILS_HERO_KEY = "hero_id"
     const val HERO_DATABASE_TABLE = "hero_table"
     const val HERO_REMOTE_KEYS_DATABASE_TABLE = "hero_remote_keys_table"
 
@@ -17,5 +16,9 @@ object Constants {
     const val PREFERENCES_KEY = "on_boarding_completed"
 
     const val ITEMS_PER_PAGE = 3
+
+    const val DETAILS_ARGUMENT_KEY = "hero_id"
+    const val ABOUT_TEXT_MAX_LINES = 7
+    const val MIN_BACKGROUND_IMAGE_HEIGHT_FRACTION = 0.4f
 
 }

@@ -1,5 +1,6 @@
 package com.namnp.heroes.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,14 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.namnp.heroes.presentation.screens.details.DetailsScreen
 import com.namnp.heroes.presentation.screens.home.HomeScreen
 import com.namnp.heroes.presentation.screens.search.SearchScreen
 import com.namnp.heroes.presentation.screens.splash.SplashScreen
 import com.namnp.heroes.presentation.screens.welcome.WelcomeScreen
-import com.namnp.heroes.util.Constants.DETAILS_HERO_KEY
+import com.namnp.heroes.util.Constants.DETAILS_ARGUMENT_KEY
 
 @ExperimentalCoilApi
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
@@ -33,11 +35,11 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable(
             route = Screen.HeroDetailsScreen.route,
-            arguments = listOf(navArgument(DETAILS_HERO_KEY) {
+            arguments = listOf(navArgument(DETAILS_ARGUMENT_KEY) {
                 type = NavType.IntType
             })
         ) {
-
+            DetailsScreen(navController = navController)
         }
         composable(route = Screen.SearchScreen.route) {
             SearchScreen(navController = navController)
