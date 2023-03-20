@@ -31,9 +31,11 @@ class SearchViewModel @Inject constructor(
 
     fun searchHeroes(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            useCases.searchHeroesUseCase(query = query).collect {
-                _searchedHeroes.value = it
-            }
+            useCases.searchHeroesUseCase(query = query)
+                .cachedIn(viewModelScope) // use for caching, e.g: rotate screen, don't make another call just because of the rotation, and view model survives configuration change
+                .collect {
+                    _searchedHeroes.value = it
+                }
         }
     }
 
