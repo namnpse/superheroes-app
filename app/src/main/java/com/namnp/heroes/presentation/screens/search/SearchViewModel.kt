@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.use_cases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +31,9 @@ class SearchViewModel @Inject constructor(
 
     fun searchHeroes(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            useCases.searchHeroesUseCase(query = query).collect {
+                _searchedHeroes.value = it
+            }
         }
     }
 
