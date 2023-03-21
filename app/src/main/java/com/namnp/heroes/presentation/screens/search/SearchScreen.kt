@@ -1,5 +1,6 @@
 package com.namnp.heroes.presentation.screens.search
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,7 +8,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.presentation.common.ListContent
+import com.namnp.heroes.ui.theme.statusBarColor
 
 @ExperimentalCoilApi
 @Composable
@@ -15,6 +18,11 @@ fun SearchScreen(
     navController: NavHostController,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.statusBarColor
+    )
+
     val searchQuery by searchViewModel.searchQuery
     val heroes = searchViewModel.searchedHeroes.collectAsLazyPagingItems()
 
