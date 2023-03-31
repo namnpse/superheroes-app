@@ -1,4 +1,4 @@
-package com.example.borutoapp.presentation.components
+package com.namnp.heroes.presentation.components
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
@@ -15,10 +15,13 @@ import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.vector.PathParser
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.namnp.heroes.R
+import com.namnp.heroes.presentation.constants.WidgetIdentifier
 import com.namnp.heroes.ui.theme.EXTRA_SMALL_PADDING
 import com.namnp.heroes.ui.theme.LightGray
 import com.namnp.heroes.ui.theme.StarColor
@@ -81,7 +84,12 @@ fun FilledStar(
     starPathBounds: Rect,
     scaleFactor: Float
 ) {
-    Canvas(modifier = Modifier.size(24.dp)) {
+    Canvas(modifier = Modifier
+        .size(24.dp)
+        .semantics {
+            contentDescription = WidgetIdentifier.RATING_WIDGET_FILLED_STAR
+        }
+    ) {
         val canvasSize = this.size
         scale(scale = scaleFactor) {
             val pathWidth = starPathBounds.width
@@ -105,7 +113,12 @@ fun HalfFilledStar(
     starPathBounds: Rect,
     scaleFactor: Float
 ) {
-    Canvas(modifier = Modifier.size(24.dp)) {
+    Canvas(modifier = Modifier
+        .size(24.dp)
+        .semantics {
+            contentDescription = WidgetIdentifier.RATING_WIDGET_HALF_FILLED_STAR
+        }
+    ) {
         val canvasSize = this.size
         scale(scale = scaleFactor) {
             val pathWidth = starPathBounds.width
@@ -138,7 +151,12 @@ fun EmptyStar(
     starPathBounds: Rect,
     scaleFactor: Float
 ) {
-    Canvas(modifier = Modifier.size(24.dp)) {
+    Canvas(modifier = Modifier
+        .size(24.dp)
+        .semantics {
+            contentDescription = WidgetIdentifier.RATING_WIDGET_EMPTY_STAR
+        }
+    ) {
         val canvasSize = this.size
         scale(scale = scaleFactor) {
             val pathWidth = starPathBounds.width

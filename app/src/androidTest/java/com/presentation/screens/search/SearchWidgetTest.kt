@@ -1,5 +1,6 @@
 package com.presentation.screens.search
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -86,6 +87,8 @@ class SearchWidgetTest {
         val text = mutableStateOf("")
         val searchWidgetShown = mutableStateOf(true)
         composeTestRule.setContent {
+//            System.out.println("Start Test")
+//            println("Start Test")
             if(searchWidgetShown.value){
                 SearchWidget(
                     text = text.value,
