@@ -1,7 +1,6 @@
 package com.namnp.heroes.presentation.common
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,7 +27,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import com.example.borutoapp.presentation.components.RatingWidget
+import com.namnp.heroes.presentation.components.RatingWidget
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.util.Constants.BASE_URL
 import com.namnp.heroes.R
