@@ -10,7 +10,7 @@ import com.namnp.heroes.domain.model.Hero
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +38,7 @@ class HeroRemoteMediatorTest {
     @ExperimentalPagingApi
     @Test
     fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() =
-        runBlocking {
+        runTest {
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
                 heroDatabase = heroDatabase
@@ -57,7 +57,7 @@ class HeroRemoteMediatorTest {
     @ExperimentalPagingApi
     @Test
     fun refreshLoadSuccessAndEndOfPaginationTrueWhenNoMoreData() =
-        runBlocking {
+        runTest {
             heroApi.clearData()
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
@@ -77,7 +77,7 @@ class HeroRemoteMediatorTest {
     @ExperimentalPagingApi
     @Test
     fun refreshLoadReturnsErrorResultWhenErrorOccurs() =
-        runBlocking {
+        runTest {
             heroApi.fakeException()
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
