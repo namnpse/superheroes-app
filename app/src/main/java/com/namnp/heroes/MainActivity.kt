@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.namnp.heroes.navigation.SetupNavGraph
 import com.namnp.heroes.ui.theme.HeroesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@OptIn(ExperimentalCoilApi::class)
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
