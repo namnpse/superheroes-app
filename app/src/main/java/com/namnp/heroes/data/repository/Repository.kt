@@ -14,8 +14,8 @@ class Repository @Inject constructor(
     private val dataStore: DataStoreOperations
 ) {
 
-    fun getAllHeroes(): Flow<PagingData<Hero>> {
-        return remote.getAllHeroes()
+    fun getAllHeroes(collection: String = ""): Flow<PagingData<Hero>> {
+        return remote.getAllHeroes(collection)
     }
 
     fun searchHero(query: String): Flow<PagingData<Hero>> {

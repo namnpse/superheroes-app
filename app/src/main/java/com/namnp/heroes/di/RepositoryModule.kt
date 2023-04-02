@@ -6,6 +6,7 @@ import com.namnp.heroes.data.repository.Repository
 import com.namnp.heroes.domain.repository.DataStoreOperations
 import com.namnp.heroes.domain.use_cases.UseCases
 import com.namnp.heroes.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
+import com.namnp.heroes.domain.use_cases.get_all_heroes.GetMarvelHeroesUseCase
 import com.namnp.heroes.domain.use_cases.get_detail_hero.GetDetailsHeroUseCase
 import com.namnp.heroes.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.namnp.heroes.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
@@ -36,6 +37,7 @@ object RepositoryModule {
             saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository),
             getAllHeroesUseCase  = GetAllHeroesUseCase(repository),
+            getMarvelHeroesUseCase  = GetMarvelHeroesUseCase(repository),
             searchHeroesUseCase = SearchHeroesUseCase(repository),
             getDetailsHeroUseCase = GetDetailsHeroUseCase(repository)
         )

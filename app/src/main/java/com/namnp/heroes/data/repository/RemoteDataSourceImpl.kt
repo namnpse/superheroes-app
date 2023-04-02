@@ -21,13 +21,14 @@ class RemoteDataSourceImpl(
 
     private val heroDao = heroDatabase.heroDao()
 
-    override fun getAllHeroes(): Flow<PagingData<Hero>> {
+    override fun getAllHeroes(collection: String): Flow<PagingData<Hero>> {
         val pagingSourceFactory = { heroDao.getAllHeroes() }
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
-                heroDatabase = heroDatabase
+                heroDatabase = heroDatabase,
+                collection = collection,
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow
