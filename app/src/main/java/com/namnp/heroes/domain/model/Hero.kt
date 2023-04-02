@@ -15,9 +15,13 @@ data class Hero(
     val about: String,
     val rating: Double,
     val power: Int,
-    val month: String,
-    val day: String,
-    val family: List<String>,
     val abilities: List<String>,
-    val natureTypes: List<String>
+    val gender: String = "Male",
+    val month: String = "",
+    val day: String = "",
+    val family: List<String> = emptyList(),
+    val natureTypes: List<String> = emptyList(),
+    val realName: String? = null,
+    val issues: Int? = null,
+    val aliases: List<String>? = null,
 )

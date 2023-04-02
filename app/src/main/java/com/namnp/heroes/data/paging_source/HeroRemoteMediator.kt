@@ -6,6 +6,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.namnp.heroes.data.local.HeroDatabase
+import com.namnp.heroes.data.local.toHero
 import com.namnp.heroes.data.remote.HeroApi
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.model.HeroRemoteKeys
@@ -78,7 +79,7 @@ class HeroRemoteMediator @Inject constructor(
                         )
                     }
                     heroRemoteKeysDao.addAllRemoteKeys(heroRemoteKeys = keys)
-                    heroDao.addHeroes(heroes = response.data)
+                    heroDao.addHeroes(heroes = response.data.map { it.toHero() })
                 }
             }
             MediatorResult.Success(endOfPaginationReached = response.nextPage == null)
