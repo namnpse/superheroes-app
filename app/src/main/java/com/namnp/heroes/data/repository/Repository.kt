@@ -6,6 +6,9 @@ import com.namnp.heroes.domain.repository.DataStoreOperations
 import com.namnp.heroes.domain.repository.LocalDataSource
 import com.namnp.heroes.domain.repository.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -22,8 +25,18 @@ class Repository @Inject constructor(
         return remote.searchHeroes(query = query)
     }
 
-    suspend fun getHeroByHeroId(heroId: Int): Hero {
-        return local.getHeroByHeroId(heroId = heroId)
+    suspend fun getHeroByHeroId(heroId: Int): Flow<Hero?> {
+        val localData = local.getHeroByHeroId(heroId = heroId)
+        return remote.getHeroById(heroId)
+            .onStart {
+                if (localData != null)
+                    emit(localData)
+            }
+            .onEach { remoteData ->
+                if (remoteData != null) {
+                    local.saveHero(remoteData)
+                }
+            }
     }
 
     suspend fun saveOnBoardingState(completed: Boolean) {

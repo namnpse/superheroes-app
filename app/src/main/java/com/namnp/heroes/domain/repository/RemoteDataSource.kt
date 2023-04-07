@@ -9,4 +9,6 @@ interface RemoteDataSource {
     fun getAllHeroes(collection: String = ""): Flow<PagingData<Hero>>
 
     fun searchHeroes(query: String): Flow<PagingData<Hero>>
+
+    fun getHeroById(id: Int): Flow<Hero?>
 }

@@ -14,3 +14,10 @@ data class ApiResponse(
     val data: List<HeroDto> = emptyList(),
     val lastUpdated: Long? = null
 )
+
+@Serializable
+data class HeroResponse(
+    val success: Boolean,
+    val message: String? = null,
+    val data: HeroDto? = null,
+)

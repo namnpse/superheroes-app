@@ -1,7 +1,9 @@
 package com.namnp.heroes.data.remote
 
 import com.namnp.heroes.domain.ApiResponse
+import com.namnp.heroes.domain.HeroResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface HeroApi {
@@ -20,5 +22,10 @@ interface HeroApi {
     suspend fun searchHeroes(
         @Query("name") name: String
     ): ApiResponse
+
+    @GET("/heroes/{id}")
+    suspend fun getHeroById(
+        @Path("id") id: Int
+    ): HeroResponse
 
 }

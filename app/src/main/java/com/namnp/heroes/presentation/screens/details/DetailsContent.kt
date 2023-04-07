@@ -82,18 +82,21 @@ fun DetailsContent(
         sheetPeekHeight = MIN_SHEET_HEIGHT,
         sheetContent = {
             selectedHero?.let {
-//                BottomSheetContent(
-//                    selectedHero = it,
-//                    infoBoxIconColor = Color(android.graphics.Color.parseColor(vibrant)),
-//                    sheetBackgroundColor = Color(android.graphics.Color.parseColor(darkVibrant)),
-//                    contentColor = Color(android.graphics.Color.parseColor(onDarkVibrant))
-//                )
-                BottomSheetMarvelHeroContent(
-                    selectedHero = it,
-                    infoBoxIconColor = Color(android.graphics.Color.parseColor(vibrant)),
-                    sheetBackgroundColor = Color(android.graphics.Color.parseColor(darkVibrant)),
-                    contentColor = Color(android.graphics.Color.parseColor(onDarkVibrant))
-                )
+                if (it.image.contains("marvel")) {
+                    BottomSheetMarvelHeroContent(
+                        selectedHero = it,
+                        infoBoxIconColor = Color(android.graphics.Color.parseColor(vibrant)),
+                        sheetBackgroundColor = Color(android.graphics.Color.parseColor(darkVibrant)),
+                        contentColor = Color(android.graphics.Color.parseColor(onDarkVibrant))
+                    )
+                } else {
+                    BottomSheetContent(
+                        selectedHero = it,
+                        infoBoxIconColor = Color(android.graphics.Color.parseColor(vibrant)),
+                        sheetBackgroundColor = Color(android.graphics.Color.parseColor(darkVibrant)),
+                        contentColor = Color(android.graphics.Color.parseColor(onDarkVibrant))
+                    )
+                }
             }
         },
         content = {

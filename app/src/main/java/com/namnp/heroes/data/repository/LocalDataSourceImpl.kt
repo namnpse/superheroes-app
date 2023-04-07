@@ -8,7 +8,11 @@ class LocalDataSourceImpl(heroDatabase: HeroDatabase): LocalDataSource {
 
     private val heroDao = heroDatabase.heroDao()
 
-    override suspend fun getHeroByHeroId(heroId: Int): Hero {
+    override suspend fun getHeroByHeroId(heroId: Int): Hero? {
         return heroDao.getHeroByHeroId(heroId = heroId)
+    }
+
+    override suspend fun saveHero(hero: Hero) {
+        heroDao.addHero(hero)
     }
 }
