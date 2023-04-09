@@ -42,7 +42,8 @@ fun SplashScreen(
         )
         navController.popBackStack()
         if (onBoardingCompleted) {
-            navController.navigate(Screen.HomeScreen.route)
+//            navController.navigate(Screen.HomeScreen.route)
+            navController.navigate(Screen.MainScreen.route)
         } else {
             navController.navigate(Screen.WelcomeScreen.route)
         }

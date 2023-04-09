@@ -34,9 +34,11 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val heroId = savedStateHandle.get<Int>(DETAILS_ARGUMENT_KEY)
             heroId?.let {
-                useCases.getDetailsHeroUseCase(heroId = heroId).collectLatest { hero ->
-                    _selectedHero.value = hero
-                }
+                useCases.getDetailsHeroUseCase(heroId = heroId)
+                    .distinctUntilChanged() // trigger collect when values change -> prevent UI displaying the same values
+                    .collectLatest { hero ->
+                        _selectedHero.value = hero
+                    }
             }
         }
     }
