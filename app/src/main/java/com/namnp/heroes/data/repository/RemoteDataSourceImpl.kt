@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.namnp.heroes.data.local.HeroDatabase
+import com.namnp.heroes.data.local.toHero
 import com.namnp.heroes.data.paging_source.HeroRemoteMediator
 import com.namnp.heroes.data.paging_source.SearchHeroesSource
 import com.namnp.heroes.data.remote.HeroApi
@@ -12,6 +13,7 @@ import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.repository.RemoteDataSource
 import com.namnp.heroes.util.Constants.ITEMS_PER_PAGE
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 @ExperimentalPagingApi
 class RemoteDataSourceImpl(
@@ -21,13 +23,14 @@ class RemoteDataSourceImpl(
 
     private val heroDao = heroDatabase.heroDao()
 
-    override fun getAllHeroes(): Flow<PagingData<Hero>> {
+    override fun getAllHeroes(collection: String): Flow<PagingData<Hero>> {
         val pagingSourceFactory = { heroDao.getAllHeroes() }
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
-                heroDatabase = heroDatabase
+                heroDatabase = heroDatabase,
+                collection = collection,
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow
@@ -40,5 +43,11 @@ class RemoteDataSourceImpl(
                 SearchHeroesSource(heroApi = heroApi, query = query)
             }
         ).flow
+    }
+
+    override fun getHeroById(id: Int): Flow<Hero?> {
+        return flow {
+            emit(heroApi.getHeroById(id).data?.toHero())
+        }
     }
 }

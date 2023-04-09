@@ -6,7 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.namnp.heroes.data.local.HeroDatabase
+import com.namnp.heroes.data.local.toHero
 import com.namnp.heroes.data.remote.HeroApi
+import com.namnp.heroes.domain.ApiResponse
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.model.HeroRemoteKeys
 import javax.inject.Inject
@@ -14,7 +16,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class HeroRemoteMediator @Inject constructor(
     private val heroApi: HeroApi,
-    private val heroDatabase: HeroDatabase
+    private val heroDatabase: HeroDatabase,
+    private val collection: String
 ) : RemoteMediator<Int, Hero>() {
 
     private val heroDao = heroDatabase.heroDao()
@@ -60,7 +63,11 @@ class HeroRemoteMediator @Inject constructor(
                 }
             }
 
-            val response = heroApi.getAllHeroes(page = page)
+            val response: ApiResponse = if(collection == "marvel")
+                heroApi.getMarvelHeroes(page = page)
+            else {
+                heroApi.getAllHeroes(page = page)
+            }
             if(response.data.isNotEmpty()) {
                 heroDatabase.withTransaction {
                     if(loadType == LoadType.PREPEND) {
@@ -78,7 +85,7 @@ class HeroRemoteMediator @Inject constructor(
                         )
                     }
                     heroRemoteKeysDao.addAllRemoteKeys(heroRemoteKeys = keys)
-                    heroDao.addHeroes(heroes = response.data)
+                    heroDao.addHeroes(heroes = response.data.map { it.toHero() })
                 }
             }
             MediatorResult.Success(endOfPaginationReached = response.nextPage == null)
@@ -112,5 +119,4 @@ class HeroRemoteMediator @Inject constructor(
                 heroRemoteKeysDao.getRemoteKeys(heroId = hero.id)
             }
     }
-
 }

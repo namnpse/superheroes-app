@@ -19,7 +19,7 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val allHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems()
+    val allHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems()
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
