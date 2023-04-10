@@ -22,7 +22,6 @@ import com.namnp.heroes.util.Constants.DETAILS_ARGUMENT_KEY
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    val navBarNavController = rememberNavController()
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
@@ -51,7 +50,7 @@ fun SetupNavGraph(navController: NavHostController) {
             ListHeroesScreen(navController = navController)
         }
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navBarNavController)
+            MainScreen(appNavController = navController)
         }
     }
 }
