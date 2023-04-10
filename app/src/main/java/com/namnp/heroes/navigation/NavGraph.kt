@@ -11,10 +11,6 @@ import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.namnp.heroes.presentation.screens.details.DetailsScreen
-import com.namnp.heroes.presentation.screens.home.HomeScreen
-import com.namnp.heroes.presentation.screens.home.MoviesScreen
-import com.namnp.heroes.presentation.screens.home.MusicScreen
-import com.namnp.heroes.presentation.screens.home.NavigationItem
 import com.namnp.heroes.presentation.screens.list.ListHeroesScreen
 import com.namnp.heroes.presentation.screens.main.MainScreen
 import com.namnp.heroes.presentation.screens.search.SearchScreen

@@ -4,6 +4,8 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
@@ -14,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.namnp.heroes.R
 import com.namnp.heroes.presentation.screens.home.NavigationItem
+import com.namnp.heroes.ui.theme.Purple500
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -23,14 +26,16 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationItem.Profile,
     )
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.colorPrimary),
+//        backgroundColor = colorResource(id = R.color.colorPrimary),
+        backgroundColor =Purple500,
         contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
+//                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
+                icon = { if(item.title == "Home") Icon(painterResource(id = R.drawable.ic_bolt), contentDescription = item.title) else Icon(item.icon, contentDescription = item.title) },
                 label = { Text(text = item.title) },
                 selectedContentColor = Color.White,
                 unselectedContentColor = Color.White.copy(0.4f),
