@@ -38,7 +38,7 @@ class RemoteDataSourceImpl(
 
     override fun searchHeroes(query: String): Flow<PagingData<Hero>> {
         return Pager(
-            config = PagingConfig(pageSize = ITEMS_PER_PAGE,),
+            config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             pagingSourceFactory = {
                 SearchHeroesSource(heroApi = heroApi, query = query)
             }
@@ -49,5 +49,9 @@ class RemoteDataSourceImpl(
         return flow {
             emit(heroApi.getHeroById(id).data?.toHero())
         }
+    }
+
+    override suspend fun getBanners(): List<Hero> {
+        return heroApi.getBanners().data.map { it.toHero() }
     }
 }

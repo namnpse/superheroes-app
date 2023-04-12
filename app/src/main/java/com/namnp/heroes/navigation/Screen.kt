@@ -12,5 +12,7 @@ sealed class Screen(val route: String) {
         }
     }
 
+    object ListHeroesScreen : Screen("list_heroes_screen")
     object SearchScreen : Screen("search_screen")
+    object MainScreen : Screen("main_screen")
 }

@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.namnp.heroes.navigation.SetupNavGraph
+import com.namnp.heroes.presentation.screens.main.Navigation
 import com.namnp.heroes.ui.theme.HeroesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
             HeroesAppTheme {
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
+//                Navigation(navController = navController)
             }
         }
     }
