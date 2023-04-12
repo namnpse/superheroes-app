@@ -11,4 +11,6 @@ interface RemoteDataSource {
     fun searchHeroes(query: String): Flow<PagingData<Hero>>
 
     fun getHeroById(id: Int): Flow<Hero?>
+
+    suspend fun getBanners(): List<Hero>
 }

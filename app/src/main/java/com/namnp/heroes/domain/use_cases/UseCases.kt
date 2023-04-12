@@ -13,5 +13,6 @@ data class UseCases(
     val getAllHeroesUseCase: GetAllHeroesUseCase,
     val getMarvelHeroesUseCase: GetMarvelHeroesUseCase,
     val searchHeroesUseCase: SearchHeroesUseCase,
-    val getDetailsHeroUseCase: GetDetailsHeroUseCase
+    val getDetailsHeroUseCase: GetDetailsHeroUseCase,
+    val getBannersUseCase: GetBannersUseCase,
 )

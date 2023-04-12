@@ -28,4 +28,7 @@ interface HeroApi {
         @Path("id") id: Int
     ): HeroResponse
 
+    @GET("/banners")
+    suspend fun getBanners(): ApiResponse
+
 }

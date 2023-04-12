@@ -39,6 +39,10 @@ class Repository @Inject constructor(
             }
     }
 
+    suspend fun getBanners(): List<Hero> {
+        return  remote.getBanners()
+    }
+
     suspend fun saveOnBoardingState(completed: Boolean) {
         dataStore.saveOnBoardingState(completed = completed)
     }
