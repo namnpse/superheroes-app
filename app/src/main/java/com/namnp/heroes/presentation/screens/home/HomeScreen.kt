@@ -3,16 +3,13 @@ package com.namnp.heroes.presentation.screens.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,8 +63,8 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems()
-    val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems()
+//    val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems()
+//    val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems()
     val images =
         homeViewModel.banners.collectAsState().value.map { "${Constants.BASE_URL}${it.image}" }
 
@@ -112,7 +109,7 @@ fun HomeScreen(
                     )
                 }
                 val pagerState = rememberPagerState()
-                println("COUNT: ${marvelHeroes.itemCount}")
+//                println("COUNT: ${marvelHeroes.itemCount}")
 //                HorizontalPager(count = marvelHeroes.itemCount/4, state = pagerState) { page ->
 //                    Card(
 //                        Modifier
@@ -148,7 +145,7 @@ fun HomeScreen(
 //                    }
 //                }
                 Spacer(modifier = Modifier.height(32.dp))
-                customListView(LocalContext.current, homeViewModel)
+                customListView(LocalContext.current, homeViewModel, navController)
 //                ListContent(
 //                    heroes = allHeroes,
 //                    navController = navController
@@ -182,13 +179,14 @@ data class ListModel(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun customListView(context: Context, homeViewModel: HomeViewModel) {
+fun customListView(context: Context, homeViewModel: HomeViewModel, navController: NavHostController) {
     // in the below line, we are creating and
     // initializing our array list
 //    lateinit var courseList: List<ListModel>
 //    courseList = ArrayList<ListModel>()
 
     val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
+    val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
 
     // in the below line, we are adding data to our list.
 //    courseList = courseList + ListModel("Android", R.drawable.ic_calendar)
@@ -219,7 +217,11 @@ fun customListView(context: Context, homeViewModel: HomeViewModel) {
             text = "See more",
             modifier = Modifier
 //            .width(120.dp)
-                .padding(4.dp),
+                .padding(4.dp)
+                .clickable {
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("boruto"))
+                }
+            ,
             color = Color.Black,
             textAlign = TextAlign.Center,
 //            fontWeight = FontWeight.W400,
@@ -273,6 +275,92 @@ fun customListView(context: Context, homeViewModel: HomeViewModel) {
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = borutoHeroes[index]?.name ?: "",
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(4.dp),
+                    color = Color.Black, textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(24.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = "Marvel heroes",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp),
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.h6
+        )
+        Text(
+            text = "See more",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp)
+                .clickable {
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("marvel"))
+                }
+            ,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+//            fontWeight = FontWeight.W400,
+//            style = MaterialTheme.typography.h6
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow(
+//        contentPadding = PaddingValues(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+        ) {
+        itemsIndexed(marvelHeroes) { index, item ->
+            Column(
+                modifier = Modifier
+//                        .padding(8.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            marvelHeroes[index]?.name + " selected..",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                )
+                {
+                    Column(
+                        modifier = Modifier
+//                        .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+//                    Spacer(modifier = Modifier.height(5.dp))
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("${Constants.BASE_URL}${marvelHeroes[index]?.image}")
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(120.dp)
+//                            .aspectRatio(0.5f)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = marvelHeroes[index]?.name ?: "",
                     modifier = Modifier
                         .width(120.dp)
                         .padding(4.dp),
