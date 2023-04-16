@@ -239,9 +239,9 @@ fun BottomSheetMarvelHeroContent(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(INFO_ICON_SIZE)
+                    .size(INFO_ICON_SIZE_LARGE)
                     .weight(2f),
-                painter = painterResource(id = R.drawable.ic_logo),
+                painter = painterResource(id = R.drawable.shield),
                 contentDescription = stringResource(id = R.string.app_logo),
                 tint = contentColor
             )
@@ -280,16 +280,16 @@ fun BottomSheetMarvelHeroContent(
                 textColor = contentColor,
             )
             InfoBox(
-                icon = painterResource(id = R.drawable.ic_calendar),
+                icon = painterResource(id = R.drawable.ic_user),
                 iconColor = infoBoxIconColor,
                 bigText = selectedHero.gender,
                 smallText = "Gender",
                 textColor = contentColor
             )
             InfoBox(
-                icon = painterResource(id = R.drawable.ic_cake),
+                icon = painterResource(id = R.drawable.ic_book),
                 iconColor = infoBoxIconColor,
-                bigText = selectedHero.issues.toString(),
+                bigText = (selectedHero.issues ?: 0).toString(),
                 smallText = "Issues",
                 textColor = contentColor
             )
