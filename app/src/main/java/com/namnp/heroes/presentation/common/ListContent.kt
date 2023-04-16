@@ -197,7 +197,8 @@ fun HeroItemPreview() {
             day = "",
             family = listOf(),
             abilities = listOf(),
-            natureTypes = listOf()
+            natureTypes = listOf(),
+            collection = "",
         ),
         navController = rememberNavController()
     )
@@ -219,7 +220,8 @@ fun HeroItemDarkPreview() {
             day = "",
             family = listOf(),
             abilities = listOf(),
-            natureTypes = listOf()
+            natureTypes = listOf(),
+            collection = "",
         ),
         navController = rememberNavController()
     )

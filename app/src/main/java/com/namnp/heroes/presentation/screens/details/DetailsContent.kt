@@ -439,7 +439,8 @@ fun BottomSheetMarvelHeroContentPreview() {
             day = "1st",
             family = listOf("Minato", "Kushina", "Boruto", "Himawari"),
             abilities = listOf("Sage Mode", "Shadow Clone", "Rasengan"),
-            natureTypes = listOf("Earth", "Wind")
+            natureTypes = listOf("Earth", "Wind"),
+            collection = "",
         )
     )
 }

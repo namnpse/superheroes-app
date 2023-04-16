@@ -219,7 +219,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
 //            .width(120.dp)
                 .padding(4.dp)
                 .clickable {
-                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("boruto"))
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Boruto"))
                 }
             ,
             color = Color.Black,
@@ -305,7 +305,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
 //            .width(120.dp)
                 .padding(4.dp)
                 .clickable {
-                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("marvel"))
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Marvel"))
                 }
             ,
             color = Color.Black,
@@ -320,7 +320,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
         horizontalArrangement = Arrangement.spacedBy(16.dp),
 
         ) {
-        itemsIndexed(marvelHeroes) { index, item ->
+        itemsIndexed(marvelHeroes) { index, hero ->
             Column(
                 modifier = Modifier
 //                        .padding(8.dp)
@@ -330,11 +330,12 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
                 Card(
                     shape = RoundedCornerShape(10.dp),
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            marvelHeroes[index]?.name + " selected..",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            context,
+//                            marvelHeroes[index]?.name + " selected..",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+                        navController.navigate(Screen.HeroDetailsScreen.passHeroId(heroId = hero?.id ?: 0))
                     },
                 )
                 {

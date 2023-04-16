@@ -24,4 +24,5 @@ data class Hero(
     val realName: String? = null,
     val issues: Int? = null,
     val aliases: List<String>? = null,
+    val collection: String
 )

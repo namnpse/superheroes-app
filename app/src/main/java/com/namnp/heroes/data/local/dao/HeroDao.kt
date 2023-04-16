@@ -10,8 +10,8 @@ import com.namnp.heroes.domain.model.Hero
 @Dao
 interface HeroDao {
 
-    @Query("SELECT * FROM HERO_TABLE WHERE id>=:threshHold ORDER BY id ASC")
-    fun getAllHeroes(threshHold: Int): PagingSource<Int, Hero>
+    @Query("SELECT * FROM HERO_TABLE WHERE collection=:collection ORDER BY id ASC")
+    fun getAllHeroes(collection: String): PagingSource<Int, Hero>
 
     @Query("SELECT * FROM HERO_TABLE WHERE id=:heroId")
     fun getHeroByHeroId(heroId: Int): Hero?

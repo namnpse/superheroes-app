@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ListHeroesViewModel @Inject constructor(
     useCases: UseCases,
     savedStateHandle: SavedStateHandle,
-): ViewModel() {
-    private val categoryId = savedStateHandle.get<String>(Constants.CATEGORY_ARGUMENT_KEY)
-    val getAllHeroesByCategory = if(categoryId == "boruto") useCases.getAllHeroesUseCase() else useCases.getMarvelHeroesUseCase()
+) : ViewModel() {
+    private val categoryId = savedStateHandle.get<String>(Constants.CATEGORY_ARGUMENT_KEY) ?: ""
+    val getAllHeroesByCategory = useCases.getAllHeroesUseCase(collection = categoryId)
 }

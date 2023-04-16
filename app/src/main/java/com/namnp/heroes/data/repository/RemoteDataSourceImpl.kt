@@ -24,7 +24,7 @@ class RemoteDataSourceImpl(
     private val heroDao = heroDatabase.heroDao()
 
     override fun getAllHeroes(collection: String): Flow<PagingData<Hero>> {
-        val pagingSourceFactory = { heroDao.getAllHeroes(if(collection == "marvel") 100 else 0) }
+        val pagingSourceFactory = { heroDao.getAllHeroes(collection) }
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             remoteMediator = HeroRemoteMediator(
