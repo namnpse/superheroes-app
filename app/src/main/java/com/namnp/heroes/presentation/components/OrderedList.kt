@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.namnp.heroes.ui.theme.SMALL_PADDING
+import com.namnp.heroes.ui.theme.fonts
 import com.namnp.heroes.ui.theme.titleColor
 
 @Composable
@@ -27,14 +28,16 @@ fun OrderedList(
             text = title,
             color = textColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = fonts,
         )
         items.forEachIndexed { index, item ->
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
                 text = "${index + 1}. $item",
                 color = textColor,
-                fontSize = MaterialTheme.typography.body1.fontSize
+                fontSize = MaterialTheme.typography.body1.fontSize,
+                fontFamily = fonts,
             )
         }
     }

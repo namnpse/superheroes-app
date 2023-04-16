@@ -182,7 +182,8 @@ fun BottomSheetContent(
             text = stringResource(R.string.about),
             color = contentColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = fonts,
         )
         Text(
             modifier = Modifier
@@ -191,7 +192,8 @@ fun BottomSheetContent(
             text = selectedHero.about,
             color = contentColor,
             fontSize = MaterialTheme.typography.body1.fontSize,
-            maxLines = ABOUT_TEXT_MAX_LINES
+            maxLines = ABOUT_TEXT_MAX_LINES,
+            fontFamily = fonts,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -251,14 +253,16 @@ fun BottomSheetMarvelHeroContent(
                     text = selectedHero.name,
                     color = contentColor,
                     fontSize = MaterialTheme.typography.h4.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
                 )
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
                     text = selectedHero.realName ?: "",
                     color = contentColor,
                     fontSize = MaterialTheme.typography.caption.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
                 )
             }
         }
@@ -273,7 +277,7 @@ fun BottomSheetMarvelHeroContent(
                 iconColor = infoBoxIconColor,
                 bigText = "${selectedHero.power}",
                 smallText = stringResource(R.string.power),
-                textColor = contentColor
+                textColor = contentColor,
             )
             InfoBox(
                 icon = painterResource(id = R.drawable.ic_calendar),
@@ -295,7 +299,8 @@ fun BottomSheetMarvelHeroContent(
             text = stringResource(R.string.about),
             color = contentColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = fonts,
         )
         Text(
             modifier = Modifier
@@ -304,7 +309,8 @@ fun BottomSheetMarvelHeroContent(
             text = selectedHero.about,
             color = contentColor,
             fontSize = MaterialTheme.typography.body1.fontSize,
-            maxLines = ABOUT_TEXT_MAX_LINES
+            maxLines = ABOUT_TEXT_MAX_LINES,
+            fontFamily = fonts,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

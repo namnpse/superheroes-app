@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.namnp.heroes.R
 import com.namnp.heroes.ui.theme.INFO_ICON_SIZE
 import com.namnp.heroes.ui.theme.SMALL_PADDING
+import com.namnp.heroes.ui.theme.fonts
 import com.namnp.heroes.ui.theme.titleColor
 
 @Composable
@@ -46,13 +47,15 @@ fun InfoBox(
                 text = bigText,
                 color = textColor,
                 fontSize = MaterialTheme.typography.h6.fontSize,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                fontFamily = fonts,
             )
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
                 text = smallText,
                 color = textColor,
-                fontSize = MaterialTheme.typography.overline.fontSize
+                fontSize = MaterialTheme.typography.overline.fontSize,
+                fontFamily = fonts,
             )
         }
     }

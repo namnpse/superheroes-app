@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.namnp.heroes.R
 import com.namnp.heroes.presentation.screens.home.NavigationItem
 import com.namnp.heroes.ui.theme.Purple500
+import com.namnp.heroes.ui.theme.fonts
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -43,7 +44,7 @@ fun BottomNavigationBar(navController: NavController) {
                         )
                     else Icon(item.icon, contentDescription = item.title)
                 },
-                label = { Text(text = item.title) },
+                label = { Text(text = item.title, fontFamily = fonts,) },
                 selectedContentColor = Color.White,
                 unselectedContentColor = Color.White.copy(0.4f),
                 alwaysShowLabel = true,

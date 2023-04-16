@@ -47,10 +47,7 @@ import com.namnp.heroes.presentation.common.ListContent
 import com.namnp.heroes.presentation.components.RatingWidget
 import com.namnp.heroes.presentation.image_slider.AutoSlidingCarousel
 import com.namnp.heroes.presentation.screens.details.UiEvent
-import com.namnp.heroes.ui.theme.MEDIUM_PADDING
-import com.namnp.heroes.ui.theme.SMALL_PADDING
-import com.namnp.heroes.ui.theme.statusBarColor
-import com.namnp.heroes.ui.theme.topAppBarContentColor
+import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.Constants
 import com.namnp.heroes.util.PaletteGenerator
 import kotlinx.coroutines.flow.collectLatest
@@ -63,8 +60,6 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-//    val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems()
-//    val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems()
     val images =
         homeViewModel.banners.collectAsState().value.map { "${Constants.BASE_URL}${it.image}" }
 
@@ -108,48 +103,8 @@ fun HomeScreen(
                         }
                     )
                 }
-                val pagerState = rememberPagerState()
-//                println("COUNT: ${marvelHeroes.itemCount}")
-//                HorizontalPager(count = marvelHeroes.itemCount/4, state = pagerState) { page ->
-//                    Card(
-//                        Modifier
-////                            .weight(0.8f)
-////                            .size(100.dp)
-//                            .aspectRatio(1.5f)
-////                            .background(color = Purple500)
-//                            .graphicsLayer {
-//                                // Calculate the absolute offset for the current page from the
-//                                // scroll position. We use the absolute value which allows us to mirror
-//                                // any effects for both directions
-////                                val pageOffset = ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-//                                val pageOffset =
-//                                    ((pagerState.currentPage - page) + pagerState.currentPageOffset).absoluteValue
-//
-//                                // We animate the alpha, between 50% and 100%
-//                                alpha = lerp(
-//                                    start = 0.5f,
-//                                    stop = 1f,
-//                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                                )
-//                            }
-//                    ) {
-//                        // Card content
-//                        AsyncImage(
-//                            model = ImageRequest.Builder(LocalContext.current)
-//                                .data("${Constants.BASE_URL}${marvelHeroes[page]?.image}")
-//                                .build(),
-//                            contentDescription = null,
-//                            contentScale = ContentScale.Crop,
-//                            modifier = Modifier.height(200.dp)
-//                        )
-//                    }
-//                }
                 Spacer(modifier = Modifier.height(32.dp))
                 customListView(LocalContext.current, homeViewModel, navController)
-//                ListContent(
-//                    heroes = allHeroes,
-//                    navController = navController
-//                )
             }
         }
     )
@@ -180,21 +135,9 @@ data class ListModel(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun customListView(context: Context, homeViewModel: HomeViewModel, navController: NavHostController) {
-    // in the below line, we are creating and
-    // initializing our array list
-//    lateinit var courseList: List<ListModel>
-//    courseList = ArrayList<ListModel>()
 
     val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
     val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
-
-    // in the below line, we are adding data to our list.
-//    courseList = courseList + ListModel("Android", R.drawable.ic_calendar)
-//    courseList = courseList + ListModel("JavaScript", R.drawable.ic_cake)
-//    courseList = courseList + ListModel("Python", R.drawable.ic_search_document)
-//    courseList = courseList + ListModel("C++", R.drawable.ic_bolt)
-//    courseList = courseList + ListModel("Java", com.google.android.material.R.drawable.ic_clock_black_24dp)
-//    courseList = courseList + ListModel("Node Js", R.drawable.greetings)
 
     // in the below line, we are creating a
     // lazy row for displaying a horizontal list view.
@@ -211,7 +154,8 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
             color = Color.Black,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.h6,
+            fontFamily = fonts,
         )
         Text(
             text = "See more",
@@ -224,6 +168,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
             ,
             color = Color.Black,
             textAlign = TextAlign.Center,
+            fontFamily = fonts,
 //            fontWeight = FontWeight.W400,
 //            style = MaterialTheme.typography.h6
         )
@@ -278,7 +223,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
                     modifier = Modifier
                         .width(120.dp)
                         .padding(4.dp),
-                    color = Color.Black, textAlign = TextAlign.Center
+                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
                 )
             }
         }
@@ -297,7 +242,8 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
             color = Color.Black,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.h6,
+            fontFamily = fonts,
         )
         Text(
             text = "See more",
@@ -310,6 +256,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
             ,
             color = Color.Black,
             textAlign = TextAlign.Center,
+            fontFamily = fonts,
 //            fontWeight = FontWeight.W400,
 //            style = MaterialTheme.typography.h6
         )
@@ -365,7 +312,7 @@ fun customListView(context: Context, homeViewModel: HomeViewModel, navController
                     modifier = Modifier
                         .width(120.dp)
                         .padding(4.dp),
-                    color = Color.Black, textAlign = TextAlign.Center
+                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
                 )
             }
         }
