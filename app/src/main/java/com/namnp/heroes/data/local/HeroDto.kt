@@ -20,6 +20,7 @@ data class HeroDto(
     val realName: String? = null,
     val issues: Int? = null,
     val aliases: List<String>? = null,
+    val collection: String?
 )
 
 fun HeroDto.toHero(): Hero {
@@ -38,6 +39,7 @@ fun HeroDto.toHero(): Hero {
         gender = gender ?: "Male",
         realName = realName ?: "Unknown",
         issues = issues ?: 0,
-        aliases = aliases ?: emptyList()
+        aliases = aliases ?: emptyList(),
+        collection = collection ?: "",
     )
 }

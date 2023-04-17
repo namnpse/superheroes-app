@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetAllHeroesUseCase(
     private val repository: Repository
 ) {
-    operator fun invoke(): Flow<PagingData<Hero>> {
-        return repository.getAllHeroes()
+    operator fun invoke(collection: String): Flow<PagingData<Hero>> {
+        return repository.getAllHeroes(collection)
     }
 }

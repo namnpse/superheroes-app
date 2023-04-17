@@ -1,5 +1,6 @@
 package com.namnp.heroes.navigation
 
+import com.namnp.heroes.util.Constants.CATEGORY_ARGUMENT_KEY
 import com.namnp.heroes.util.Constants.DETAILS_ARGUMENT_KEY
 
 sealed class Screen(val route: String) {
@@ -12,7 +13,11 @@ sealed class Screen(val route: String) {
         }
     }
 
-    object ListHeroesScreen : Screen("list_heroes_screen")
+    object ListHeroesScreen : Screen("list_heroes_screen/{$CATEGORY_ARGUMENT_KEY}") {
+        fun passCategoryId(categoryId: String): String {
+            return "list_heroes_screen/$categoryId"
+        }
+    }
     object SearchScreen : Screen("search_screen")
     object MainScreen : Screen("main_screen")
 }

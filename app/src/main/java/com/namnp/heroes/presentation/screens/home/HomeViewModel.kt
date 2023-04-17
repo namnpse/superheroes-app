@@ -13,8 +13,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     useCases: UseCases
 ): ViewModel() {
-    val getAllHeroes = useCases.getAllHeroesUseCase()
-    val getMarvelHeroes = useCases.getMarvelHeroesUseCase()
+    val getAllHeroes = useCases.getAllHeroesUseCase("Boruto")
+    val getMarvelHeroes = useCases.getAllHeroesUseCase("Marvel")
     val getBannersUseCase = useCases.getBannersUseCase
     private val _banners = MutableStateFlow<List<Hero>>(emptyList())
     val banners = _banners
@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(
         getBanners()
     }
 
-    fun getBanners() {
+    private fun getBanners() {
         viewModelScope.launch {
             _banners.value = getBannersUseCase()
         }

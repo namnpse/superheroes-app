@@ -182,7 +182,8 @@ fun BottomSheetContent(
             text = stringResource(R.string.about),
             color = contentColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = fonts,
         )
         Text(
             modifier = Modifier
@@ -191,7 +192,8 @@ fun BottomSheetContent(
             text = selectedHero.about,
             color = contentColor,
             fontSize = MaterialTheme.typography.body1.fontSize,
-            maxLines = ABOUT_TEXT_MAX_LINES
+            maxLines = ABOUT_TEXT_MAX_LINES,
+            fontFamily = fonts,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -237,9 +239,9 @@ fun BottomSheetMarvelHeroContent(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(INFO_ICON_SIZE)
+                    .size(INFO_ICON_SIZE_LARGE)
                     .weight(2f),
-                painter = painterResource(id = R.drawable.ic_logo),
+                painter = painterResource(id = R.drawable.shield),
                 contentDescription = stringResource(id = R.string.app_logo),
                 tint = contentColor
             )
@@ -251,14 +253,16 @@ fun BottomSheetMarvelHeroContent(
                     text = selectedHero.name,
                     color = contentColor,
                     fontSize = MaterialTheme.typography.h4.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
                 )
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
                     text = selectedHero.realName ?: "",
                     color = contentColor,
                     fontSize = MaterialTheme.typography.caption.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
                 )
             }
         }
@@ -273,19 +277,19 @@ fun BottomSheetMarvelHeroContent(
                 iconColor = infoBoxIconColor,
                 bigText = "${selectedHero.power}",
                 smallText = stringResource(R.string.power),
-                textColor = contentColor
+                textColor = contentColor,
             )
             InfoBox(
-                icon = painterResource(id = R.drawable.ic_calendar),
+                icon = painterResource(id = R.drawable.ic_user),
                 iconColor = infoBoxIconColor,
                 bigText = selectedHero.gender,
                 smallText = "Gender",
                 textColor = contentColor
             )
             InfoBox(
-                icon = painterResource(id = R.drawable.ic_cake),
+                icon = painterResource(id = R.drawable.ic_book),
                 iconColor = infoBoxIconColor,
-                bigText = selectedHero.issues.toString(),
+                bigText = (selectedHero.issues ?: 0).toString(),
                 smallText = "Issues",
                 textColor = contentColor
             )
@@ -295,7 +299,8 @@ fun BottomSheetMarvelHeroContent(
             text = stringResource(R.string.about),
             color = contentColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = fonts,
         )
         Text(
             modifier = Modifier
@@ -304,7 +309,8 @@ fun BottomSheetMarvelHeroContent(
             text = selectedHero.about,
             color = contentColor,
             fontSize = MaterialTheme.typography.body1.fontSize,
-            maxLines = ABOUT_TEXT_MAX_LINES
+            maxLines = ABOUT_TEXT_MAX_LINES,
+            fontFamily = fonts,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -439,7 +445,8 @@ fun BottomSheetMarvelHeroContentPreview() {
             day = "1st",
             family = listOf("Minato", "Kushina", "Boruto", "Himawari"),
             abilities = listOf("Sage Mode", "Shadow Clone", "Rasengan"),
-            natureTypes = listOf("Earth", "Wind")
+            natureTypes = listOf("Earth", "Wind"),
+            collection = "",
         )
     )
 }

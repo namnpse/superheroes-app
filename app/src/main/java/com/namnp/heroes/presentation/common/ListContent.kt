@@ -153,14 +153,16 @@ fun HeroItem(
                     fontSize = MaterialTheme.typography.h5.fontSize,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = fonts,
                 )
                 Text(
                     text = hero.about,
                     color = Color.White.copy(alpha = ContentAlpha.medium),
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = fonts,
                 )
                 Row(
                     modifier = Modifier.padding(top = SMALL_PADDING),
@@ -173,7 +175,8 @@ fun HeroItem(
                     Text(
                         text = "(${hero.rating})",
                         textAlign = TextAlign.Center,
-                        color = Color.White.copy(alpha = ContentAlpha.medium)
+                        color = Color.White.copy(alpha = ContentAlpha.medium),
+                        fontFamily = fonts,
                     )
                 }
             }
@@ -197,7 +200,8 @@ fun HeroItemPreview() {
             day = "",
             family = listOf(),
             abilities = listOf(),
-            natureTypes = listOf()
+            natureTypes = listOf(),
+            collection = "",
         ),
         navController = rememberNavController()
     )
@@ -219,7 +223,8 @@ fun HeroItemDarkPreview() {
             day = "",
             family = listOf(),
             abilities = listOf(),
-            natureTypes = listOf()
+            natureTypes = listOf(),
+            collection = "",
         ),
         navController = rememberNavController()
     )

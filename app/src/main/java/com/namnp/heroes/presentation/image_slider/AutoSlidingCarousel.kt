@@ -45,13 +45,13 @@ fun AutoSlidingCarousel(
         }
 
         // you can remove the surface in case you don't want
-        // the transparant bacground
+        // the transparent background
         Surface(
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .align(Alignment.BottomCenter),
             shape = CircleShape,
-            color = Color.Black.copy(alpha = 0.5f)
+            color = Color.Black.copy(alpha = 0.0f)
         ) {
             DotsIndicator(
 //                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),

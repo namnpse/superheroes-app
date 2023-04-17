@@ -3,16 +3,13 @@ package com.namnp.heroes.presentation.screens.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -49,10 +47,7 @@ import com.namnp.heroes.presentation.common.ListContent
 import com.namnp.heroes.presentation.components.RatingWidget
 import com.namnp.heroes.presentation.image_slider.AutoSlidingCarousel
 import com.namnp.heroes.presentation.screens.details.UiEvent
-import com.namnp.heroes.ui.theme.MEDIUM_PADDING
-import com.namnp.heroes.ui.theme.SMALL_PADDING
-import com.namnp.heroes.ui.theme.statusBarColor
-import com.namnp.heroes.ui.theme.topAppBarContentColor
+import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.Constants
 import com.namnp.heroes.util.PaletteGenerator
 import kotlinx.coroutines.flow.collectLatest
@@ -65,8 +60,8 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val allHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems()
-    val images = homeViewModel.banners.collectAsState().value.map { "${Constants.BASE_URL}${it.image}" }
+    val images =
+        homeViewModel.banners.collectAsState().value.map { "${Constants.BASE_URL}${it.image}" }
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
@@ -108,110 +103,8 @@ fun HomeScreen(
                         }
                     )
                 }
-                val pagerState = rememberPagerState()
-                HorizontalPager(count = images.size, state = pagerState) { page ->
-                    Card(
-                        Modifier
-//                            .weight(0.8f)
-//                            .size(100.dp)
-                            .aspectRatio(1.5f)
-//                            .background(color = Purple500)
-                            .graphicsLayer {
-                                // Calculate the absolute offset for the current page from the
-                                // scroll position. We use the absolute value which allows us to mirror
-                                // any effects for both directions
-//                                val pageOffset = ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-                                val pageOffset =
-                                    ((pagerState.currentPage - page) + pagerState.currentPageOffset).absoluteValue
-
-                                // We animate the alpha, between 50% and 100%
-                                alpha = lerp(
-                                    start = 0.5f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            }
-                    ) {
-                        // Card content
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(images[page])
-                                .build(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.height(200.dp)
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(100.dp))
-                customListView(LocalContext.current)
-                Spacer(modifier = Modifier.height(100.dp))
-                Card(
-                    modifier = Modifier
-//                        .padding(16.dp)
-                        .height(200.dp),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    AutoSlidingCarousel(
-                        itemsCount = images.size,
-                        itemContent = { index ->
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(images[index])
-                                    .build(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.height(200.dp)
-                            )
-                        }
-                    )
-                }
-                Spacer(modifier = Modifier.height(100.dp))
-                Card(
-                    modifier = Modifier
-//                        .padding(16.dp)
-                        .height(200.dp),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    AutoSlidingCarousel(
-                        itemsCount = images.size,
-                        itemContent = { index ->
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(images[index])
-                                    .build(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.height(200.dp)
-                            )
-                        }
-                    )
-                }
-                Spacer(modifier = Modifier.height(100.dp))
-                Card(
-                    modifier = Modifier
-//                        .padding(16.dp)
-                        .height(200.dp),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    AutoSlidingCarousel(
-                        itemsCount = images.size,
-                        itemContent = { index ->
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(images[index])
-                                    .build(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.height(200.dp)
-                            )
-                        }
-                    )
-                }
-//                ListContent(
-//                    heroes = allHeroes,
-//                    navController = navController
-//                )
+                Spacer(modifier = Modifier.height(32.dp))
+                customListView(LocalContext.current, homeViewModel, navController)
             }
         }
     )
@@ -241,98 +134,186 @@ data class ListModel(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun customListView(context: Context) {
-    // in the below line, we are creating and
-    // initializing our array list
-    lateinit var courseList: List<ListModel>
-    courseList = ArrayList<ListModel>()
+fun customListView(context: Context, homeViewModel: HomeViewModel, navController: NavHostController) {
 
-    // in the below line, we are adding data to our list.
-    courseList = courseList + ListModel("Android", R.drawable.ic_calendar)
-    courseList = courseList + ListModel("JavaScript", R.drawable.ic_cake)
-    courseList = courseList + ListModel("Python", R.drawable.ic_search_document)
-    courseList = courseList + ListModel("C++", R.drawable.ic_bolt)
-    courseList = courseList + ListModel("Java", com.google.android.material.R.drawable.ic_clock_black_24dp)
-    courseList = courseList + ListModel("Node Js", R.drawable.greetings)
+    val borutoHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
+    val marvelHeroes = homeViewModel.getMarvelHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
 
     // in the below line, we are creating a
     // lazy row for displaying a horizontal list view.
-    LazyRow {
-        // in the below line, we are setting data for each item of our listview.
-        itemsIndexed(courseList) { index, item ->
-            // in the below line, we are creating a card for our list view item.
-            Card(
-                // inside our grid view on below line
-                // we are adding on click for each item of our grid view.
-                onClick = {
-                    // inside on click we are displaying the toast message.
-                    Toast.makeText(
-                        context,
-                        courseList[index].languageName + " selected..",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                // in the below line, we are adding
-                // padding from our all sides.
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(120.dp),
-
-                // in the below line, we are adding
-                // elevation for the card.
-                elevation = 6.dp
-            )
-            {
-                // in the below line, we are creating
-                // a row for our list view item.
-                Column(
-                    // for our row we are adding modifier
-                    // to set padding from all sides.
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // in the below line, inside row we are adding spacer
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    // in the below line, we are adding Image to display the image.
-                    Image(
-                        // in the below line, we are specifying the drawable image for our image.
-                        painter = painterResource(id = courseList[index].languageImg),
-
-                        // in the below line, we are specifying
-                        // content description for our image
-                        contentDescription = "img",
-
-                        // in the below line, we are setting height
-                        // and width for our image.
-                        modifier = Modifier
-                            .height(60.dp)
-                            .width(60.dp)
-                            .padding(5.dp),
-
-                        alignment = Alignment.Center
-                    )
-
-                    // in the below line, we are adding spacer between image and a text
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    // in the below line, we are creating a text.
-                    Text(
-                        // inside the text on below line we are
-                        // setting text as the language name
-                        // from our model class.
-                        text = courseList[index].languageName,
-
-                        // in the below line, we are adding padding
-                        // for our text from all sides.
-                        modifier = Modifier.padding(4.dp),
-
-                        // in the below line, we are adding color for our text
-                        color = Color.Black, textAlign = TextAlign.Center
-                    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = "Boruto heroes",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp),
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.h6,
+            fontFamily = fonts,
+        )
+        Text(
+            text = "See more",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp)
+                .clickable {
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Boruto"))
                 }
+            ,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontFamily = fonts,
+//            fontWeight = FontWeight.W400,
+//            style = MaterialTheme.typography.h6
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow(
+//        contentPadding = PaddingValues(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+        ) {
+        itemsIndexed(borutoHeroes) { index, item ->
+            Column(
+                modifier = Modifier
+//                        .padding(8.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            borutoHeroes[index]?.name + " selected..",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                )
+                {
+                    Column(
+                        modifier = Modifier
+//                        .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+//                    Spacer(modifier = Modifier.height(5.dp))
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("${Constants.BASE_URL}${borutoHeroes[index]?.image}")
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(120.dp)
+//                            .aspectRatio(0.5f)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = borutoHeroes[index]?.name ?: "",
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(4.dp),
+                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(24.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = "Marvel heroes",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp),
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.h6,
+            fontFamily = fonts,
+        )
+        Text(
+            text = "See more",
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp)
+                .clickable {
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Marvel"))
+                }
+            ,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontFamily = fonts,
+//            fontWeight = FontWeight.W400,
+//            style = MaterialTheme.typography.h6
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow(
+//        contentPadding = PaddingValues(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+        ) {
+        itemsIndexed(marvelHeroes) { index, hero ->
+            Column(
+                modifier = Modifier
+//                        .padding(8.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+//                        Toast.makeText(
+//                            context,
+//                            marvelHeroes[index]?.name + " selected..",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+                        navController.navigate(Screen.HeroDetailsScreen.passHeroId(heroId = hero?.id ?: 0))
+                    },
+                )
+                {
+                    Column(
+                        modifier = Modifier
+//                        .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+//                    Spacer(modifier = Modifier.height(5.dp))
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("${Constants.BASE_URL}${marvelHeroes[index]?.image}")
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(120.dp)
+//                            .aspectRatio(0.5f)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = marvelHeroes[index]?.name ?: "",
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(4.dp),
+                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
+                )
             }
         }
     }

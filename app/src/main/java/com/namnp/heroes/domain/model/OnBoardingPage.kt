@@ -12,7 +12,7 @@ sealed class OnBoardingPage(
     object First : OnBoardingPage(
         image = R.drawable.greetings,
         title = "Greetings",
-        description = "Are you a Boruto fan? Because if you are then we have a great news for you!"
+        description = "Are you a superheroes fan? Because if you are then we have a great news for you!"
     )
 
     object Second : OnBoardingPage(

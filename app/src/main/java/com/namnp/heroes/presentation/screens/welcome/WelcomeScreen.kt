@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
@@ -101,8 +102,10 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             color = MaterialTheme.colors.titleColor,
             fontSize = MaterialTheme.typography.h4.fontSize,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = fonts
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,8 +114,9 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             text = onBoardingPage.description,
             color = MaterialTheme.colors.descriptionColor,
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
+            fontWeight = FontWeight.Light,
+            textAlign = TextAlign.Center,
+            fontFamily = fonts
         )
     }
 }
@@ -142,7 +146,10 @@ fun FinishButton(
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Finish")
+                Text(
+                    text = "Finish", 
+                    fontFamily = fonts, 
+                    fontSize = MaterialTheme.typography.h6.fontSize,)
             }
         }
     }

@@ -62,12 +62,7 @@ class HeroRemoteMediator @Inject constructor(
                     nextPage
                 }
             }
-
-            val response: ApiResponse = if(collection == "marvel")
-                heroApi.getMarvelHeroes(page = page)
-            else {
-                heroApi.getAllHeroes(page = page)
-            }
+            val response: ApiResponse = heroApi.getAllHeroes(page = page, collection = collection)
             if(response.data.isNotEmpty()) {
                 heroDatabase.withTransaction {
                     if(loadType == LoadType.PREPEND) {
