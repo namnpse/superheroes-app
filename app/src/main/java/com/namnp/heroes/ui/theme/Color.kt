@@ -17,6 +17,8 @@ val ShimmerLightGray = Color(0xFFF1F1F1)
 val ShimmerMediumGray = Color(0xFFE3E3E3)
 val ShimmerDarkGray = Color(0xFF1D1D1D)
 
+val greenColor = Color(0xFF0F9D58)
+
 val Colors.statusBarColor
     get() = if (isLight) Purple700 else Color.Black
 

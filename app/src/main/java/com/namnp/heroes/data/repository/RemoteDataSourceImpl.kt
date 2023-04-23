@@ -52,6 +52,10 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun getBanners(): List<Hero> {
-        return heroApi.getBanners().data.map { it.toHero() }
+        return try {
+         heroApi.getBanners().data.map { it.toHero() }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 }
