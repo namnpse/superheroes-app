@@ -18,14 +18,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.namnp.heroes.R
-import com.namnp.heroes.navigation.Screen
-import com.namnp.heroes.navigation.SetupNavGraph
 import com.namnp.heroes.presentation.components.BottomNavigationBar
-import com.namnp.heroes.presentation.screens.details.DetailsScreen
+import com.namnp.heroes.presentation.screens.favorite.FavoriteScreen
 import com.namnp.heroes.presentation.screens.home.*
-import com.namnp.heroes.util.Constants
+import com.namnp.heroes.presentation.screens.profile.ProfileScreen
 
 @Composable
 fun MainScreen(
@@ -64,43 +61,5 @@ fun Navigation(
         composable(NavigationItem.Profile.route) {
             ProfileScreen()
         }
-    }
-}
-
-@Composable
-fun FavoriteScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.colorPrimaryDark))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Favorite View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
-    }
-}
-
-@Composable
-fun ProfileScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.colorPrimaryDark))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Profile View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
     }
 }
