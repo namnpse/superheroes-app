@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "399575733533",
+    "project_id": "instagram-flutter-36073",
+    "storage_bucket": "instagram-flutter-36073.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399575733533:android:539b471fe4e9d779f6bdf4",
+        "android_client_info": {
+          "package_name": "com.namnp.heroes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399575733533-brv83upsoceg078cu4e4qafsgkv9m2il.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq-hKrWNr6eKmyMPWLTLdLoc5nsEV9lmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399575733533-brv83upsoceg078cu4e4qafsgkv9m2il.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "399575733533-ni0p4a23maruu953fqfht81oq2pd1pvj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.namnpse.instagramFlutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399575733533:android:45fe11b7975e3ba6f6bdf4",
+        "android_client_info": {
+          "package_name": "com.namnpse.instagram_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399575733533-brv83upsoceg078cu4e4qafsgkv9m2il.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq-hKrWNr6eKmyMPWLTLdLoc5nsEV9lmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399575733533-brv83upsoceg078cu4e4qafsgkv9m2il.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "399575733533-ni0p4a23maruu953fqfht81oq2pd1pvj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.namnpse.instagramFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

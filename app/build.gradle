@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlinx-serialization'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -69,6 +70,7 @@ dependencies {
 
     // Room components
     implementation "androidx.room:room-runtime:2.5.1"
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.5'
     kapt "androidx.room:room-compiler:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
     implementation "androidx.room:room-paging:2.5.1"
@@ -109,6 +111,10 @@ dependencies {
 
     // Palette API
     implementation "androidx.palette:palette-ktx:1.0.0"
+
+    // Firestore
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-firestore:24.5.0'
 
     // Testing
     androidTestImplementation "androidx.test:runner:1.4.0"
