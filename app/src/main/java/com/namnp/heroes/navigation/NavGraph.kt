@@ -12,6 +12,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.namnp.heroes.presentation.screens.details.DetailsScreen
 import com.namnp.heroes.presentation.screens.list.ListHeroesScreen
+import com.namnp.heroes.presentation.screens.login.LoginScreen
 import com.namnp.heroes.presentation.screens.main.MainScreen
 import com.namnp.heroes.presentation.screens.search.SearchScreen
 import com.namnp.heroes.presentation.screens.splash.SplashScreen
@@ -51,6 +52,9 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable(route = Screen.MainScreen.route) {
             MainScreen(appNavController = navController)
+        }
+        composable(Screen.LoginScreen.route) {
+            LoginScreen()
         }
     }
 }
