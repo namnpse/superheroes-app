@@ -23,11 +23,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.namnp.heroes.R
+import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.*
 
 @Composable
 fun ProfileScreen(
+    navController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     Column(
@@ -220,10 +224,12 @@ fun ProfileScreen(
 //        )
         Spacer(modifier = Modifier.weight(1f))
         Button(
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .padding(vertical = MEDIUM_PADDING),
             onClick =  {
                  println("LOGOUT")
+                navController.navigate(Screen.LoginScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.buttonBackgroundColor,

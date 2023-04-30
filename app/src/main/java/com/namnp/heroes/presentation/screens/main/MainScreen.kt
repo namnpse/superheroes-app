@@ -59,7 +59,7 @@ fun Navigation(
             FavoriteScreen()
         }
         composable(NavigationItem.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(appNavController)
         }
     }
 }
