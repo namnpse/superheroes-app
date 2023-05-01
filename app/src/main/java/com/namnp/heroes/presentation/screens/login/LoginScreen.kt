@@ -4,39 +4,38 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Password
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.SpanStyle
-//import androidx.compose.ui.text.annotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.namnp.heroes.R
 
-
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    authenViewModel: AuthenViewModel = hiltViewModel()
+) {
 
     Box {
         BackgroundCard()
@@ -47,7 +46,22 @@ fun LoginScreen() {
 
 @Composable
 fun BackgroundCard() {
-    val signupText = "Sign up here!"
+    val signup = stringResource(R.string.sign_up)
+    val signupText = buildAnnotatedString {
+        withStyle(
+            SpanStyle(color = Color.LightGray, fontSize = 14.sp)
+        ) {
+            append(stringResource(R.string.dont_have_an_account))
+        }
+        withStyle(SpanStyle(
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )) {
+            pushStringAnnotation(tag = signup, annotation = signup)
+            append(signup)
+        }
+    }
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.fillMaxSize()
@@ -76,7 +90,12 @@ fun BackgroundCard() {
 
             }
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
-            Text(text = signupText, color = Color.White)
+            ClickableText(text = signupText, onClick = { offset ->
+                signupText.getStringAnnotations(offset, offset)
+                    .firstOrNull()?.let { span ->
+                        println("Clicked on ${span.item}")
+                    }
+            })
         }
     }
 }
@@ -112,7 +131,7 @@ fun LoginCard() {
                     emailState.value = it
                 },
                 label = {
-                    Text(text = "Email address")
+                    Text(text = stringResource(R.string.email))
                 },
                 leadingIcon = {
                     Icon(
@@ -130,7 +149,7 @@ fun LoginCard() {
                     passState.value = it
                 },
                 label = {
-                    Text(text = "Password")
+                    Text(text = stringResource(R.string.password))
                 },
                 leadingIcon = {
                     Icon(
@@ -141,14 +160,14 @@ fun LoginCard() {
                 modifier = modifier,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+            Spacer(modifier = Modifier.padding(vertical = 32.dp))
             Button(
                 onClick = {},
                 shape = RoundedCornerShape(16.dp),
                 modifier = modifier,
                 contentPadding = PaddingValues(16.dp)
             ) {
-                Text(text = "Log In")
+                Text(text = stringResource(R.string.log_in))
             }
         }
     }
