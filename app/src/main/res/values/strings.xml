@@ -19,5 +19,10 @@
     <string name="sign_up">Sign Up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="nickname">Nickname</string>
+    <string name="bio">Bio</string>
+    <string name="create_an_account">Create An Account</string>
     <string name="dont_have_an_account">Don"'"t have an account? </string>
+    <string name="already_have_an_account">Already have an account? </string>
 </resources>

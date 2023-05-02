@@ -29,23 +29,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.namnp.heroes.R
+import com.namnp.heroes.navigation.Screen
 
 //@Preview(showBackground = true)
 @Composable
 fun LoginScreen(
+    navController: NavHostController,
     authenViewModel: AuthenViewModel = hiltViewModel()
 ) {
 
     Box {
-        BackgroundCard()
+        BackgroundCard(navController)
         LoginCard()
     }
 
 }
 
 @Composable
-fun BackgroundCard() {
+fun BackgroundCard(navController: NavHostController) {
     val signup = stringResource(R.string.sign_up)
     val signupText = buildAnnotatedString {
         withStyle(
@@ -93,7 +96,8 @@ fun BackgroundCard() {
             ClickableText(text = signupText, onClick = { offset ->
                 signupText.getStringAnnotations(offset, offset)
                     .firstOrNull()?.let { span ->
-                        println("Clicked on ${span.item}")
+//                        println("Clicked on ${span.item}")
+                        navController.navigate(Screen.SignUpScreen.route)
                     }
             })
         }
