@@ -2,13 +2,12 @@ package com.namnp.heroes.presentation.screens.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +33,7 @@ fun ProfileScreen(
     navController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val displayColor = MaterialTheme.colors.primaryVariant
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,12 +43,11 @@ fun ProfileScreen(
     ) {
         Row {
             Spacer(Modifier.weight(1f))
-//            Text("c")
             Icon(
                 modifier = Modifier.padding(16.dp),
-//                painterResource(id = R.drawable.ic_bolt),
                 imageVector = Icons.Default.Edit,
-                contentDescription = "Edit profile"
+                contentDescription = "Edit profile",
+                tint = displayColor,
             )
         }
         Row(
@@ -60,12 +59,10 @@ fun ProfileScreen(
         ) {
             Icon(
                 modifier = Modifier
-//                    .size(INFO_ICON_SIZE_LARGE)
-                    .padding(16.dp)
+                    .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING, bottom = MEDIUM_PADDING)
                     .weight(3f),
                 painter = painterResource(id = R.drawable.shield),
                 contentDescription = "Avatar",
-//                tint = contentColor
             )
             Column(
                 modifier = Modifier
@@ -73,19 +70,19 @@ fun ProfileScreen(
             ) {
                 Text(
                     text = "Nam Nguyen",
-//                    color = contentColor,
                     fontSize = MaterialTheme.typography.h5.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
+                    color = displayColor,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
                     text = "Bryan",
-//                    color = contentColor,
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
+                    color = displayColor,
                 )
             }
         }
@@ -98,14 +95,15 @@ fun ProfileScreen(
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-//                modifier = Modifier.padding(end = MEDIUM_PADDING),
-                modifier = Modifier.size(PROFILE_ICON_SIZE),
+                modifier = Modifier.size(PROFILE_ICON_SIZE).alpha(ContentAlpha.medium),
                 imageVector = Icons.Default.Phone,
-                contentDescription = "Phone"
+                contentDescription = "Phone",
+                tint = displayColor,
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
+                color = displayColor,
                 text = "(+84) 123456789",
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
@@ -116,16 +114,15 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MEDIUM_PADDING)
-//                .padding(bottom = LARGE_PADDING)
             ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-//                modifier = Modifier.padding(end = MEDIUM_PADDING),
-                modifier = Modifier.size(PROFILE_ICON_SIZE),
+                modifier = Modifier.size(PROFILE_ICON_SIZE).alpha(ContentAlpha.medium),
                 imageVector = Icons.Default.Email,
-                contentDescription = "Email"
+                contentDescription = "Email",
+                tint = displayColor,
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -134,111 +131,126 @@ fun ProfileScreen(
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
+                color = displayColor,
             )
         }
-//        Spacer(modifier = Modifier.height(16.dp))
         Divider(color = colorResource(id = R.color.ink100s), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
-//        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MEDIUM_PADDING)
-//                .padding(bottom = LARGE_PADDING)
             ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
                 modifier = Modifier.size(PROFILE_ICON_SIZE),
-//                imageVector = Icons.Default.Email,
-                painter = painterResource(id = R.drawable.ic_heart_empty),
-                tint = colorResource(id = R.color.colorPrimaryDark),
-                contentDescription = "Email"
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite",
+                tint = displayColor
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "Your favorites",
-//                    color = contentColor,
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
+                color = displayColor,
             )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MEDIUM_PADDING)
-//                .padding(bottom = LARGE_PADDING)
             ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
                 modifier = Modifier.size(PROFILE_ICON_SIZE),
-//                imageVector = Icons.Default.Email,
-                painter = painterResource(id = R.drawable.ic_heart_empty),
-                tint = colorResource(id = R.color.colorPrimaryDark),
-                contentDescription = "Email"
+                imageVector = Icons.Default.DarkMode,
+                tint = displayColor,
+                contentDescription = "DarkMode"
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "Dark Theme",
-//                    color = contentColor,
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
+                color = displayColor,
             )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MEDIUM_PADDING)
-//                .padding(bottom = LARGE_PADDING)
             ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
                 modifier = Modifier.size(PROFILE_ICON_SIZE),
-//                imageVector = Icons.Default.Email,
-                painter = painterResource(id = R.drawable.ic_heart_empty),
-                tint = colorResource(id = R.color.colorPrimaryDark),
-                contentDescription = "Email"
+                imageVector = Icons.Default.Settings,
+                tint = displayColor,
+                contentDescription = "Settings"
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "Settings",
-//                    color = contentColor,
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
+                color = displayColor,
             )
         }
-//        Text(
-//            text = "Profile View",
-//            fontWeight = FontWeight.Bold,
-//            color = Color.White,
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
-//            textAlign = TextAlign.Center,
-//            fontSize = 25.sp
-//        )
-        Spacer(modifier = Modifier.weight(1f))
+        Divider(color = colorResource(id = R.color.ink100s), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MEDIUM_PADDING)
+                .clickable {
+                    println("LOGOUT")
+                    navController.navigate(Screen.LoginScreen.route)
+                }
+            ,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            Icon(
+                modifier = Modifier.size(PROFILE_ICON_SIZE),
+                imageVector = Icons.Default.Logout,
+                tint = Color.Red,
+                contentDescription = "Logout"
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "Log out",
+                fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                fontWeight = FontWeight.Bold,
+                fontFamily = fonts,
+                color = Color.Red,
+            )
+        }
+        Spacer(Modifier.weight(1f))
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = MEDIUM_PADDING),
             onClick =  {
-                 println("LOGOUT")
+                 println("LOGIN")
                 navController.navigate(Screen.LoginScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.buttonBackgroundColor,
                 contentColor = Color.White
-            )
+            ),
+//            border = BorderStroke(1.dp, displayColor),
+            shape = RoundedCornerShape(50),
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = MEDIUM_PADDING),
-                text = "Log out",
+                modifier = Modifier.padding(horizontal = LARGE_PADDING, vertical = 4.dp),
+                text = "Log in",
                 fontFamily = fonts,
                 fontSize = MaterialTheme.typography.h6.fontSize,)
         }
