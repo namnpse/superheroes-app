@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.Purple500
 import com.namnp.heroes.ui.theme.Purple700
+import com.namnp.heroes.ui.theme.statusBarColor
 
 @Composable
 fun SplashScreen(
@@ -32,6 +35,11 @@ fun SplashScreen(
 
     val degrees = remember { Animatable(0f) }
     val onBoardingCompleted by splashViewModel.onBoardingCompleted.collectAsState()
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.statusBarColor
+    )
 
     LaunchedEffect(key1 = true) {
         degrees.animateTo(

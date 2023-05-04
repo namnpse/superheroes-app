@@ -48,6 +48,7 @@ fun HomeScreen(
     )
 
     Scaffold(
+        backgroundColor = MaterialTheme.colors.welcomeScreenBackgroundColor,
         topBar = {
             HomeTopBar(
                 onSearchClicked = {
@@ -110,7 +111,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
             modifier = Modifier
 //            .width(120.dp)
                 .padding(4.dp),
-            color = Color.Black,
+            color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h6,
@@ -124,7 +125,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                 .clickable {
                     navController.navigate(Screen.ListHeroesScreen.passCategoryId("Boruto"))
                 },
-            color = Color.Black,
+            color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontFamily = fonts,
 //            fontWeight = FontWeight.W400,
@@ -189,7 +190,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                     modifier = Modifier
                         .width(120.dp)
                         .padding(4.dp),
-                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
+                    color = MaterialTheme.colors.contrastColor, textAlign = TextAlign.Center, fontFamily = fonts,
                 )
             }
         }
@@ -205,7 +206,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
             modifier = Modifier
 //            .width(120.dp)
                 .padding(4.dp),
-            color = Color.Black,
+            color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h6,
@@ -219,7 +220,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                 .clickable {
                     navController.navigate(Screen.ListHeroesScreen.passCategoryId("Marvel"))
                 },
-            color = Color.Black,
+            color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontFamily = fonts,
 //            fontWeight = FontWeight.W400,
@@ -289,7 +290,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                     modifier = Modifier
                         .width(120.dp)
                         .padding(4.dp),
-                    color = Color.Black, textAlign = TextAlign.Center, fontFamily = fonts,
+                    color = MaterialTheme.colors.contrastColor, textAlign = TextAlign.Center, fontFamily = fonts,
                 )
             }
         }

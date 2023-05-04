@@ -1,15 +1,10 @@
 package com.namnp.heroes.presentation.components
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -26,16 +21,20 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationItem.Favorite,
         NavigationItem.Profile,
     )
+    val bgColor = if (isSystemInDarkTheme()) {
+        Color.Black
+    } else {
+        Purple500
+    }
+    val contentColor = if (isSystemInDarkTheme()) Purple500 else Color.White
     BottomNavigation(
-//        backgroundColor = colorResource(id = R.color.colorPrimary),
-        backgroundColor = Purple500,
+        backgroundColor = bgColor,
         contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             BottomNavigationItem(
-//                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 icon = {
                     if (item.title == "Home")
                         Icon(
@@ -45,8 +44,8 @@ fun BottomNavigationBar(navController: NavController) {
                     else Icon(item.icon, contentDescription = item.title)
                 },
                 label = { Text(text = item.title, fontFamily = fonts,) },
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.White.copy(0.4f),
+                selectedContentColor = contentColor,
+                unselectedContentColor = contentColor.copy(0.6f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {

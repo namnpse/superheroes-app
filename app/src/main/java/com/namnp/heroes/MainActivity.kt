@@ -17,6 +17,8 @@ import com.namnp.heroes.navigation.SetupNavGraph
 import com.namnp.heroes.presentation.screens.main.Navigation
 import com.namnp.heroes.ui.theme.HeroesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @AndroidEntryPoint
 @OptIn(ExperimentalCoilApi::class)
@@ -27,11 +29,45 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HeroesAppTheme {
+            HeroesAppTheme(
+//                darkTheme = true
+            ) {
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
-//                Navigation(navController = navController)
             }
         }
     }
 }
+
+interface UnidirectionalViewModel<STATE, EVENT, EFFECT> {
+    val state: StateFlow<STATE>
+    val effect: SharedFlow<EFFECT>
+    fun event(event: EVENT)
+}
+
+interface NewsListContract :
+    UnidirectionalViewModel<NewsListContract.State, NewsListContract.Event,
+            NewsListContract.Effect> {
+
+    data class State(
+        val news: List<News> = listOf(),
+        val refreshing: Boolean = false,
+        val showFavoriteList: Boolean = false,
+    )
+
+    sealed class Event {
+        data class OnFavoriteClick(val news: News) : Event()
+        data class OnGetNewsList(val showFavoriteList: Boolean) : Event()
+        data class OnSetShowFavoriteList(val showFavoriteList: Boolean) : Event()
+        object OnRefresh: Event()
+        object OnBackPressed : Event()
+        data class ShowToast(val message: String) : Event()
+    }
+
+    sealed class Effect {
+        object OnBackPressed : Effect()
+        data class ShowToast(val message: String) : Effect()
+    }
+}
+
+data class News(val id: Int)

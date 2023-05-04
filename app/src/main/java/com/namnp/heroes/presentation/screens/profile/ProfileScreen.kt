@@ -1,8 +1,8 @@
 package com.namnp.heroes.presentation.screens.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,31 +14,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.namnp.heroes.R
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.*
+import com.namnp.heroes.util.Constants
 
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val displayColor = MaterialTheme.colors.primaryVariant
+    val displayColor = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        MaterialTheme.colors.primaryVariant
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
 //            .background(colorResource(id = R.color.colorPrimaryDark))
-            .background(colorResource(id = R.color.white))
+            .background(MaterialTheme.colors.welcomeScreenBackgroundColor)
 //            .wrapContentSize(Alignment.Center)
     ) {
         Row {
@@ -57,12 +61,18 @@ fun ProfileScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
-            Icon(
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .error(R.drawable.avatar_placeholder)
+                    .data("${Constants.BASE_URL}/images/urashiki1.jpg")
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING, bottom = MEDIUM_PADDING)
-                    .weight(3f),
-                painter = painterResource(id = R.drawable.shield),
-                contentDescription = "Avatar",
+                    .weight(3f)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(160.dp)),
             )
             Column(
                 modifier = Modifier
@@ -134,7 +144,7 @@ fun ProfileScreen(
                 color = displayColor,
             )
         }
-        Divider(color = colorResource(id = R.color.ink100s), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+        Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,7 +214,7 @@ fun ProfileScreen(
                 color = displayColor,
             )
         }
-        Divider(color = colorResource(id = R.color.ink100s), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+        Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
         Row(
             modifier = Modifier
                 .fillMaxWidth()

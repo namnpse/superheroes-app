@@ -54,6 +54,6 @@ fun LikeAnimatedButton(
         ,
         painter = painterResource(id = R.drawable.ic_heart_empty),
         contentDescription = stringResource(id = R.string.app_logo),
-        tint = if(isLiked.value) Color.Red else Color.Gray
+        tint = if(isLiked.value) Color.Red else Color.White.copy(alpha = 0.7f)
     )
 }
