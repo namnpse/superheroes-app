@@ -1,6 +1,7 @@
 package com.namnp.heroes.presentation.screens.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,8 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
 import com.namnp.heroes.navigation.Screen
+import com.namnp.heroes.ui.theme.Purple500
+import com.namnp.heroes.ui.theme.statusBarColor
+import com.namnp.heroes.ui.theme.welcomeScreenBackgroundColor
+import com.namnp.heroes.util.DarkThemTextFieldColors
 
 //@Preview(showBackground = true)
 @Composable
@@ -39,6 +46,11 @@ fun LoginScreen(
     navController: NavHostController,
     authenViewModel: AuthenViewModel = hiltViewModel()
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.statusBarColor
+    )
 
     Box {
         BackgroundCard(navController)
@@ -66,13 +78,13 @@ fun BackgroundCard(navController: NavHostController) {
         }
     }
     Surface(
-        color = MaterialTheme.colors.primary,
+        color = Purple500,
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.offset(y = (-30).dp)
+            modifier = Modifier.offset(y = (-16).dp)
         ) {
             Row() {
                 Image(
@@ -92,7 +104,7 @@ fun BackgroundCard(navController: NavHostController) {
                 )
 
             }
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 4.dp))
             ClickableText(text = signupText, onClick = { offset ->
                 signupText.getStringAnnotations(offset, offset)
                     .firstOrNull()?.let { span ->
@@ -109,8 +121,11 @@ fun BackgroundCard(navController: NavHostController) {
 fun LoginCard() {
     val emailState = remember { mutableStateOf(TextFieldValue("namnpse@gmail.com")) }
     val passState = remember { mutableStateOf(TextFieldValue("")) }
+    val textFieldColors: TextFieldColors = if(isSystemInDarkTheme())
+        DarkThemTextFieldColors()
+    else TextFieldDefaults.outlinedTextFieldColors()
     Surface(
-        color = Color.White, modifier = Modifier
+        color = MaterialTheme.colors.welcomeScreenBackgroundColor, modifier = Modifier
             .height(600.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(60.dp)
@@ -126,11 +141,12 @@ fun LoginCard() {
             Image(
                 painter = painterResource(id = R.drawable.shield),
                 contentDescription = stringResource(R.string.app_logo),
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+                colorFilter = ColorFilter.tint(Purple500)
             )
             Spacer(modifier = Modifier.padding(16.dp))
             OutlinedTextField(
                 value = emailState.value,
+                colors = textFieldColors,
                 onValueChange = {
                     emailState.value = it
                 },
@@ -149,6 +165,7 @@ fun LoginCard() {
             Spacer(modifier = Modifier.padding(6.dp))
             OutlinedTextField(
                 value = passState.value,
+                colors = textFieldColors,
                 onValueChange = {
                     passState.value = it
                 },
@@ -169,9 +186,10 @@ fun LoginCard() {
                 onClick = {},
                 shape = RoundedCornerShape(16.dp),
                 modifier = modifier,
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(16.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Purple500)
             ) {
-                Text(text = stringResource(R.string.log_in))
+                Text(text = stringResource(R.string.log_in), style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp))
             }
         }
     }

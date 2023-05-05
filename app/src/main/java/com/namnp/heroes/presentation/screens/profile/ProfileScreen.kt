@@ -36,7 +36,7 @@ fun ProfileScreen(
     val displayColor = if (isSystemInDarkTheme()) {
         Color.White
     } else {
-        MaterialTheme.colors.primaryVariant
+        Purple500
     }
     Column(
         modifier = Modifier
@@ -51,7 +51,7 @@ fun ProfileScreen(
                 modifier = Modifier.padding(16.dp),
                 imageVector = Icons.Default.Edit,
                 contentDescription = "Edit profile",
-                tint = displayColor,
+                tint = Purple500,
             )
         }
         Row(
@@ -64,7 +64,7 @@ fun ProfileScreen(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .error(R.drawable.avatar_placeholder)
-                    .data("${Constants.BASE_URL}/images/urashiki1.jpg")
+                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -72,7 +72,8 @@ fun ProfileScreen(
                     .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING, bottom = MEDIUM_PADDING)
                     .weight(3f)
                     .aspectRatio(1f)
-                    .clip(RoundedCornerShape(160.dp)),
+                    .clip(RoundedCornerShape(160.dp))
+//                    .background(Purple500),
             )
             Column(
                 modifier = Modifier
@@ -252,7 +253,7 @@ fun ProfileScreen(
                 navController.navigate(Screen.LoginScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.buttonBackgroundColor,
+                backgroundColor = Purple500,
                 contentColor = Color.White
             ),
 //            border = BorderStroke(1.dp, displayColor),
