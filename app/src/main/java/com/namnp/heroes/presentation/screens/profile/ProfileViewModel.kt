@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.namnp.heroes.domain.model.Hero
+import com.namnp.heroes.domain.repository.AuthRepository
 import com.namnp.heroes.domain.use_cases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.awaitClose
@@ -15,11 +16,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    useCases: UseCases
+    useCases: UseCases,
+    private val repo: AuthRepository
 ): ViewModel() {
 //    val getAllHeroes = useCases.getAllHeroesUseCase("Boruto")
 //    val getMarvelHeroes = useCases.getAllHeroesUseCase("Marvel")
 //    val getBannersUseCase = useCases.getBannersUseCase
+    val currentUser = repo.currentUser
     private val firestore = FirebaseFirestore.getInstance()
     private val _banners = MutableStateFlow<List<Hero>>(emptyList())
     val banners = _banners
@@ -37,6 +40,9 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun logOut() {
+        repo.signOut()
+    }
 
     private fun getBookDetails() = callbackFlow<String> {
 

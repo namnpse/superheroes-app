@@ -33,6 +33,7 @@ fun ProfileScreen(
     navController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val currentUser = profileViewModel.currentUser
     val displayColor = if (isSystemInDarkTheme()) {
         Color.White
     } else {
@@ -138,7 +139,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
-                text = "namnpse@gmail.com",
+                text = currentUser?.email ?: "Not registered",
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
@@ -218,10 +219,9 @@ fun ProfileScreen(
         Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(MEDIUM_PADDING)
+                .padding(start = MEDIUM_PADDING)
                 .clickable {
-                    println("LOGOUT")
+                    profileViewModel.logOut()
                     navController.navigate(Screen.LoginScreen.route)
                 }
             ,
@@ -234,9 +234,10 @@ fun ProfileScreen(
                 tint = Color.Red,
                 contentDescription = "Logout"
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(MEDIUM_PADDING))
             Text(
                 text = "Log out",
+                modifier = Modifier.padding(vertical = MEDIUM_PADDING),
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
