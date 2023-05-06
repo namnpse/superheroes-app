@@ -18,9 +18,17 @@ interface AuthRepository {
 
     suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String): SignUpResponse
 
+    suspend fun sendEmailVerification(): SendEmailVerificationResponse
+
     suspend fun firebaseSignInWithEmailAndPassword(email: String, password: String): SignInResponse
 
+    suspend fun reloadFirebaseUser(): ReloadUserResponse
+
+    suspend fun sendPasswordResetEmail(email: String): SendPasswordResetEmailResponse
+
     fun signOut()
+
+    suspend fun revokeAccess(): RevokeAccessResponse
 
     fun getAuthState(viewModelScope: CoroutineScope): AuthStateResponse
 }

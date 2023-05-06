@@ -32,7 +32,7 @@ fun SplashScreen(
     navController: NavHostController,
     splashViewModel: SplashViewModel = hiltViewModel()
 ) {
-
+    val currentUser = splashViewModel.currentUser
     val degrees = remember { Animatable(0f) }
     val onBoardingCompleted by splashViewModel.onBoardingCompleted.collectAsState()
 
@@ -51,8 +51,11 @@ fun SplashScreen(
         )
         navController.popBackStack()
         if (onBoardingCompleted) {
-//            navController.navigate(Screen.HomeScreen.route)
-            navController.navigate(Screen.MainScreen.route)
+            if(currentUser == null) {
+                navController.navigate(Screen.LoginScreen.route)
+            } else {
+                navController.navigate(Screen.MainScreen.route)
+            }
         } else {
             navController.navigate(Screen.WelcomeScreen.route)
         }

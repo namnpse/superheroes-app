@@ -1,7 +1,8 @@
 package com.namnp.heroes.presentation.screens.login
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.widget.ProgressBar
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -13,15 +14,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -43,9 +43,11 @@ import com.namnp.heroes.ui.theme.Purple500
 import com.namnp.heroes.ui.theme.statusBarColor
 import com.namnp.heroes.ui.theme.welcomeScreenBackgroundColor
 import com.namnp.heroes.util.DarkThemTextFieldColors
-import com.namnp.heroes.util.Utils.Companion.showMessage
+import kotlinx.coroutines.launch
 
 //@Preview(showBackground = true)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     navController: NavHostController,
@@ -53,43 +55,46 @@ fun LoginScreen(
 ) {
 
     val context = LocalContext.current
-
+    val keyboard = LocalSoftwareKeyboardController.current
+    val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
+    val coroutineScope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
 
-    Box {
-        BackgroundCard(navController)
-        LoginCard(
-            onLogin = { email, password ->
-                viewModel.signInWithEmailAndPassword(email, password)
-            }
-        )
-        SignIn(
-            showErrorMessage = { errorMessage ->
-                showMessage(context, errorMessage)
-            },
-            context = context,
-        )
-    }
-
-}
-
-@Composable
-fun SignIn(
-    viewModel: SignInViewModel = hiltViewModel(),
-    showErrorMessage: (errorMessage: String?) -> Unit,
-    context: Context,
-) {
-    when(val signInResponse = viewModel.signInResponse) {
-        is Response.Loading -> ProgressBar(context)
-        is Response.Success -> Unit
-        is Response.Failure -> signInResponse.apply {
-            LaunchedEffect(e) {
-                print(e)
-                showErrorMessage(e.message)
-            }
+    Scaffold(
+        scaffoldState = scaffoldState // attaching `scaffoldState` to the `Scaffold`
+    ) {
+        Box {
+            BackgroundCard(navController)
+            LoginCard(
+                viewModel = viewModel,
+                onLogin = { email, password ->
+                    keyboard?.hide()
+                    viewModel.signInWithEmailAndPassword(email, password)
+                },
+                context = context,
+                showErrorMessage = { errorMessage ->
+                    coroutineScope.launch { // using the `coroutineScope` to `launch` showing the snackbar
+                        // taking the `snackbarHostState` from the attached `scaffoldState`
+                        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                            message = errorMessage ?: "",
+                            actionLabel = "OK"
+                        )
+                        when (snackbarResult) {
+                            SnackbarResult.Dismissed -> Log.d("SnackbarLogin", "Dismissed")
+                            SnackbarResult.ActionPerformed -> Log.d(
+                                "SnackbarLogin",
+                                "Snackbar's button clicked"
+                            )
+                        }
+                    }
+                },
+                onLoginSuccess = {
+                    navController.navigate(Screen.MainScreen.route)
+                }
+            )
         }
     }
 }
@@ -103,11 +108,13 @@ fun BackgroundCard(navController: NavHostController) {
         ) {
             append(stringResource(R.string.dont_have_an_account))
         }
-        withStyle(SpanStyle(
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )) {
+        withStyle(
+            SpanStyle(
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        ) {
             pushStringAnnotation(tag = signup, annotation = signup)
             append(signup)
         }
@@ -143,7 +150,6 @@ fun BackgroundCard(navController: NavHostController) {
             ClickableText(text = signupText, onClick = { offset ->
                 signupText.getStringAnnotations(offset, offset)
                     .firstOrNull()?.let { span ->
-//                        println("Clicked on ${span.item}")
                         navController.navigate(Screen.SignUpScreen.route)
                     }
             })
@@ -154,11 +160,15 @@ fun BackgroundCard(navController: NavHostController) {
 
 @Composable
 fun LoginCard(
+    viewModel: SignInViewModel,
     onLogin: (String, String) -> Unit,
+    context: Context,
+    showErrorMessage: (errorMessage: String?) -> Unit,
+    onLoginSuccess: () -> Unit,
 ) {
-    val emailState = remember { mutableStateOf(TextFieldValue("namnpse@gmail.com")) }
-    val passState = remember { mutableStateOf(TextFieldValue("")) }
-    val textFieldColors: TextFieldColors = if(isSystemInDarkTheme())
+    val emailState = remember { mutableStateOf(TextFieldValue("nam123@gmail.com")) }
+    val passState = remember { mutableStateOf(TextFieldValue("123456")) }
+    val textFieldColors: TextFieldColors = if (isSystemInDarkTheme())
         DarkThemTextFieldColors()
     else TextFieldDefaults.outlinedTextFieldColors()
     Surface(
@@ -219,7 +229,22 @@ fun LoginCard(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             Spacer(modifier = Modifier.padding(vertical = 32.dp))
-            Button(
+            val signInResponse = viewModel.signInResponse
+            if (signInResponse is Response.Failure) {
+                signInResponse.apply {
+                    LaunchedEffect(error) {
+                        println(error.message)
+                        showErrorMessage(error.message)
+                    }
+                }
+            }
+            if(signInResponse is Response.Success && signInResponse.data) {
+                LaunchedEffect(key1 = true) {
+                    onLoginSuccess()
+                }
+            }
+            if (signInResponse is Response.Loading) CircularProgressIndicator()
+            else Button(
                 onClick = {
                     onLogin(emailState.value.text, passState.value.text)
                 },
@@ -228,7 +253,14 @@ fun LoginCard(
                 contentPadding = PaddingValues(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Purple500)
             ) {
-                Text(text = stringResource(R.string.log_in), style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp))
+                Text(
+                    text = stringResource(R.string.log_in),
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    ),
+                )
             }
         }
     }
