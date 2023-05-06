@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
-import com.namnp.heroes.presentation.screens.login.AuthenViewModel
+import com.namnp.heroes.presentation.screens.login.SignInViewModel
 import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.DarkThemTextFieldColors
 
@@ -38,7 +38,7 @@ import com.namnp.heroes.util.DarkThemTextFieldColors
 @Composable
 fun SignUpScreen(
     navController: NavHostController,
-    authenViewModel: AuthenViewModel = hiltViewModel()
+    signInViewModel: SignInViewModel = hiltViewModel()
 ) {
 
     val systemUiController = rememberSystemUiController()

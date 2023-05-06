@@ -1,5 +1,7 @@
 package com.namnp.heroes.presentation.screens.login
 
+import android.content.Context
+import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -12,12 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -27,25 +31,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
+import com.namnp.heroes.domain.model.*
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.Purple500
 import com.namnp.heroes.ui.theme.statusBarColor
 import com.namnp.heroes.ui.theme.welcomeScreenBackgroundColor
 import com.namnp.heroes.util.DarkThemTextFieldColors
+import com.namnp.heroes.util.Utils.Companion.showMessage
 
 //@Preview(showBackground = true)
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    authenViewModel: AuthenViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel(),
 ) {
+
+    val context = LocalContext.current
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
@@ -54,9 +61,37 @@ fun LoginScreen(
 
     Box {
         BackgroundCard(navController)
-        LoginCard()
+        LoginCard(
+            onLogin = { email, password ->
+                viewModel.signInWithEmailAndPassword(email, password)
+            }
+        )
+        SignIn(
+            showErrorMessage = { errorMessage ->
+                showMessage(context, errorMessage)
+            },
+            context = context,
+        )
     }
 
+}
+
+@Composable
+fun SignIn(
+    viewModel: SignInViewModel = hiltViewModel(),
+    showErrorMessage: (errorMessage: String?) -> Unit,
+    context: Context,
+) {
+    when(val signInResponse = viewModel.signInResponse) {
+        is Response.Loading -> ProgressBar(context)
+        is Response.Success -> Unit
+        is Response.Failure -> signInResponse.apply {
+            LaunchedEffect(e) {
+                print(e)
+                showErrorMessage(e.message)
+            }
+        }
+    }
 }
 
 @Composable
@@ -118,7 +153,9 @@ fun BackgroundCard(navController: NavHostController) {
 
 
 @Composable
-fun LoginCard() {
+fun LoginCard(
+    onLogin: (String, String) -> Unit,
+) {
     val emailState = remember { mutableStateOf(TextFieldValue("namnpse@gmail.com")) }
     val passState = remember { mutableStateOf(TextFieldValue("")) }
     val textFieldColors: TextFieldColors = if(isSystemInDarkTheme())
@@ -183,7 +220,9 @@ fun LoginCard() {
             )
             Spacer(modifier = Modifier.padding(vertical = 32.dp))
             Button(
-                onClick = {},
+                onClick = {
+                    onLogin(emailState.value.text, passState.value.text)
+                },
                 shape = RoundedCornerShape(16.dp),
                 modifier = modifier,
                 contentPadding = PaddingValues(16.dp),

@@ -115,6 +115,8 @@ dependencies {
     // Firestore
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-firestore:24.5.0'
+    implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Testing
     androidTestImplementation "androidx.test:runner:1.4.0"
