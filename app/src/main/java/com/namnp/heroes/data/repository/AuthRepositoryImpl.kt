@@ -24,17 +24,8 @@ class AuthRepositoryImpl @Inject constructor(
         email: String, password: String
     ): SignUpResponse {
         return try {
-            auth.createUserWithEmailAndPassword(email, password).await()
-            Response.Success(true)
-        } catch (e: Exception) {
-            Response.Failure(e)
-        }
-    }
-
-    override suspend fun sendEmailVerification(): SendEmailVerificationResponse {
-        return try {
-            auth.currentUser?.sendEmailVerification()?.await()
-            Response.Success(true)
+            val res = auth.createUserWithEmailAndPassword(email, password).await()
+            Response.Success(res)
         } catch (e: Exception) {
             Response.Failure(e)
         }
@@ -50,6 +41,15 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
 //            delay(3.seconds)
 //            println("FAILLL")
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun sendEmailVerification(): SendEmailVerificationResponse {
+        return try {
+            auth.currentUser?.sendEmailVerification()?.await()
+            Response.Success(true)
+        } catch (e: Exception) {
             Response.Failure(e)
         }
     }

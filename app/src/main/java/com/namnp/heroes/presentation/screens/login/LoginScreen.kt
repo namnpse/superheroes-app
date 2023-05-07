@@ -238,7 +238,7 @@ fun LoginCard(
                     }
                 }
             }
-            if(signInResponse is Response.Success && signInResponse.data) {
+            if(signInResponse is Response.Success && signInResponse.data == true) {
                 LaunchedEffect(key1 = true) {
                     onLoginSuccess()
                 }

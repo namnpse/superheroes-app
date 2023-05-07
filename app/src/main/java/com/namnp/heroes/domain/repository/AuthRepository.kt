@@ -1,11 +1,13 @@
 package com.namnp.heroes.domain.repository
 
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.namnp.heroes.domain.model.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-typealias SignUpResponse = Response<Boolean>
+typealias SignUpResponse = Response<AuthResult>
+typealias SaveUserResponse = Response<Boolean>
 typealias SendEmailVerificationResponse = Response<Boolean>
 typealias SignInResponse = Response<Boolean>
 typealias ReloadUserResponse = Response<Boolean>

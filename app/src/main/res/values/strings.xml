@@ -18,6 +18,7 @@
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="email">Email</string>
+    <string name="phone">Phone number</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="nickname">Nickname</string>

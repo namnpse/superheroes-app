@@ -9,12 +9,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -29,31 +29,39 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
-import com.namnp.heroes.presentation.screens.login.SignInViewModel
+import com.namnp.heroes.domain.model.Response
+import com.namnp.heroes.domain.model.User
 import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.DarkThemTextFieldColors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 //@Preview(showBackground = true)
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SignUpScreen(
     navController: NavHostController,
-    signInViewModel: SignInViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
 
+    val keyboard = LocalSoftwareKeyboardController.current
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
 
-    val textFieldColors: TextFieldColors = if(isSystemInDarkTheme())
+    val textFieldColors: TextFieldColors = if (isSystemInDarkTheme())
         DarkThemTextFieldColors()
     else TextFieldDefaults.outlinedTextFieldColors()
 
-    val emailState = remember { mutableStateOf(TextFieldValue("namnpse@gmail.com")) }
+    val emailState = remember { mutableStateOf(TextFieldValue("nam12345@gmail.com")) }
+    val phoneState = remember { mutableStateOf(TextFieldValue("0123456789")) }
     val nicknameState = remember { mutableStateOf(TextFieldValue("Nam Jr")) }
-    val passwordState = remember { mutableStateOf(TextFieldValue("")) }
-    val confirmPasswordState = remember { mutableStateOf(TextFieldValue("")) }
+    val passwordState = remember { mutableStateOf(TextFieldValue("123456")) }
+    val confirmPasswordState = remember { mutableStateOf(TextFieldValue("123456")) }
     val bioState = remember { mutableStateOf(TextFieldValue("Mobile Developer")) }
 
     val signin = stringResource(R.string.log_in)
@@ -63,17 +71,20 @@ fun SignUpScreen(
         ) {
             append("${stringResource(R.string.already_have_an_account)} ")
         }
-        withStyle(SpanStyle(
-            color = Purple500,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )) {
+        withStyle(
+            SpanStyle(
+                color = Purple500,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        ) {
             pushStringAnnotation(tag = signin, annotation = signin)
             append(signin)
         }
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {
@@ -98,7 +109,8 @@ fun SignUpScreen(
         backgroundColor = MaterialTheme.colors.welcomeScreenBackgroundColor,
         content = {
             Column(
-                modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 val modifier = Modifier
@@ -118,6 +130,24 @@ fun SignUpScreen(
                         Icon(
                             Icons.Filled.Email,
                             contentDescription = "Email"
+                        )
+                    },
+                    modifier = modifier
+                )
+                Spacer(modifier = Modifier.padding(6.dp))
+                OutlinedTextField(
+                    value = phoneState.value,
+                    colors = textFieldColors,
+                    onValueChange = {
+                        phoneState.value = it
+                    },
+                    label = {
+                        Text(text = stringResource(R.string.phone))
+                    },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Phone,
+                            contentDescription = "Phone"
                         )
                     },
                     modifier = modifier
@@ -201,17 +231,90 @@ fun SignUpScreen(
                     modifier = modifier
                 )
 
-                Spacer(modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .weight(1f))
-                Button(
-                    onClick = {},
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .weight(1f)
+                )
+                val signUpResponse = signUpViewModel.signUpResponse
+                val saveUserResponse = signUpViewModel.saveUserResponse
+                if (signUpResponse is Response.Failure) {
+                    signUpResponse.apply {
+//                        showSnackBar(
+//                            scaffoldState = scaffoldState,
+//                            coroutineScope = coroutineScope,
+//                            message = error.message
+//                        )
+                        LaunchedEffect(error.message) {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = error.message ?: "",
+                            )
+                        }
+                    }
+                }
+
+                if (saveUserResponse is Response.Failure) {
+                    saveUserResponse.apply {
+//                        showSnackBar( // snackbar showing multiple times (without key)
+//                            scaffoldState = scaffoldState,
+//                            coroutineScope = coroutineScope,
+//                            message = error.message
+//                        )
+                        /* You can utilize LaunchedEffect using the text as its key,
+                          so on succeeding re-compositions, when the text changes,
+                          different from its previous value (invalidates),
+                          the LaunchedEffect will re-execute and show snackbar again
+                         */
+                        // using `error.message` as a key to avoid showing snackbar multiple times when config changes or re-render view
+                        // use as single, one time event
+                        // read more: https://stackoverflow.com/questions/74660094/unwanted-recomposition-when-using-context-toast-in-event-jetpack-compose
+                        LaunchedEffect(error.message) {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = error.message ?: "",
+                            )
+                        }
+                    }
+                }
+                if (signUpResponse is Response.Success && signUpResponse.data != null && !signUpViewModel.isSignUpSuccess) {
+                    val userInfo = User(
+                        id = signUpResponse.data.user?.uid,
+                        nickName = nicknameState.value.text,
+                        email = emailState.value.text,
+                        phone = phoneState.value.text,
+                        bio = bioState.value.text,
+                    )
+                    signUpViewModel.saveUserToFirestore(userInfo)
+                }
+                if (saveUserResponse is Response.Success && saveUserResponse.data == true) {
+                    LaunchedEffect(saveUserResponse.data) {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Sign up successfully",
+                        )
+                        navController.popBackStack()
+                    }
+                }
+                if (signUpResponse is Response.Loading || saveUserResponse is Response.Loading) CircularProgressIndicator()
+                else Button(
+                    onClick = {
+                        keyboard?.hide()
+                        signUpViewModel.signUpWithEmailAndPassword(
+                            emailState.value.text,
+                            passwordState.value.text
+                        )
+                    },
                     shape = RoundedCornerShape(16.dp),
                     modifier = modifier,
                     contentPadding = PaddingValues(16.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Purple500)
                 ) {
-                    Text(text = stringResource(R.string.create_an_account), style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp))
+                    Text(
+                        text = stringResource(R.string.create_an_account),
+                        style = TextStyle(
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    )
                 }
 
                 Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -225,4 +328,23 @@ fun SignUpScreen(
             }
         },
     )
+}
+
+private fun showSnackBar(
+    scaffoldState: ScaffoldState,
+    coroutineScope: CoroutineScope,
+    message: String?,
+    label: String? = "",
+) {
+//    LaunchedEffect(key1 = true) {
+//        scaffoldState.snackbarHostState.showSnackbar(
+//            message = "Sign up successfully",
+//        )
+//    }
+//    coroutineScope.launch {
+//        scaffoldState.snackbarHostState.showSnackbar(
+//            message = message ?: "",
+//            actionLabel = label ?: "OK"
+//        )
+//    }
 }
