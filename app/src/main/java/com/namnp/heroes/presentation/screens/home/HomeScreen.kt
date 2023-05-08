@@ -138,7 +138,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
         horizontalArrangement = Arrangement.spacedBy(16.dp),
 
         ) {
-        itemsIndexed(borutoHeroes) { index, item ->
+        itemsIndexed(borutoHeroes) { index, hero ->
             Column(
                 modifier = Modifier
 //                        .padding(8.dp)
@@ -150,7 +150,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                     onClick = {
                         Toast.makeText(
                             context,
-                            borutoHeroes[index]?.name + " selected..",
+                            hero?.name + " selected..",
                             Toast.LENGTH_SHORT
                         ).show()
                     },
@@ -166,7 +166,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                         Box {
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data("${Constants.BASE_URL}${borutoHeroes[index]?.image}")
+                                    .data("${Constants.BASE_URL}${hero?.image}")
                                     .build(),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
@@ -179,7 +179,8 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                                 modifier = Modifier.align(Alignment.TopEnd)
                                     .fillMaxWidth()
                                     .size(40.dp)
-                                    .padding(8.dp)
+                                    .padding(8.dp),
+                                hero = hero,
                             )
                         }
                     }
@@ -279,7 +280,8 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                                 modifier = Modifier.align(Alignment.TopEnd)
                                     .fillMaxWidth()
                                     .size(40.dp)
-                                    .padding(8.dp)
+                                    .padding(8.dp),
+                                hero = hero,
                             )
                         }
                     }

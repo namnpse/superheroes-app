@@ -9,13 +9,13 @@ import kotlinx.serialization.Serializable
 @Entity(tableName = HERO_DATABASE_TABLE)
 data class Hero(
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
-    val name: String,
-    val image: String,
-    val about: String,
-    val rating: Double,
-    val power: Int,
-    val abilities: List<String>,
+    val id: Int = 0,
+    val name: String = "",
+    val image: String = "",
+    val about: String = "",
+    val rating: Double = 0.0,
+    val power: Int = 0,
+    val abilities: List<String> = emptyList(),
     val gender: String = "Male",
     val month: String = "",
     val day: String = "",
@@ -24,5 +24,5 @@ data class Hero(
     val realName: String? = null,
     val issues: Int? = null,
     val aliases: List<String>? = null,
-    val collection: String
+    val collection: String = "",
 )
