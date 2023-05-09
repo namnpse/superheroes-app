@@ -148,11 +148,12 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                 Card(
                     shape = RoundedCornerShape(10.dp),
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            hero?.name + " selected..",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            context,
+//                            hero?.name + " selected..",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+                        navController.navigate(Screen.HeroDetailsScreen.passHeroId(heroId = hero?.id ?: 0))
                     },
                 )
                 {

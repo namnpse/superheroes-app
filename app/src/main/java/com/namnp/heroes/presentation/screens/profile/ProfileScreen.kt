@@ -216,35 +216,38 @@ fun ProfileScreen(
                 color = displayColor,
             )
         }
-        Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
-        Row(
-            modifier = Modifier
-                .padding(start = MEDIUM_PADDING)
-                .clickable {
-                    profileViewModel.logOut()
-                    navController.navigate(Screen.LoginScreen.route)
-                }
-            ,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
-                modifier = Modifier.size(PROFILE_ICON_SIZE),
-                imageVector = Icons.Default.Logout,
-                tint = Color.Red,
-                contentDescription = "Logout"
-            )
-            Spacer(modifier = Modifier.width(MEDIUM_PADDING))
-            Text(
-                text = "Log out",
-                modifier = Modifier.padding(vertical = MEDIUM_PADDING),
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                fontWeight = FontWeight.Bold,
-                fontFamily = fonts,
-                color = Color.Red,
-            )
+        if(profileViewModel.currentUser != null) {
+            Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+            Row(
+                modifier = Modifier
+                    .padding(start = MEDIUM_PADDING)
+                    .clickable {
+                        profileViewModel.logOut()
+                        navController.navigate(Screen.LoginScreen.route)
+                    }
+                ,
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Icon(
+                    modifier = Modifier.size(PROFILE_ICON_SIZE),
+                    imageVector = Icons.Default.Logout,
+                    tint = Color.Red,
+                    contentDescription = "Logout"
+                )
+                Spacer(modifier = Modifier.width(MEDIUM_PADDING))
+                Text(
+                    text = "Log out",
+                    modifier = Modifier.padding(vertical = MEDIUM_PADDING),
+                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
+                    color = Color.Red,
+                )
+            }
         }
         Spacer(Modifier.weight(1f))
+        if(profileViewModel.currentUser == null)
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -262,7 +265,7 @@ fun ProfileScreen(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = LARGE_PADDING, vertical = 4.dp),
-                text = "Log in",
+                text = "Log In",
                 fontFamily = fonts,
                 fontSize = MaterialTheme.typography.h6.fontSize,)
         }
