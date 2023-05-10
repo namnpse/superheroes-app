@@ -17,8 +17,8 @@ fun DotsIndicator(
     modifier: Modifier = Modifier,
     totalDots: Int,
     selectedIndex: Int,
-    selectedColor: Color = Purple500 /*IndicatorSelectedColor*/ /* Color.Yellow */,
-    unSelectedColor: Color = Color.Gray /*IndicatorUnselectedColor*/ /* Color.Gray */,
+    selectedColor: Color = Purple500,
+    unSelectedColor: Color = Color.Gray,
     dotSize: Dp
 ) {
     LazyRow(
@@ -31,7 +31,6 @@ fun DotsIndicator(
                 color = if (index == selectedIndex) selectedColor else unSelectedColor,
                 size = dotSize
             )
-
             if (index != totalDots - 1) {
                 Spacer(modifier = Modifier.padding(horizontal = 2.dp))
             }

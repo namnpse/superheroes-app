@@ -15,27 +15,7 @@ class ProfileViewModel @Inject constructor(
     useCases: UseCases,
     private val repo: AuthRepository
 ): ViewModel() {
-//    val getAllHeroes = useCases.getAllHeroesUseCase("Boruto")
-//    val getMarvelHeroes = useCases.getAllHeroesUseCase("Marvel")
-//    val getBannersUseCase = useCases.getBannersUseCase
     val currentUser = repo.currentUser
-    private val firestore = FirebaseFirestore.getInstance()
-    private val _banners = MutableStateFlow<List<Hero>>(emptyList())
-    val banners = _banners
-    val flowViaChannel = Channel<List<Hero>>()
-
-//    init {
-//        getBanners()
-//    }
-//
-//    private fun getBanners() {
-//        viewModelScope.launch {
-////            _banners.value = getBannersUseCase()
-//            getBookDetails().collectLatest {
-//                println("DONE: $it")
-//            }
-//        }
-//    }
 
     fun logOut() {
         repo.signOut()

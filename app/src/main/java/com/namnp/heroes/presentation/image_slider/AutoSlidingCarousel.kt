@@ -44,7 +44,7 @@ fun AutoSlidingCarousel(
             itemContent(page)
         }
 
-        // you can remove the surface in case you don't want
+        // can remove the surface in case don't want
         // the transparent background
         Surface(
             modifier = Modifier
@@ -54,7 +54,6 @@ fun AutoSlidingCarousel(
             color = Color.Black.copy(alpha = 0.0f)
         ) {
             DotsIndicator(
-//                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 totalDots = itemsCount,
                 selectedIndex = if (isDragged) pagerState.currentPage else pagerState.targetPage,
                 dotSize = 8.dp

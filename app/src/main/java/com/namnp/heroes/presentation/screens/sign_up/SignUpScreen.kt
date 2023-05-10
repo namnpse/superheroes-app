@@ -87,9 +87,7 @@ fun SignUpScreen(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {
-//                    Text(text = "TopAppBar")
-                },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.popBackStack()
@@ -97,7 +95,6 @@ fun SignUpScreen(
                         Icon(
                             Icons.Filled.ArrowBack,
                             "Back",
-//                            tint = Purple500,
                         )
                     }
                 },

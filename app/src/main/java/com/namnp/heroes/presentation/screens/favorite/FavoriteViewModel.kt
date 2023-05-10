@@ -77,8 +77,6 @@ class FavoriteViewModel @Inject constructor(
 //                    println("UPLOAD DONE")
 //                }.addOnFailureListener {
 //                    println("UPLOAD ERROR: ${it.message}")
-//                }.addOnCanceledListener {
-//                    println("UPLOAD CANCELLED")
 //                }
         }else {
             firestoreDb
@@ -88,27 +86,4 @@ class FavoriteViewModel @Inject constructor(
                 .document(hero.id.toString()).delete()
         }
     }
-
-//    fun <T> DocumentReference.addSnapshotListenerFlow(dataType: Class<T>): Flow<T?> = callbackFlow {
-//        val listener = object : EventListener<DocumentSnapshot> {
-//            override fun onEvent(snapshot: DocumentSnapshot?, exception: FirebaseFirestoreException?) {
-//                if (exception != null) {
-//                    // An error occurred
-//                    cancel()
-//                    return
-//                }
-//
-//                if (snapshot != null && snapshot.exists()) {
-//                    // The document has data
-//                    val data = snapshot.toObject(dataType)
-//                    trySend(data)
-//                } else {
-//                    // The document does not exist or has no data
-//                }
-//            }
-//        }
-//
-//        val registration = addSnapshotListener(listener)
-//        awaitClose { registration.remove() }
-//    }
 }

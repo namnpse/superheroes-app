@@ -30,7 +30,6 @@ fun MainScreen(
 ) {
     val navBottomNavigationController = rememberNavController()
     Scaffold(
-//        topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navBottomNavigationController) },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
             Box(modifier = Modifier.padding(padding)) {
@@ -52,7 +51,6 @@ fun Navigation(
 ) {
     NavHost(navBottomNavigationController, startDestination = NavigationItem.Home.route) {
         composable(NavigationItem.Home.route) {
-//            HomeScreen(navController = navController)
             HomeScreen(navController = appNavController)
         }
         composable(NavigationItem.Favorite.route) {

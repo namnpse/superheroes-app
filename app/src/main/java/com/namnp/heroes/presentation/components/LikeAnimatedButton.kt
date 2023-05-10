@@ -40,13 +40,9 @@ fun LikeAnimatedButton(
         modifier = modifier
             .size(INFO_ICON_SIZE_LARGE)
             .scale(scale.value)
-//                .clickable {
-//                           isLiked.value = !isLiked.value
-//                }
             .pointerInteropFilter {
                 if (it.action == MotionEvent.ACTION_DOWN) {
                     isLiked.value = !isLiked.value
-                    println("LIKE: ${isLiked.value}")
                     viewModel.likeHero(hero = hero, isLike = isLiked.value)
                 }
                 when (it.action) {

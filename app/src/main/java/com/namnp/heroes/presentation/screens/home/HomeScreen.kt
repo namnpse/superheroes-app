@@ -120,7 +120,6 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
         Text(
             text = "See more",
             modifier = Modifier
-//            .width(120.dp)
                 .padding(4.dp)
                 .clickable {
                     navController.navigate(Screen.ListHeroesScreen.passCategoryId("Boruto"))
@@ -148,11 +147,6 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                 Card(
                     shape = RoundedCornerShape(10.dp),
                     onClick = {
-//                        Toast.makeText(
-//                            context,
-//                            hero?.name + " selected..",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         navController.navigate(Screen.HeroDetailsScreen.passHeroId(heroId = hero?.id ?: 0))
                     },
                 )
@@ -163,7 +157,6 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-//                    Spacer(modifier = Modifier.height(5.dp))
                         Box {
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
@@ -245,11 +238,6 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
                 Card(
                     shape = RoundedCornerShape(10.dp),
                     onClick = {
-//                        Toast.makeText(
-//                            context,
-//                            marvelHeroes[index]?.name + " selected..",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         navController.navigate(
                             Screen.HeroDetailsScreen.passHeroId(
                                 heroId = hero?.id ?: 0

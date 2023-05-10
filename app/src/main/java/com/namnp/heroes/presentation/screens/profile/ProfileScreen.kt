@@ -42,7 +42,6 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(colorResource(id = R.color.colorPrimaryDark))
             .background(MaterialTheme.colors.welcomeScreenBackgroundColor)
 //            .wrapContentSize(Alignment.Center)
     ) {
