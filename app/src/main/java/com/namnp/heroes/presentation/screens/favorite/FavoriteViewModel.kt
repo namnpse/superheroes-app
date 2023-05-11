@@ -28,15 +28,12 @@ class FavoriteViewModel @Inject constructor(
     val favoriteHeroes: StateFlow<ListHeroesResponse> = _favoriteHeroes
     val firestoreDb = Firebase.firestore
 
-    init {
+    fun getFavoriteHeroes() {
+        if(currentUser == null) return
         viewModelScope.launch(Dispatchers.IO) {
             _favoriteHeroes.value = Response.Loading
-            _favoriteHeroes.value = getHeroes().stateIn(viewModelScope).value
+            _favoriteHeroes.value = listenFavoriteHeroesFlow().stateIn(viewModelScope).value
         }
-    }
-
-    fun getHeroes(): Flow<ListHeroesResponse> {
-        return listenFavoriteHeroesFlow()
     }
 
     private fun listenFavoriteHeroesFlow() = callbackFlow<ListHeroesResponse> {
