@@ -9,6 +9,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.*
@@ -31,10 +35,17 @@ import com.namnp.heroes.util.Constants
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    themeState: MutableState<ThemeState>,
+    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.statusBarColor
+    )
     val currentUser = profileViewModel.currentUser
-    val displayColor = if (isSystemInDarkTheme()) {
+//    val displayColor = if (isSystemInDarkTheme()) {
+    val displayColor = if (themeState.value.theme == Theme.Dark) {
         Color.White
     } else {
         Purple500
@@ -190,6 +201,17 @@ fun ProfileScreen(
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
                 color = displayColor,
+            )
+            Spacer(Modifier.weight(1f))
+            Switch(
+                checked = themeState.value.theme == Theme.Dark,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Purple500,
+//                    checkedTrackColor = Color.Magenta
+                ),
+                onCheckedChange = { checked ->
+                    themeState.value = ThemeState(if(checked) Theme.Dark else Theme.Light)
+                }
             )
         }
         Row(

@@ -9,6 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -19,6 +21,8 @@ import com.google.firebase.ktx.Firebase
 import com.namnp.heroes.navigation.SetupNavGraph
 import com.namnp.heroes.presentation.screens.main.Navigation
 import com.namnp.heroes.ui.theme.HeroesAppTheme
+import com.namnp.heroes.ui.theme.Theme
+import com.namnp.heroes.ui.theme.ThemeState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,11 +36,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val themeState = remember { mutableStateOf(ThemeState(Theme.Light)) }
             HeroesAppTheme(
-//                darkTheme = true
+//                darkTheme = true,
+                themeState = themeState.value,
             ) {
                 navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+                SetupNavGraph(navController = navController, themeState = themeState)
             }
         }
     }

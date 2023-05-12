@@ -2,6 +2,7 @@ package com.namnp.heroes.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,12 +18,16 @@ import com.namnp.heroes.presentation.screens.search.SearchScreen
 import com.namnp.heroes.presentation.screens.sign_up.SignUpScreen
 import com.namnp.heroes.presentation.screens.splash.SplashScreen
 import com.namnp.heroes.presentation.screens.welcome.WelcomeScreen
+import com.namnp.heroes.ui.theme.ThemeState
 import com.namnp.heroes.util.Constants.DETAILS_ARGUMENT_KEY
 
 @ExperimentalCoilApi
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(
+    navController: NavHostController,
+    themeState: MutableState<ThemeState>,
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
@@ -48,7 +53,7 @@ fun SetupNavGraph(navController: NavHostController) {
             ListHeroesScreen(navController = navController)
         }
         composable(route = Screen.MainScreen.route) {
-            MainScreen(appNavController = navController)
+            MainScreen(appNavController = navController, themeState = themeState)
         }
         composable(Screen.LoginScreen.route) {
             LoginScreen(navController = navController)

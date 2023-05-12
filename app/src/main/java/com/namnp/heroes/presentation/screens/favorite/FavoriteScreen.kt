@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.model.Response
@@ -33,6 +34,7 @@ import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.presentation.components.LikeAnimatedButton
 import com.namnp.heroes.ui.theme.contrastColor
 import com.namnp.heroes.ui.theme.fonts
+import com.namnp.heroes.ui.theme.statusBarColor
 import com.namnp.heroes.ui.theme.welcomeScreenBackgroundColor
 import com.namnp.heroes.util.Constants
 
@@ -40,6 +42,11 @@ import com.namnp.heroes.util.Constants
 fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel()
 ) {
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = MaterialTheme.colors.statusBarColor
+    )
 
     viewModel.getFavoriteHeroes()
     val favoriteHeroesResponse = viewModel.favoriteHeroes.collectAsState().value
@@ -63,6 +70,8 @@ fun FavoriteScreen(
 //            .wrapContentSize(Alignment.TopCenter)
     ) {
         LazyVerticalGrid(
+            modifier = Modifier
+                .padding(horizontal = 8.dp),
             columns = GridCells.Fixed(2)
         ) {
             items(favoriteHeroes) { hero ->
@@ -85,7 +94,7 @@ fun FavoriteHeroItem(
 ) {
     Column(
         modifier = Modifier
-                        .padding(16.dp)
+                        .padding(start = 8.dp, end = 8.dp, top = 16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
 //        verticalArrangement = Arrangement.Center
@@ -110,7 +119,7 @@ fun FavoriteHeroItem(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .height(200.dp)
+                            .height(240.dp)
 //                            .width(120.dp)
 //                            .aspectRatio(0.5f)
                     )
