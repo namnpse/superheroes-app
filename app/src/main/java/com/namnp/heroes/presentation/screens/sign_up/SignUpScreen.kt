@@ -1,7 +1,6 @@
 package com.namnp.heroes.presentation.screens.sign_up
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -53,9 +52,9 @@ fun SignUpScreen(
         color = MaterialTheme.colors.statusBarColor
     )
 
-    val textFieldColors: TextFieldColors = if (isSystemInDarkTheme())
-        DarkThemTextFieldColors()
-    else TextFieldDefaults.outlinedTextFieldColors()
+    val textFieldColors: TextFieldColors = if (MaterialTheme.colors.isLight)
+        TextFieldDefaults.outlinedTextFieldColors()
+    else DarkThemTextFieldColors()
 
     val emailState = remember { mutableStateOf(TextFieldValue("nam12345@gmail.com")) }
     val phoneState = remember { mutableStateOf(TextFieldValue("0123456789")) }

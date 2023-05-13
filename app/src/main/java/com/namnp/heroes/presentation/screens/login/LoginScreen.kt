@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
@@ -168,9 +167,9 @@ fun LoginCard(
 ) {
     val emailState = remember { mutableStateOf(TextFieldValue("nam123@gmail.com")) }
     val passState = remember { mutableStateOf(TextFieldValue("123456")) }
-    val textFieldColors: TextFieldColors = if (isSystemInDarkTheme())
-        DarkThemTextFieldColors()
-    else TextFieldDefaults.outlinedTextFieldColors()
+    val textFieldColors: TextFieldColors = if (MaterialTheme.colors.isLight)
+        TextFieldDefaults.outlinedTextFieldColors()
+    else DarkThemTextFieldColors()
     Surface(
         color = MaterialTheme.colors.welcomeScreenBackgroundColor, modifier = Modifier
             .height(600.dp)

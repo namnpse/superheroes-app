@@ -1,7 +1,6 @@
 package com.namnp.heroes.ui.theme
 
 import androidx.compose.material.Colors
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val Purple200 = Color(0xFFBB86FC)
@@ -51,3 +50,21 @@ val Colors.topAppBarBackgroundColor: Color
 
 val Colors.contrastColor: Color
     get() = if (isLight) Color.Black else Color.White
+
+val Colors.Purple500_White: Color
+    get() = if (isLight) Purple500 else Color.White
+
+val Colors.White_Purple500: Color
+    get() = if (isLight) Color.White else Purple500
+
+val Colors.DarkGray_LightGray: Color
+    get() = if (isLight) DarkGray else LightGray
+
+val Colors.Purple500_Black: Color
+    get() = if (isLight) Purple500 else Color.Black
+
+val Colors.ShimmerMediumGray_ShimmerDarkGray: Color
+    get() = if (isLight) ShimmerMediumGray else ShimmerDarkGray
+
+val Colors.ShimmerLightGray_Black: Color
+    get() = if (isLight) ShimmerLightGray else Color.Black

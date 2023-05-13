@@ -1,6 +1,5 @@
 package com.namnp.heroes.presentation.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,7 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.namnp.heroes.R
 import com.namnp.heroes.presentation.screens.home.NavigationItem
-import com.namnp.heroes.ui.theme.Purple500
+import com.namnp.heroes.ui.theme.Purple500_Black
+import com.namnp.heroes.ui.theme.White_Purple500
 import com.namnp.heroes.ui.theme.fonts
 
 @Composable
@@ -21,12 +21,9 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationItem.Favorite,
         NavigationItem.Profile,
     )
-    val bgColor = if (isSystemInDarkTheme()) {
-        Color.Black
-    } else {
-        Purple500
-    }
-    val contentColor = if (isSystemInDarkTheme()) Purple500 else Color.White
+    val bgColor = MaterialTheme.colors.Purple500_Black
+    val contentColor = MaterialTheme.colors.White_Purple500
+
     BottomNavigation(
         backgroundColor = bgColor,
         contentColor = Color.White

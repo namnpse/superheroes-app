@@ -3,7 +3,6 @@ package com.namnp.heroes.presentation.common
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,10 +26,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.namnp.heroes.R
 import com.namnp.heroes.domain.model.Hero
-import com.namnp.heroes.ui.theme.DarkGray
-import com.namnp.heroes.ui.theme.LightGray
-import com.namnp.heroes.ui.theme.NETWORK_ERROR_ICON_HEIGHT
-import com.namnp.heroes.ui.theme.SMALL_PADDING
+import com.namnp.heroes.ui.theme.*
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -115,14 +111,14 @@ fun EmptyContent(
                     .alpha(alpha = alphaAnim),
                 painter = painterResource(id = icon),
                 contentDescription = stringResource(R.string.network_error_icon),
-                tint = if (isSystemInDarkTheme()) LightGray else DarkGray
+                tint = MaterialTheme.colors.DarkGray_LightGray
             )
             Text(
                 modifier = Modifier
                     .padding(top = SMALL_PADDING)
                     .alpha(alpha = alphaAnim),
                 text = message,
-                color = if (isSystemInDarkTheme()) LightGray else DarkGray,
+                color = MaterialTheme.colors.DarkGray_LightGray,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium,
                 fontSize = MaterialTheme.typography.subtitle1.fontSize

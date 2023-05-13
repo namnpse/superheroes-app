@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -65,12 +64,12 @@ fun SplashScreen(
 
 @Composable
 fun Splash(degrees: Float) {
-    val modifier = if (isSystemInDarkTheme()) {
-        Modifier.background(Color.Black)
-    } else {
+    val modifier = if (MaterialTheme.colors.isLight) {
         Modifier.background(
             Brush.verticalGradient(listOf(Purple700, Purple500))
         )
+    } else {
+        Modifier.background(Color.Black)
     }
     Box(
         modifier = modifier

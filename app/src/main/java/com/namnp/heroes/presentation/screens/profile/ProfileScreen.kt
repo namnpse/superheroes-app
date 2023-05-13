@@ -2,7 +2,6 @@ package com.namnp.heroes.presentation.screens.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -10,8 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,12 +41,7 @@ fun ProfileScreen(
         color = MaterialTheme.colors.statusBarColor
     )
     val currentUser = profileViewModel.currentUser
-//    val displayColor = if (isSystemInDarkTheme()) {
-    val displayColor = if (themeState.value.theme == Theme.Dark) {
-        Color.White
-    } else {
-        Purple500
-    }
+    val displayColor = MaterialTheme.colors.Purple500_White
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -207,7 +199,7 @@ fun ProfileScreen(
                 checked = themeState.value.theme == Theme.Dark,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = Purple500,
-//                    checkedTrackColor = Color.Magenta
+//                    checkedTrackColor = Color.ShimmerLightGray
                 ),
                 onCheckedChange = { checked ->
                     themeState.value = ThemeState(if(checked) Theme.Dark else Theme.Light)
@@ -274,7 +266,6 @@ fun ProfileScreen(
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = MEDIUM_PADDING),
             onClick =  {
-                 println("LOGIN")
                 navController.navigate(Screen.LoginScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
