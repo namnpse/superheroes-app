@@ -8,7 +8,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,6 +27,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
+import com.namnp.heroes.domain.model.Hero
+import com.namnp.heroes.domain.model.Response
+import com.namnp.heroes.domain.model.User
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.Constants
@@ -40,8 +45,23 @@ fun ProfileScreen(
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
-    val currentUser = profileViewModel.currentUser
+//    val currentUser = profileViewModel.currentUser
     val displayColor = MaterialTheme.colors.Purple500_White
+    profileViewModel.getUser()
+    val getUserResponse = profileViewModel.user.collectAsState().value
+    if (getUserResponse is Response.Failure) {
+        getUserResponse.apply {
+            LaunchedEffect(error) {
+                println(error.message)
+            }
+        }
+    }
+    var user: User? = null
+    if(getUserResponse is Response.Success){
+        getUserResponse.data?.let {
+            user = it
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +71,11 @@ fun ProfileScreen(
         Row {
             Spacer(Modifier.weight(1f))
             Icon(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        navController.navigate(Screen.UpdateProfileScreen.route)
+                    },
                 imageVector = Icons.Default.Edit,
                 contentDescription = "Edit profile",
                 tint = Purple500,
@@ -67,7 +91,8 @@ fun ProfileScreen(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .error(R.drawable.avatar_placeholder)
-                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
+//                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
+                    .data(user?.photoUrl)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -103,13 +128,14 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING)
-            ,
+                .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-                modifier = Modifier.size(PROFILE_ICON_SIZE).alpha(ContentAlpha.medium),
+                modifier = Modifier
+                    .size(PROFILE_ICON_SIZE)
+                    .alpha(ContentAlpha.medium),
                 imageVector = Icons.Default.Phone,
                 contentDescription = "Phone",
                 tint = displayColor,
@@ -127,13 +153,14 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MEDIUM_PADDING)
-            ,
+                .padding(MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
             Icon(
-                modifier = Modifier.size(PROFILE_ICON_SIZE).alpha(ContentAlpha.medium),
+                modifier = Modifier
+                    .size(PROFILE_ICON_SIZE)
+                    .alpha(ContentAlpha.medium),
                 imageVector = Icons.Default.Email,
                 contentDescription = "Email",
                 tint = displayColor,
@@ -141,19 +168,22 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
-                text = currentUser?.email ?: "Not registered",
+                text = user?.email ?: "",
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
                 color = displayColor,
             )
         }
-        Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+        Divider(
+            color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f),
+            thickness = 1.dp,
+            modifier = Modifier.padding(vertical = MEDIUM_PADDING)
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MEDIUM_PADDING)
-            ,
+                .padding(MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
@@ -175,8 +205,7 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MEDIUM_PADDING)
-            ,
+                .padding(MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
@@ -202,15 +231,14 @@ fun ProfileScreen(
 //                    checkedTrackColor = Color.ShimmerLightGray
                 ),
                 onCheckedChange = { checked ->
-                    themeState.value = ThemeState(if(checked) Theme.Dark else Theme.Light)
+                    themeState.value = ThemeState(if (checked) Theme.Dark else Theme.Light)
                 }
             )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MEDIUM_PADDING)
-            ,
+                .padding(MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
@@ -229,16 +257,19 @@ fun ProfileScreen(
                 color = displayColor,
             )
         }
-        if(profileViewModel.currentUser != null) {
-            Divider(color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f), thickness = 1.dp, modifier = Modifier.padding(vertical = MEDIUM_PADDING))
+        if (profileViewModel.currentUser != null) {
+            Divider(
+                color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = MEDIUM_PADDING)
+            )
             Row(
                 modifier = Modifier
                     .padding(start = MEDIUM_PADDING)
                     .clickable {
                         profileViewModel.logOut()
                         navController.navigate(Screen.LoginScreen.route)
-                    }
-                ,
+                    },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
             ) {
@@ -260,26 +291,27 @@ fun ProfileScreen(
             }
         }
         Spacer(Modifier.weight(1f))
-        if(profileViewModel.currentUser == null)
-        Button(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(vertical = MEDIUM_PADDING),
-            onClick =  {
-                navController.navigate(Screen.LoginScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Purple500,
-                contentColor = Color.White
-            ),
+        if (profileViewModel.currentUser == null)
+            Button(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = MEDIUM_PADDING),
+                onClick = {
+                    navController.navigate(Screen.LoginScreen.route)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Purple500,
+                    contentColor = Color.White
+                ),
 //            border = BorderStroke(1.dp, displayColor),
-            shape = RoundedCornerShape(50),
-        ) {
-            Text(
-                modifier = Modifier.padding(horizontal = LARGE_PADDING, vertical = 4.dp),
-                text = "Log In",
-                fontFamily = fonts,
-                fontSize = MaterialTheme.typography.h6.fontSize,)
-        }
+                shape = RoundedCornerShape(50),
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = LARGE_PADDING, vertical = 4.dp),
+                    text = "Log In",
+                    fontFamily = fonts,
+                    fontSize = MaterialTheme.typography.h6.fontSize,
+                )
+            }
     }
 }

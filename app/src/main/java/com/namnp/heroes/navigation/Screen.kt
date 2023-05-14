@@ -22,4 +22,5 @@ sealed class Screen(val route: String) {
     object MainScreen : Screen("main_screen")
     object LoginScreen : Screen("login_screen")
     object SignUpScreen : Screen("signup_screen")
+    object UpdateProfileScreen : Screen("update_profile_screen")
 }

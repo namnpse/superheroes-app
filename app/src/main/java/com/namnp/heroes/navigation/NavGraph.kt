@@ -17,6 +17,7 @@ import com.namnp.heroes.presentation.screens.main.MainScreen
 import com.namnp.heroes.presentation.screens.search.SearchScreen
 import com.namnp.heroes.presentation.screens.sign_up.SignUpScreen
 import com.namnp.heroes.presentation.screens.splash.SplashScreen
+import com.namnp.heroes.presentation.screens.update_profile.UpdateProfileScreen
 import com.namnp.heroes.presentation.screens.welcome.WelcomeScreen
 import com.namnp.heroes.ui.theme.ThemeState
 import com.namnp.heroes.util.Constants.DETAILS_ARGUMENT_KEY
@@ -61,5 +62,9 @@ fun SetupNavGraph(
         composable(Screen.SignUpScreen.route) {
             SignUpScreen(navController = navController)
         }
+        composable(Screen.UpdateProfileScreen.route) {
+            UpdateProfileScreen(navController = navController)
+        }
+
     }
 }

@@ -3,10 +3,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val id: String?,
-    val nickName: String?,
-    val imageUrl: String? = null,
-    val email: String?,
-    val phone: String?,
-    val bio: String?,
+    val id: String? = "",
+//    val uid: String? = null,
+    val nickName: String? = "",
+//    val username: String? = null,
+    val imageUrl: String? = "",
+    val photoUrl: String? = null,
+    val email: String? = "",
+    val phone: String? = "",
+    val bio: String? = "",
 )

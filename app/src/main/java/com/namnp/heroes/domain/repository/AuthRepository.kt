@@ -4,6 +4,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.domain.model.Response
+import com.namnp.heroes.domain.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -16,6 +17,7 @@ typealias SendPasswordResetEmailResponse = Response<Boolean>
 typealias RevokeAccessResponse = Response<Boolean>
 typealias AuthStateResponse = StateFlow<Boolean>
 typealias ListHeroesResponse = Response<List<Hero?>>
+typealias UserProfileResponse = Response<User?>
 
 interface AuthRepository {
     val currentUser: FirebaseUser?

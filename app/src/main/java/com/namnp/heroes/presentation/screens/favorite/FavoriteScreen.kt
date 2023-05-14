@@ -62,6 +62,8 @@ fun FavoriteScreen(
         favoriteHeroesResponse.data?.let {
             favoriteHeroes = it
         }
+        println("RES::: ${favoriteHeroesResponse.data?.size}")
+        println("RES::: ${favoriteHeroes.size}")
     }
     Column(
         modifier = Modifier
