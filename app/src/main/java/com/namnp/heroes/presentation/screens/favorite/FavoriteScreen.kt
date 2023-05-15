@@ -48,7 +48,6 @@ fun FavoriteScreen(
         color = MaterialTheme.colors.statusBarColor
     )
 
-    viewModel.getFavoriteHeroes()
     val favoriteHeroesResponse = viewModel.favoriteHeroes.collectAsState().value
     if (favoriteHeroesResponse is Response.Failure) {
         favoriteHeroesResponse.apply {
@@ -62,7 +61,6 @@ fun FavoriteScreen(
         favoriteHeroesResponse.data?.let {
             favoriteHeroes = it
         }
-        println("RES::: ${favoriteHeroesResponse.data?.size}")
         println("RES::: ${favoriteHeroes.size}")
     }
     Column(

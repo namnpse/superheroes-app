@@ -47,7 +47,7 @@ fun ProfileScreen(
     )
 //    val currentUser = profileViewModel.currentUser
     val displayColor = MaterialTheme.colors.Purple500_White
-    profileViewModel.getUser()
+//    profileViewModel.getUser()
     val getUserResponse = profileViewModel.user.collectAsState().value
     if (getUserResponse is Response.Failure) {
         getUserResponse.apply {

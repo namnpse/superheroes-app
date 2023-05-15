@@ -29,6 +29,10 @@ class ProfileViewModel @Inject constructor(
     private val _user: MutableStateFlow<UserProfileResponse> = MutableStateFlow(Response.Success(data = null))
     val user: StateFlow<UserProfileResponse> = _user
 
+    init {
+        getUser()
+    }
+
     fun getUser() {
         if(currentUser == null) return
         viewModelScope.launch(Dispatchers.IO) {

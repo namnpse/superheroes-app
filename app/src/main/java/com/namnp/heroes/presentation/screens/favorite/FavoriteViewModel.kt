@@ -22,19 +22,27 @@ class FavoriteViewModel @Inject constructor(
     useCases: UseCases,
     private val repo: AuthRepository
 ): ViewModel() {
-    val currentUser = repo.currentUser
+    private val currentUser = repo.currentUser
     // 2 way to init Firestore
     private val firestore = FirebaseFirestore.getInstance()
-    val firestoreDb = Firebase.firestore
+    private val firestoreDb = Firebase.firestore
     private val _favoriteHeroes: MutableStateFlow<ListHeroesResponse> = MutableStateFlow(Response.Success(data = null))
     val favoriteHeroes: StateFlow<ListHeroesResponse> = _favoriteHeroes
+
+    init {
+        getFavoriteHeroes()
+    }
 
     fun getFavoriteHeroes() {
         if(currentUser == null) return
 //        if(favoriteHeroes.value is Response.Success && (favoriteHeroes.value as Response.Success<List<Hero?>>).data != null) return
         viewModelScope.launch(Dispatchers.IO) {
             _favoriteHeroes.value = Response.Loading
-            _favoriteHeroes.value = listenFavoriteHeroesFlow().stateIn(viewModelScope).value
+//            val res = listenFavoriteHeroesFlow().stateIn(viewModelScope).value
+            listenFavoriteHeroesFlow().collect { res ->
+                println("COLLECT")
+                _favoriteHeroes.value = res
+            }
         }
     }
 
@@ -45,7 +53,6 @@ class FavoriteViewModel @Inject constructor(
             .document(currentUser?.uid ?: "")
             .collection("likes")
         val snapshotListener = collection.addSnapshotListener { value, error ->
-//            trySend(Response.Loading)
             val response = if (error == null) {
                 val size = value?.documents?.size
                 println("RES: $size")
@@ -59,6 +66,7 @@ class FavoriteViewModel @Inject constructor(
         }
 
         awaitClose {
+            println("snapshotListener remove")
             snapshotListener.remove()
         }
     }

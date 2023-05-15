@@ -21,6 +21,7 @@ fun DetailsScreen(
     navController: NavHostController,
     detailsViewModel: DetailsViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val selectedHero by detailsViewModel.selectedHero.collectAsState()
     val colorPalette by detailsViewModel.colorPalette
 
@@ -33,8 +34,6 @@ fun DetailsScreen(
     } else {
         detailsViewModel.generateColorPalette()
     }
-
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         detailsViewModel.uiEvent.collectLatest { event ->
