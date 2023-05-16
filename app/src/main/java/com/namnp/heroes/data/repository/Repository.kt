@@ -2,6 +2,7 @@ package com.namnp.heroes.data.repository
 
 import androidx.paging.PagingData
 import com.namnp.heroes.domain.model.Hero
+import com.namnp.heroes.domain.model.User
 import com.namnp.heroes.domain.repository.DataStoreOperations
 import com.namnp.heroes.domain.repository.LocalDataSource
 import com.namnp.heroes.domain.repository.RemoteDataSource
@@ -49,6 +50,14 @@ class Repository @Inject constructor(
 
     fun readOnBoardingState(): Flow<Boolean> {
         return dataStore.readOnBoardingState()
+    }
+
+    suspend fun saveUserInfo(user: User) {
+        dataStore.saveUserInfo(user)
+    }
+
+    fun readUserInfo(): Flow<User> {
+        return dataStore.readUserInfo()
     }
 
 }
