@@ -41,7 +41,8 @@ class HeroRemoteMediatorTest {
         runTest {
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
-                heroDatabase = heroDatabase
+                heroDatabase = heroDatabase,
+                collection = ""
             )
             val pagingState = PagingState<Int, Hero>(
                 pages = listOf(),
@@ -61,7 +62,8 @@ class HeroRemoteMediatorTest {
             heroApi.clearData()
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
-                heroDatabase = heroDatabase
+                heroDatabase = heroDatabase,
+                collection = ""
             )
             val pagingState = PagingState<Int, Hero>(
                 pages = listOf(),
@@ -81,7 +83,8 @@ class HeroRemoteMediatorTest {
             heroApi.fakeException()
             val remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
-                heroDatabase = heroDatabase
+                heroDatabase = heroDatabase,
+                collection = ""
             )
             val pagingState = PagingState<Int, Hero>(
                 pages = listOf(),

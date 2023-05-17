@@ -2,7 +2,9 @@ package com.data.remote
 
 import com.namnp.heroes.data.remote.HeroApi
 import com.namnp.heroes.domain.ApiResponse
+import com.namnp.heroes.domain.HeroResponse
 import com.namnp.heroes.domain.model.Hero
+import com.namnp.heroes.domain.model.toHeroDto
 import java.io.IOException
 
 // Cause test remote mediator requires Android component (Context) -> create Android tests
@@ -408,7 +410,7 @@ class FakeRemoteMediatorApi: HeroApi {
         exception = true
     }
 
-    override suspend fun getAllHeroes(page: Int): ApiResponse {
+    override suspend fun getAllHeroes(page: Int, collection: String): ApiResponse {
         if (exception) {
             throw IOException()
         }
@@ -418,14 +420,26 @@ class FakeRemoteMediatorApi: HeroApi {
             message = "ok",
             prevPage = calculate(page = page)["prevPage"],
             nextPage = calculate(page = page)["nextPage"],
-            data = heroes[page]!!
+            data = heroes[page]!!.map { it.toHeroDto() }
         )
+    }
+
+    override suspend fun getMarvelHeroes(page: Int): ApiResponse {
+        TODO("Not yet implemented")
     }
 
     override suspend fun searchHeroes(name: String): ApiResponse {
         return ApiResponse(
             success = false
         )
+    }
+
+    override suspend fun getHeroById(id: Int): HeroResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getBanners(): ApiResponse {
+        TODO("Not yet implemented")
     }
 
     private fun calculate(page: Int): Map<String, Int?> {

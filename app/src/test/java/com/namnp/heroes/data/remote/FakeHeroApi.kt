@@ -1,6 +1,7 @@
 package com.namnp.heroes.data.remote
 
 import com.namnp.heroes.domain.ApiResponse
+import com.namnp.heroes.domain.HeroResponse
 import com.namnp.heroes.domain.model.Hero
 
 
@@ -48,10 +49,14 @@ class FakeBorutoApi : HeroApi {
         )
     )
 
-    override suspend fun getAllHeroes(page: Int): ApiResponse {
+    override suspend fun getAllHeroes(page: Int, collection: String): ApiResponse {
         return ApiResponse(
             success = false
         )
+    }
+
+    override suspend fun getMarvelHeroes(page: Int): ApiResponse {
+        TODO("Not yet implemented")
     }
 
     override suspend fun searchHeroes(name: String): ApiResponse {
@@ -59,8 +64,16 @@ class FakeBorutoApi : HeroApi {
         return ApiResponse(
             success = true,
             message = "ok",
-            data = searchedHeroes
+            data = searchedHeroes.map { it.toHeroDto() }
         )
+    }
+
+    override suspend fun getHeroById(id: Int): HeroResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getBanners(): ApiResponse {
+        TODO("Not yet implemented")
     }
 
     private fun findHeroes(name: String): List<Hero> {

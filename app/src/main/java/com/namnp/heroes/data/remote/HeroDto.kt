@@ -1,4 +1,4 @@
-package com.namnp.heroes.data.local
+package com.namnp.heroes.data.remote
 
 import com.namnp.heroes.domain.model.Hero
 import kotlinx.serialization.Serializable
@@ -41,5 +41,26 @@ fun HeroDto.toHero(): Hero {
         issues = issues ?: 0,
         aliases = aliases ?: emptyList(),
         collection = collection ?: "",
+    )
+}
+
+fun Hero.toHeroDto(): HeroDto {
+    return HeroDto(
+        id = id,
+        name = name,
+        image = image,
+        about = about,
+        rating = rating,
+        power = power,
+        abilities = abilities,
+        month = month,
+        day = day,
+        family = family,
+        natureTypes = natureTypes,
+        gender = gender,
+        realName = realName ?: "Unknown",
+        issues = issues ?: 0,
+        aliases = aliases ?: emptyList(),
+        collection = collection,
     )
 }
