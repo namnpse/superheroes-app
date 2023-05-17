@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.namnp.heroes.data.local.HeroDatabase
-import com.namnp.heroes.data.local.toHero
+import com.namnp.heroes.data.remote.toHero
 import com.namnp.heroes.data.paging_source.HeroRemoteMediator
 import com.namnp.heroes.data.paging_source.SearchHeroesSource
 import com.namnp.heroes.data.remote.HeroApi

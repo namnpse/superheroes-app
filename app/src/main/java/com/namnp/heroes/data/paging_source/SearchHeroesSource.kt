@@ -2,7 +2,7 @@ package com.namnp.heroes.data.paging_source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.namnp.heroes.data.local.toHero
+import com.namnp.heroes.data.remote.toHero
 import com.namnp.heroes.data.remote.HeroApi
 import com.namnp.heroes.domain.model.Hero
 import javax.inject.Inject

@@ -1,7 +1,6 @@
 package com.namnp.heroes.domain
 
-import com.namnp.heroes.data.local.HeroDto
-import com.namnp.heroes.domain.model.Hero
+import com.namnp.heroes.data.remote.HeroDto
 import kotlinx.serialization.Serializable
 
 @Serializable

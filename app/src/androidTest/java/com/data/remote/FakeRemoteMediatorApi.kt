@@ -4,7 +4,7 @@ import com.namnp.heroes.data.remote.HeroApi
 import com.namnp.heroes.domain.ApiResponse
 import com.namnp.heroes.domain.HeroResponse
 import com.namnp.heroes.domain.model.Hero
-import com.namnp.heroes.domain.model.toHeroDto
+import com.namnp.heroes.data.remote.toHeroDto
 import java.io.IOException
 
 // Cause test remote mediator requires Android component (Context) -> create Android tests
