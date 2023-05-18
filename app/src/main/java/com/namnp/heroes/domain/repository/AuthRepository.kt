@@ -18,6 +18,7 @@ typealias RevokeAccessResponse = Response<Boolean>
 typealias AuthStateResponse = StateFlow<Boolean>
 typealias ListHeroesResponse = Response<List<Hero?>>
 typealias UserProfileResponse = Response<User?>
+typealias UploadAvatarResponse = Response<String?>
 
 interface AuthRepository {
     val currentUser: FirebaseUser?

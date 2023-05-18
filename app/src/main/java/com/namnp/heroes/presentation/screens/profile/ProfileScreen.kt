@@ -62,6 +62,18 @@ fun ProfileScreen(
             user = it
         }
     }
+
+    navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<Boolean>("update")?.observeForever {
+            println("savedStateHandle ${it.toString()}")
+            if(it) {
+                profileViewModel.getUser()
+            }
+        }
+//    secondScreenResult?.value?.let {
+//        // Read the result
+//    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -108,7 +120,7 @@ fun ProfileScreen(
                     .weight(7f),
             ) {
                 Text(
-                    text = "Nam Nguyen",
+                    text = user?.nickName ?: "",
                     fontSize = MaterialTheme.typography.h5.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
@@ -117,7 +129,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
-                    text = "Bryan",
+                    text = "@${user?.email}",
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
@@ -144,35 +156,10 @@ fun ProfileScreen(
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
                 color = displayColor,
-                text = "(+84) 123456789",
+                text = user?.phone ?: "(+84) 123456789",
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MEDIUM_PADDING),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
-                modifier = Modifier
-                    .size(PROFILE_ICON_SIZE)
-                    .alpha(ContentAlpha.medium),
-                imageVector = Icons.Default.Email,
-                contentDescription = "Email",
-                tint = displayColor,
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                modifier = Modifier.alpha(ContentAlpha.medium),
-                text = user?.email ?: "",
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                fontWeight = FontWeight.Bold,
-                fontFamily = fonts,
-                color = displayColor,
             )
         }
         Divider(

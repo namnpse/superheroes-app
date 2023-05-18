@@ -12,6 +12,7 @@ import com.namnp.heroes.domain.use_cases.get_detail_hero.GetDetailsHeroUseCase
 import com.namnp.heroes.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.namnp.heroes.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
 import com.namnp.heroes.domain.use_cases.search_heroes.SearchHeroesUseCase
+import com.namnp.heroes.domain.use_cases.user_info.ClearUserInfoUseCase
 import com.namnp.heroes.domain.use_cases.user_info.ReadUserInfoUseCase
 import com.namnp.heroes.domain.use_cases.user_info.SaveUserInfoUseCase
 import dagger.Module
@@ -46,6 +47,7 @@ object RepositoryModule {
             getBannersUseCase = GetBannersUseCase(repository),
             saveUserInfoUseCase = SaveUserInfoUseCase(repository),
             readUserInfoUseCase = ReadUserInfoUseCase(repository),
+            clearUserInfoUseCase = ClearUserInfoUseCase(repository),
         )
     }
 

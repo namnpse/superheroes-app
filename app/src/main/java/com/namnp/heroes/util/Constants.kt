@@ -17,6 +17,7 @@ object Constants {
 
     const val PREFERENCES_NAME = "hero_shared_preferences"
     const val PREFERENCES_KEY = "on_boarding_completed"
+    const val PREFERENCES_KEY_ID = "user_id"
     const val PREFERENCES_KEY_USERNAME = "user_username"
     const val PREFERENCES_KEY_EMAIL = "user_email"
     const val PREFERENCES_KEY_PHONE = "user_phone"

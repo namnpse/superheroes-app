@@ -60,4 +60,6 @@ class Repository @Inject constructor(
         return dataStore.readUserInfo()
     }
 
+    suspend fun clearUserInfo() = dataStore.clearUserInfo()
+
 }

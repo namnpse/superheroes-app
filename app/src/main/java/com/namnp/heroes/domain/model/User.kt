@@ -7,9 +7,12 @@ data class User(
 //    val uid: String? = null,
     val nickName: String? = "",
 //    val username: String? = null,
-    val imageUrl: String? = "",
+//    val imageUrl: String? = "",
     val photoUrl: String? = null,
     val email: String? = "",
     val phone: String? = "",
     val bio: String? = "",
-)
+) {
+//    constructor(nickName: String, phone: String, bio: String) : this("", nickName, "", "", phone, bio)
+    constructor(photoUrl: String) : this("", "", photoUrl, "", "", "")
+}

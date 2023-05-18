@@ -43,7 +43,7 @@ class SignUpViewModel @Inject constructor(
             "nickName" to (user.nickName ?: ""),
             "email" to (user.email ?: ""),
             "phoneNumber" to (user.phone ?: ""),
-            "imageUrl" to (user.imageUrl ?: ""),
+            "photoUrl" to (user.photoUrl ?: ""),
             "bio" to (user.bio ?: ""),
         )
         db.collection("users").document(user.id ?: "")

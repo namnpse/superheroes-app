@@ -1,10 +1,13 @@
 package com.namnp.heroes.presentation.screens.update_profile
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,20 +15,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.namnp.heroes.R
 import com.namnp.heroes.domain.model.Response
@@ -33,9 +37,18 @@ import com.namnp.heroes.domain.model.User
 import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.DarkThemTextFieldColors
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 //@Preview(showBackground = true)
+//@Composable
+//fun UpdateProfileScreenPreview() {
+//    val navController = rememberNavController()
+//    UpdateProfileScreen(
+//        navController = navController,
+//    )
+//}
+
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -56,31 +69,23 @@ fun UpdateProfileScreen(
         TextFieldDefaults.outlinedTextFieldColors()
     else DarkThemTextFieldColors()
 
-    val emailState = remember { mutableStateOf(TextFieldValue("nam12345@gmail.com")) }
     val phoneState = remember { mutableStateOf(TextFieldValue("0123456789")) }
     val nicknameState = remember { mutableStateOf(TextFieldValue("Nam Jr")) }
-    val passwordState = remember { mutableStateOf(TextFieldValue("123456")) }
-    val confirmPasswordState = remember { mutableStateOf(TextFieldValue("123456")) }
     val bioState = remember { mutableStateOf(TextFieldValue("Mobile Developer")) }
 
-    val signin = stringResource(R.string.log_in)
-    val signinText = buildAnnotatedString {
-        withStyle(
-            SpanStyle(color = Color.LightGray, fontSize = 14.sp)
-        ) {
-            append("${stringResource(R.string.already_have_an_account)} ")
-        }
-        withStyle(
-            SpanStyle(
-                color = Purple500,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        ) {
-            pushStringAnnotation(tag = signin, annotation = signin)
-            append(signin)
-        }
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
     }
+
+    println("selectedImageUri ${selectedImageUri?.path}")
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+//            selectedImageUri = uri
+            viewModel.uploadAvatarImage(uri)
+        }
+    )
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -108,27 +113,34 @@ fun UpdateProfileScreen(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
+                val userAvatar = viewModel.avatarUrl.collectAsState().value
+                println("userAvatar $userAvatar")
                 val modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                Spacer(modifier = Modifier.padding(16.dp))
-                OutlinedTextField(
-                    value = emailState.value,
-                    colors = textFieldColors,
-                    onValueChange = {
-                        emailState.value = it
-                    },
-                    label = {
-                        Text(text = stringResource(R.string.email))
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Filled.Email,
-                            contentDescription = "Email"
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .error(R.drawable.avatar_placeholder)
+//                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
+                        .data(userAvatar)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(160.dp)
+                        .padding(
+                            start = MEDIUM_PADDING,
+                            end = MEDIUM_PADDING,
+                            bottom = MEDIUM_PADDING
                         )
-                    },
-                    modifier = modifier
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(160.dp))
+                        .clickable {
+                            singlePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        }
+//                    .background(Purple500),
                 )
                 Spacer(modifier = Modifier.padding(6.dp))
                 OutlinedTextField(
@@ -147,46 +159,6 @@ fun UpdateProfileScreen(
                         )
                     },
                     modifier = modifier
-                )
-
-                Spacer(modifier = Modifier.padding(6.dp))
-                OutlinedTextField(
-                    value = passwordState.value,
-                    colors = textFieldColors,
-                    onValueChange = {
-                        passwordState.value = it
-                    },
-                    label = {
-                        Text(text = stringResource(R.string.password))
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Filled.Lock,
-                            contentDescription = "Password"
-                        )
-                    },
-                    modifier = modifier,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-
-                Spacer(modifier = Modifier.padding(6.dp))
-                OutlinedTextField(
-                    value = confirmPasswordState.value,
-                    colors = textFieldColors,
-                    onValueChange = {
-                        confirmPasswordState.value = it
-                    },
-                    label = {
-                        Text(text = stringResource(R.string.confirm_password))
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Filled.Lock,
-                            contentDescription = "Password"
-                        )
-                    },
-                    modifier = modifier,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
 
                 Spacer(modifier = Modifier.padding(6.dp))
@@ -232,15 +204,9 @@ fun UpdateProfileScreen(
                         .padding(vertical = 8.dp)
                         .weight(1f)
                 )
-                val signUpResponse = viewModel.signUpResponse
-                val saveUserResponse = viewModel.saveUserResponse
-                if (signUpResponse is Response.Failure) {
-                    signUpResponse.apply {
-//                        showSnackBar(
-//                            scaffoldState = scaffoldState,
-//                            coroutineScope = coroutineScope,
-//                            message = error.message
-//                        )
+                val updateUserInfoResponse = viewModel.updateUserInfoResponse
+                if (updateUserInfoResponse is Response.Failure) {
+                    updateUserInfoResponse.apply {
                         LaunchedEffect(error.message) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = error.message ?: "",
@@ -248,41 +214,27 @@ fun UpdateProfileScreen(
                         }
                     }
                 }
-
-                if (saveUserResponse is Response.Failure) {
-                    saveUserResponse.apply {
-                        LaunchedEffect(error.message) {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = error.message ?: "",
-                            )
-                        }
-                    }
-                }
-                if (signUpResponse is Response.Success && signUpResponse.data != null && !viewModel.isSignUpSuccess) {
-                    val userInfo = User(
-                        id = signUpResponse.data.user?.uid,
-                        nickName = nicknameState.value.text,
-                        email = emailState.value.text,
-                        phone = phoneState.value.text,
-                        bio = bioState.value.text,
-                    )
-                    viewModel.saveUserToFirestore(userInfo)
-                }
-                if (saveUserResponse is Response.Success && saveUserResponse.data == true) {
-                    LaunchedEffect(saveUserResponse.data) {
+                if (updateUserInfoResponse is Response.Success && updateUserInfoResponse.data == true) {
+                    LaunchedEffect(updateUserInfoResponse.data) {
                         scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Sign up successfully",
+                            message = "Update successfully",
                         )
+//                        delay(1.seconds)
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("update", true)
+                        // Do something with the result.
                         navController.popBackStack()
                     }
                 }
-                if (signUpResponse is Response.Loading || saveUserResponse is Response.Loading) CircularProgressIndicator()
+                if (updateUserInfoResponse is Response.Loading) CircularProgressIndicator()
                 else Button(
                     onClick = {
                         keyboard?.hide()
-                        viewModel.signUpWithEmailAndPassword(
-                            emailState.value.text,
-                            passwordState.value.text
+                        viewModel.saveUserToFirestore(
+                            nicknameState.value.text,
+                            phoneState.value.text,
+                            bioState.value.text
                         )
                     },
                     shape = RoundedCornerShape(16.dp),
@@ -299,15 +251,7 @@ fun UpdateProfileScreen(
                         )
                     )
                 }
-
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-                ClickableText(text = signinText, onClick = { offset ->
-                    signinText.getStringAnnotations(offset, offset)
-                        .firstOrNull()?.let { span ->
-                            navController.popBackStack()
-                        }
-                })
+                Spacer(modifier = Modifier.padding(vertical = 0.dp))
             }
         },
     )

@@ -10,12 +10,15 @@ import com.namnp.heroes.util.Constants.PREFERENCES_KEY
 import com.namnp.heroes.util.Constants.PREFERENCES_KEY_AVATAR
 import com.namnp.heroes.util.Constants.PREFERENCES_KEY_BIO
 import com.namnp.heroes.util.Constants.PREFERENCES_KEY_EMAIL
+import com.namnp.heroes.util.Constants.PREFERENCES_KEY_ID
 import com.namnp.heroes.util.Constants.PREFERENCES_KEY_PHONE
 import com.namnp.heroes.util.Constants.PREFERENCES_KEY_USERNAME
 import com.namnp.heroes.util.Constants.PREFERENCES_NAME
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
@@ -24,6 +27,7 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
 
     private object PreferencesKey {
         val onBoardingKey = booleanPreferencesKey(name = PREFERENCES_KEY)
+        val idKey = stringPreferencesKey(name = PREFERENCES_KEY_ID)
         val usernameKey = stringPreferencesKey(name = PREFERENCES_KEY_USERNAME)
         val emailKey = stringPreferencesKey(name = PREFERENCES_KEY_EMAIL)
         val phoneKey = stringPreferencesKey(name = PREFERENCES_KEY_PHONE)
@@ -54,8 +58,10 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
             }
     }
 
-    override suspend fun saveUserInfo(user: User) {
+    override suspend fun saveUserInfo(user: User): Unit = withContext(Dispatchers.IO) {
         dataStore.edit { preferences ->
+            if(!user.id.isNullOrEmpty())
+                preferences[PreferencesKey.idKey] = user.id
             if(!user.nickName.isNullOrEmpty())
                 preferences[PreferencesKey.usernameKey] = user.nickName
             if(!user.email.isNullOrEmpty())
@@ -79,12 +85,14 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
                 }
             }
             .map { preferences ->
+                val id = preferences[PreferencesKey.idKey] ?: ""
                 val nickName = preferences[PreferencesKey.usernameKey] ?: ""
                 val email = preferences[PreferencesKey.emailKey] ?: ""
                 val phone = preferences[PreferencesKey.phoneKey] ?: ""
                 val bio = preferences[PreferencesKey.bioKey] ?: ""
                 val photoUrl = preferences[PreferencesKey.avatarKey] ?: ""
                 User(
+                    id = id,
                     nickName = nickName,
                     email = email,
                     phone = phone,
@@ -92,5 +100,11 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
                     photoUrl = photoUrl,
                 )
             }
+    }
+
+    override suspend fun clearUserInfo(): Unit = withContext(Dispatchers.IO) {
+        dataStore.edit {
+            it.clear()
+        }
     }
 }

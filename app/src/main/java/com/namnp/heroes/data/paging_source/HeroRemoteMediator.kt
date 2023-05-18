@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.namnp.heroes.data.local.HeroDatabase
-import com.namnp.heroes.data.local.toHero
+import com.namnp.heroes.data.remote.toHero
 import com.namnp.heroes.data.remote.HeroApi
 import com.namnp.heroes.domain.ApiResponse
 import com.namnp.heroes.domain.model.Hero

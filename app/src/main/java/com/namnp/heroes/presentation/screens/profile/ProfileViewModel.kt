@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    useCases: UseCases,
+    private val useCases: UseCases,
     private val repo: AuthRepository
 ): ViewModel() {
     val currentUser = repo.currentUser
@@ -34,10 +34,13 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getUser() {
+        println("getUser")
         if(currentUser == null) return
         viewModelScope.launch(Dispatchers.IO) {
             _user.value = Response.Loading
-            _user.value = getUserFromFirestore().stateIn(viewModelScope).value
+            val localUser = useCases.readUserInfoUseCase().stateIn(viewModelScope).value
+            _user.value = Response.Success(data = localUser)
+//            _user.value = getUserFromFirestore().stateIn(viewModelScope).value
         }
     }
 
@@ -66,6 +69,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun logOut() {
+        viewModelScope.launch(Dispatchers.IO) {
+            useCases.clearUserInfoUseCase()
+        }
+
         repo.signOut()
     }
 }

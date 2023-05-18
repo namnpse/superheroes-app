@@ -12,4 +12,6 @@ interface DataStoreOperations {
     suspend fun saveUserInfo(user: User)
 
     fun readUserInfo(): Flow<User>
+
+    suspend fun clearUserInfo()
 }
