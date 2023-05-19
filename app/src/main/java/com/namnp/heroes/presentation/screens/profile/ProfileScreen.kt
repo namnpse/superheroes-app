@@ -45,9 +45,7 @@ fun ProfileScreen(
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
-//    val currentUser = profileViewModel.currentUser
     val displayColor = MaterialTheme.colors.Purple500_White
-//    profileViewModel.getUser()
     val getUserResponse = profileViewModel.user.collectAsState().value
     if (getUserResponse is Response.Failure) {
         getUserResponse.apply {
@@ -71,14 +69,10 @@ fun ProfileScreen(
                 profileViewModel.getUser()
             }
         }
-//    secondScreenResult?.value?.let {
-//        // Read the result
-//    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.welcomeScreenBackgroundColor)
-//            .wrapContentSize(Alignment.Center)
     ) {
         Row {
             Spacer(Modifier.weight(1f))
@@ -103,7 +97,6 @@ fun ProfileScreen(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .error(R.drawable.avatar_placeholder)
-//                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
                     .data(user?.photoUrl)
                     .build(),
                 contentDescription = null,
@@ -113,7 +106,6 @@ fun ProfileScreen(
                     .weight(3f)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(160.dp))
-//                    .background(Purple500),
             )
             Column(
                 modifier = Modifier
@@ -290,7 +282,6 @@ fun ProfileScreen(
                     backgroundColor = Purple500,
                     contentColor = Color.White
                 ),
-//            border = BorderStroke(1.dp, displayColor),
                 shape = RoundedCornerShape(50),
             ) {
                 Text(
