@@ -31,9 +31,6 @@ class UpdateProfileViewModel @Inject constructor(
     val db = Firebase.firestore
     private val currentUser = repo.currentUser
 
-//    var signUpResponse by mutableStateOf<SignUpResponse>(Response.Success(data = null))
-//        private set
-
     var updateUserInfoResponse by mutableStateOf<SaveUserResponse>(Response.Success(data = false))
         private set
 
@@ -53,7 +50,7 @@ class UpdateProfileViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val userLocal = useCases.readUserInfoUseCase().stateIn(viewModelScope).value
             _user.value = userLocal
-            println("userLocal avatar ${userLocal.photoUrl}")
+            println("userLocal avatar ${userLocal.photoUrl} ${userLocal.nickName} ${userLocal.phone} ${userLocal.bio}")
             _avatarUrl.value = userLocal.photoUrl
         }
     }
@@ -84,8 +81,8 @@ class UpdateProfileViewModel @Inject constructor(
         }
     }
 
-    fun saveUserToFirestore(nickName: String, phone: String, bio: String) {
-        val user: User = User(
+    fun updateUserInfo(nickName: String, phone: String, bio: String) {
+        val user = User(
             id = currentUser?.uid ?: "",
             nickName = nickName,
             email = currentUser?.email ?: "",
@@ -93,6 +90,13 @@ class UpdateProfileViewModel @Inject constructor(
             photoUrl = avatarUrl.value,
             bio = bio,
         )
+        viewModelScope.launch {
+            useCases.saveUserInfoUseCase(user)
+        }
+        saveUserToFirestore(user)
+    }
+
+    private fun saveUserToFirestore(user: User) {
         updateUserInfoResponse = Response.Loading
         val userMap: Map<String, String> = hashMapOf(
             "id" to (currentUser?.uid ?: ""),

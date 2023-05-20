@@ -61,14 +61,16 @@ fun ProfileScreen(
         }
     }
 
-    navController.currentBackStackEntry
-        ?.savedStateHandle
-        ?.getLiveData<Boolean>("update")?.observeForever {
-            println("savedStateHandle ${it.toString()}")
-            if(it) {
-                profileViewModel.getUser()
+    LaunchedEffect(key1 = true) {
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Boolean>("update")?.observeForever {
+                println("savedStateHandle $it")
+                if(it) {
+                    profileViewModel.getUser()
+                }
             }
-        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -111,17 +113,19 @@ fun ProfileScreen(
                 modifier = Modifier
                     .weight(7f),
             ) {
+                val username = if(!user?.nickName.isNullOrEmpty()) (user?.nickName ?: "") else "Username"
                 Text(
-                    text = user?.nickName ?: "",
+                    text = username,
                     fontSize = MaterialTheme.typography.h5.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
                     color = displayColor,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                val email = if(!user?.email.isNullOrEmpty()) (user?.email ?: "") else "nickname"
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
-                    text = "@${user?.email}",
+                    text = "@$email",
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
@@ -129,31 +133,32 @@ fun ProfileScreen(
                 )
             }
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-        ) {
-            Icon(
+        if(!user?.phone.isNullOrEmpty())
+            Row(
                 modifier = Modifier
-                    .size(PROFILE_ICON_SIZE)
-                    .alpha(ContentAlpha.medium),
-                imageVector = Icons.Default.Phone,
-                contentDescription = "Phone",
-                tint = displayColor,
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                modifier = Modifier.alpha(ContentAlpha.medium),
-                color = displayColor,
-                text = user?.phone ?: "(+84) 123456789",
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                fontWeight = FontWeight.Bold,
-                fontFamily = fonts,
-            )
-        }
+                    .fillMaxWidth()
+                    .padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(PROFILE_ICON_SIZE)
+                        .alpha(ContentAlpha.medium),
+                    imageVector = Icons.Default.Phone,
+                    contentDescription = "Phone",
+                    tint = displayColor,
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    modifier = Modifier.alpha(ContentAlpha.medium),
+                    color = displayColor,
+                    text = user?.phone ?: "(+84) 123456789",
+                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fonts,
+                )
+            }
         Divider(
             color = colorResource(id = R.color.ink100s).copy(alpha = 0.5f),
             thickness = 1.dp,

@@ -20,7 +20,8 @@ data class HeroDto(
     val realName: String? = null,
     val issues: Int? = null,
     val aliases: List<String>? = null,
-    val collection: String?
+    val collection: String? = "",
+    val isLiked: Boolean? = null,
 )
 
 fun HeroDto.toHero(): Hero {
@@ -41,6 +42,7 @@ fun HeroDto.toHero(): Hero {
         issues = issues ?: 0,
         aliases = aliases ?: emptyList(),
         collection = collection ?: "",
+        isLiked = isLiked ?: false,
     )
 }
 

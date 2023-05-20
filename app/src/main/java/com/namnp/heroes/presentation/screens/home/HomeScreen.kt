@@ -108,9 +108,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
     ) {
         Text(
             text = "Boruto heroes",
-            modifier = Modifier
-//            .width(120.dp)
-                .padding(4.dp),
+            modifier = Modifier.padding(4.dp),
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,

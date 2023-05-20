@@ -1,5 +1,6 @@
 package com.namnp.heroes.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -24,4 +25,14 @@ interface HeroDao {
 
     @Query("DELETE FROM HERO_TABLE")
     suspend fun deleteAllHeroes()
+
+    @Query("UPDATE HERO_TABLE SET is_liked=:isLike WHERE id=:heroId")
+    suspend fun likeHero(heroId: Int, isLike: Boolean)
+
+    // https://stackoverflow.com/questions/47730820/hardcode-boolean-query-in-room-database
+    // SQLite does not have a boolean data type.
+    // -> Room maps it to an INTEGER column, mapping true to 1 and false to 0
+    @Query("SELECT * FROM HERO_TABLE WHERE is_liked = 1")
+    fun getFavoriteHeroes(): LiveData<List<Hero?>>?
+
 }

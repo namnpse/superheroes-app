@@ -36,6 +36,8 @@ fun LikeAnimatedButton(
     val isLiked = remember { mutableStateOf(false) }
     val scale = animateFloatAsState(if (selected.value) 2f else 1f)
 
+    isLiked.value = viewModel.isLikedHero(hero)
+
     Icon(
         modifier = modifier
             .size(INFO_ICON_SIZE_LARGE)

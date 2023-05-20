@@ -22,7 +22,7 @@ object Constants {
     const val PREFERENCES_KEY_EMAIL = "user_email"
     const val PREFERENCES_KEY_PHONE = "user_phone"
     const val PREFERENCES_KEY_BIO = "user_bio"
-    const val PREFERENCES_KEY_AVATAR = "user_bio"
+    const val PREFERENCES_KEY_AVATAR = "user_avatar"
 
     const val ITEMS_PER_PAGE = 3
 

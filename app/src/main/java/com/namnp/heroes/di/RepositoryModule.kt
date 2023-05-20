@@ -5,6 +5,8 @@ import com.namnp.heroes.data.repository.DataStoreOperationsImpl
 import com.namnp.heroes.data.repository.Repository
 import com.namnp.heroes.domain.repository.DataStoreOperations
 import com.namnp.heroes.domain.use_cases.GetBannersUseCase
+import com.namnp.heroes.domain.use_cases.GetListFavoriteHeroesUseCase
+import com.namnp.heroes.domain.use_cases.LikeHeroUseCase
 import com.namnp.heroes.domain.use_cases.UseCases
 import com.namnp.heroes.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
 import com.namnp.heroes.domain.use_cases.get_all_heroes.GetMarvelHeroesUseCase
@@ -48,6 +50,8 @@ object RepositoryModule {
             saveUserInfoUseCase = SaveUserInfoUseCase(repository),
             readUserInfoUseCase = ReadUserInfoUseCase(repository),
             clearUserInfoUseCase = ClearUserInfoUseCase(repository),
+            likeHeroUseCase = LikeHeroUseCase(repository),
+            getListFavoriteHeroesUseCase = GetListFavoriteHeroesUseCase(repository),
         )
     }
 

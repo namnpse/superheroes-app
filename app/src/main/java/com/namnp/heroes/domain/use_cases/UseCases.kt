@@ -21,4 +21,6 @@ data class UseCases(
     val saveUserInfoUseCase: SaveUserInfoUseCase,
     val readUserInfoUseCase: ReadUserInfoUseCase,
     val clearUserInfoUseCase: ClearUserInfoUseCase,
+    val likeHeroUseCase: LikeHeroUseCase,
+    val getListFavoriteHeroesUseCase: GetListFavoriteHeroesUseCase,
 )

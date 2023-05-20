@@ -64,25 +64,27 @@ fun UpdateProfileScreen(
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
-
     val textFieldColors: TextFieldColors = if (MaterialTheme.colors.isLight)
         TextFieldDefaults.outlinedTextFieldColors()
     else DarkThemTextFieldColors()
 
-    val phoneState = remember { mutableStateOf(TextFieldValue("0123456789")) }
-    val nicknameState = remember { mutableStateOf(TextFieldValue("Nam Jr")) }
-    val bioState = remember { mutableStateOf(TextFieldValue("Mobile Developer")) }
+    val phoneState = remember { mutableStateOf(TextFieldValue("")) }
+    val nicknameState = remember { mutableStateOf(TextFieldValue("")) }
+    val bioState = remember { mutableStateOf(TextFieldValue("")) }
+
+    val user by viewModel.user.collectAsState()
+    LaunchedEffect(key1 = true) {
+        phoneState.value = TextFieldValue(user?.phone ?: "")
+        nicknameState.value = TextFieldValue(user?.nickName ?: "")
+        bioState.value = TextFieldValue(user?.bio ?: "")
+    }
 
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-
-    println("selectedImageUri ${selectedImageUri?.path}")
-
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-//            selectedImageUri = uri
             viewModel.uploadAvatarImage(uri)
         }
     )
@@ -114,14 +116,12 @@ fun UpdateProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val userAvatar = viewModel.avatarUrl.collectAsState().value
-                println("userAvatar $userAvatar")
                 val modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .error(R.drawable.avatar_placeholder)
-//                    .data("${Constants.BASE_URL}/images/urashiki.jpg")
                         .data(userAvatar)
                         .build(),
                     contentDescription = null,
@@ -140,7 +140,6 @@ fun UpdateProfileScreen(
                                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                             )
                         }
-//                    .background(Purple500),
                 )
                 Spacer(modifier = Modifier.padding(6.dp))
                 OutlinedTextField(
@@ -216,14 +215,12 @@ fun UpdateProfileScreen(
                 }
                 if (updateUserInfoResponse is Response.Success && updateUserInfoResponse.data == true) {
                     LaunchedEffect(updateUserInfoResponse.data) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Update successfully",
-                        )
-//                        delay(1.seconds)
                         navController.previousBackStackEntry
                             ?.savedStateHandle
                             ?.set("update", true)
-                        // Do something with the result.
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Update successfully",
+                        )
                         navController.popBackStack()
                     }
                 }
@@ -231,7 +228,7 @@ fun UpdateProfileScreen(
                 else Button(
                     onClick = {
                         keyboard?.hide()
-                        viewModel.saveUserToFirestore(
+                        viewModel.updateUserInfo(
                             nicknameState.value.text,
                             phoneState.value.text,
                             bioState.value.text

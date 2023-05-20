@@ -1,5 +1,6 @@
 package com.namnp.heroes.domain.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.namnp.heroes.util.Constants.HERO_DATABASE_TABLE
@@ -25,4 +26,6 @@ data class Hero(
     val issues: Int? = null,
     val aliases: List<String>? = null,
     val collection: String = "",
+    @ColumnInfo("is_liked")
+    val isLiked: Boolean = false,
 )
