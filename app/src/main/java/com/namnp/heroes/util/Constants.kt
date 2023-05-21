@@ -23,6 +23,9 @@ object Constants {
     const val PREFERENCES_KEY_PHONE = "user_phone"
     const val PREFERENCES_KEY_BIO = "user_bio"
     const val PREFERENCES_KEY_AVATAR = "user_avatar"
+    const val PREFERENCES_KEY_ALREADY_PULL_REMOTE_USER_INFO = "already_pull_remote_user_info"
+    const val PREFERENCES_KEY_ALREADY_PULL_REMOTE_FAVORITE_HEROES = "already_pull_remote_favorite_heroes"
+    const val PREFERENCES_KEY_DARK_THEME = "is_dark_theme"
 
     const val ITEMS_PER_PAGE = 3
 

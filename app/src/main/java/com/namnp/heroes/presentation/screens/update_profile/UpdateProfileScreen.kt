@@ -73,15 +73,12 @@ fun UpdateProfileScreen(
     val bioState = remember { mutableStateOf(TextFieldValue("")) }
 
     val user by viewModel.user.collectAsState()
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = user?.id) {
         phoneState.value = TextFieldValue(user?.phone ?: "")
         nicknameState.value = TextFieldValue(user?.nickName ?: "")
         bioState.value = TextFieldValue(user?.bio ?: "")
     }
 
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->

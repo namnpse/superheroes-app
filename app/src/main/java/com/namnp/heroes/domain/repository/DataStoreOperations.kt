@@ -13,5 +13,9 @@ interface DataStoreOperations {
 
     fun readUserInfo(): Flow<User>
 
+    fun getDataStoreValueByKey(key: String): Flow<String>
+
+    suspend fun setDataStoreValueByKey(key: String?, value: String?)
+
     suspend fun clearUserInfo()
 }

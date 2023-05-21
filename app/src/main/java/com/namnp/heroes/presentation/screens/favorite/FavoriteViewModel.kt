@@ -10,8 +10,10 @@ import com.namnp.heroes.domain.model.Response
 import com.namnp.heroes.domain.repository.AuthRepository
 import com.namnp.heroes.domain.repository.ListHeroesResponse
 import com.namnp.heroes.domain.use_cases.UseCases
+import com.namnp.heroes.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,11 +27,13 @@ class FavoriteViewModel @Inject constructor(
     // 2 way to init Firestore
     private val firestore = FirebaseFirestore.getInstance()
     private val firestoreDb = Firebase.firestore
+    private var cachedFavoriteHeroes: List<Hero?> = emptyList()
     private val _favoriteHeroes: MutableStateFlow<ListHeroesResponse> = MutableStateFlow(Response.Success(data = null))
     val favoriteHeroes: StateFlow<ListHeroesResponse> = _favoriteHeroes
 
     init {
         getFavoriteHeroes()
+        getRemoteFavoriteHeroes()
     }
 
     private fun getFavoriteHeroes() { // LOCAL
@@ -39,6 +43,7 @@ class FavoriteViewModel @Inject constructor(
             useCases.getListFavoriteHeroesUseCase()?.observeForever {
                 it?.let {
                     _favoriteHeroes.value = Response.Success(data = it)
+                    cachedFavoriteHeroes = it
                     println("getListFavoriteHeroesUseCase ${it.size}")
                 }
             }
@@ -63,42 +68,68 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    //    private fun getRemoteFavoriteHeroes() { // REMOTE
-//        if(currentUser == null) return
-//        viewModelScope.launch(Dispatchers.IO) {
-//            _favoriteHeroes.value = Response.Loading
-////            val res = listenFavoriteHeroesFlow().stateIn(viewModelScope).value
-//            listenFavoriteHeroesFlow().collect { res ->
-//                println("COLLECT")
-//                _favoriteHeroes.value = res
-//            }
-//        }
-//    }
+    fun clearListFavoriteHeroes() {
+        cachedFavoriteHeroes.forEach { hero ->
+            likeHero(hero, false)
+        }
+    }
 
-//    private fun listenFavoriteHeroesFlow() = callbackFlow<ListHeroesResponse> {
-//
-//        val collection = firestore
-//            .collection("favorite")
-//            .document(currentUser?.uid ?: "")
-//            .collection("likes")
-//        val snapshotListener = collection.addSnapshotListener { value, error ->
-//            val response = if (error == null) {
-//                val size = value?.documents?.size
-//                println("RES: $size")
-//                val heroes = value?.documents?.map { doc -> doc.toObject(Hero::class.java) } ?: emptyList<Hero>()
-//                Response.Success(data = heroes)
-//            } else {
-//                println("ERROR: $error")
-//                Response.Failure(error = error)
-//            }
-//            trySend(response)
-//        }
-//
-//        awaitClose {
-//            println("snapshotListener remove")
-//            snapshotListener.remove()
-//        }
-//    }
+    private fun getRemoteFavoriteHeroes() { // REMOTE
+        if(currentUser == null) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val isAlreadyPullRemoteFavoriteHeroes = useCases.getDataStoreValueUseCase(
+                    key = Constants.PREFERENCES_KEY_ALREADY_PULL_REMOTE_FAVORITE_HEROES
+                ).stateIn(viewModelScope).value
+            if(isAlreadyPullRemoteFavoriteHeroes == "true")   return@launch
+
+//            val res = listenFavoriteHeroesFlow().stateIn(viewModelScope).value
+            listenFavoriteHeroesFlow().collect { res ->
+                println("COLLECT")
+                _favoriteHeroes.value = res
+                if(res is Response.Success) {
+                    saveRemoteFavoriteHeroesToLocal(res.data)
+                }
+            }
+        }
+    }
+
+    private fun saveRemoteFavoriteHeroesToLocal(heroes: List<Hero?>?) {
+        if(heroes.isNullOrEmpty())  return
+        viewModelScope.launch(Dispatchers.IO) {
+            useCases.setDataStoreValueUseCase(
+                key = Constants.PREFERENCES_KEY_ALREADY_PULL_REMOTE_FAVORITE_HEROES,
+                value = "true"
+            )
+            heroes.forEach { hero ->
+                likeHero(hero = hero, isLike = true)
+            }
+        }
+    }
+
+    private fun listenFavoriteHeroesFlow() = callbackFlow<ListHeroesResponse> {
+
+        val collection = firestore
+            .collection("favorite")
+            .document(currentUser?.uid ?: "")
+            .collection("likes")
+        val snapshotListener = collection.addSnapshotListener { value, error ->
+            val response = if (error == null) {
+                val size = value?.documents?.size
+                println("RES: $size")
+                val heroes = value?.documents?.map { doc -> doc.toObject(Hero::class.java) } ?: emptyList<Hero>()
+                Response.Success(data = heroes)
+            } else {
+                println("ERROR: $error")
+                Response.Failure(error = error)
+            }
+            trySend(response)
+        }
+
+        awaitClose {
+            println("snapshotListener remove")
+            snapshotListener.remove()
+        }
+    }
 
 //    fun likeHero(hero: Hero?, isLike: Boolean) {
 //        if(hero == null)    return

@@ -1,4 +1,4 @@
-package com.namnp.heroes.domain.use_cases
+package com.namnp.heroes.domain.use_cases.favorite
 
 import com.namnp.heroes.data.repository.Repository
 

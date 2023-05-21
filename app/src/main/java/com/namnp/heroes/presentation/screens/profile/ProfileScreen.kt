@@ -1,5 +1,7 @@
 package com.namnp.heroes.presentation.screens.profile
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,6 +24,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -54,6 +57,7 @@ fun ProfileScreen(
             }
         }
     }
+    val context = LocalContext.current
     var user: User? = null
     if(getUserResponse is Response.Success){
         getUserResponse.data?.let {
@@ -76,19 +80,21 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(MaterialTheme.colors.welcomeScreenBackgroundColor)
     ) {
-        Row {
-            Spacer(Modifier.weight(1f))
-            Icon(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        navController.navigate(Screen.UpdateProfileScreen.route)
-                    },
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Edit profile",
-                tint = Purple500,
-            )
-        }
+
+        if(profileViewModel.currentUser != null)
+            Row {
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clickable {
+                            navController.navigate(Screen.UpdateProfileScreen.route)
+                        },
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit profile",
+                    tint = Purple500,
+                )
+            }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,7 +103,7 @@ fun ProfileScreen(
             horizontalArrangement = Arrangement.Start,
         ) {
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(context)
                     .error(R.drawable.avatar_placeholder)
                     .data(user?.photoUrl)
                     .build(),
@@ -153,7 +159,7 @@ fun ProfileScreen(
                 Text(
                     modifier = Modifier.alpha(ContentAlpha.medium),
                     color = displayColor,
-                    text = user?.phone ?: "(+84) 123456789",
+                    text = user?.phone ?: "",
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Bold,
                     fontFamily = fonts,
@@ -216,6 +222,7 @@ fun ProfileScreen(
                 ),
                 onCheckedChange = { checked ->
                     themeState.value = ThemeState(if (checked) Theme.Dark else Theme.Light)
+                    profileViewModel.changeTheme(theme = themeState.value.theme)
                 }
             )
         }
@@ -251,6 +258,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .padding(start = MEDIUM_PADDING)
                     .clickable {
+                        clearListFavoriteHero(context)
                         profileViewModel.logOut()
                         navController.navigate(Screen.LoginScreen.route)
                     },
@@ -297,4 +305,12 @@ fun ProfileScreen(
                 )
             }
     }
+}
+
+private fun clearListFavoriteHero (context: Context) {
+    val intent = Intent("clear-list-favorite-heroes-local-broadcast")
+    // on below line we are passing data to our broad cast receiver with key and value pair.
+    intent.putExtra("clear", "true")
+    // on below line we are sending our broad cast with intent using broad cast manager.
+    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
 }

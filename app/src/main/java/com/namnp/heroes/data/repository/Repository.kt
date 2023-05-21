@@ -68,6 +68,14 @@ class Repository @Inject constructor(
         return dataStore.readUserInfo()
     }
 
+    fun getDataStoreValueByKey(key: String): Flow<String> {
+        return dataStore.getDataStoreValueByKey(key)
+    }
+
+    suspend fun setDataStoreValueByKey(key: String?, value: String?) {
+        dataStore.setDataStoreValueByKey(key, value)
+    }
+
     suspend fun clearUserInfo() = dataStore.clearUserInfo()
 
 }

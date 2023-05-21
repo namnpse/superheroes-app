@@ -60,17 +60,17 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
 
     override suspend fun saveUserInfo(user: User): Unit = withContext(Dispatchers.IO) {
         dataStore.edit { preferences ->
-            if(!user.id.isNullOrEmpty())
+            if (!user.id.isNullOrEmpty())
                 preferences[PreferencesKey.idKey] = user.id
-            if(!user.nickName.isNullOrEmpty())
+            if (!user.nickName.isNullOrEmpty())
                 preferences[PreferencesKey.usernameKey] = user.nickName
-            if(!user.email.isNullOrEmpty())
+            if (!user.email.isNullOrEmpty())
                 preferences[PreferencesKey.emailKey] = user.email
-            if(!user.phone.isNullOrEmpty())
+            if (!user.phone.isNullOrEmpty())
                 preferences[PreferencesKey.phoneKey] = user.phone
-            if(!user.bio.isNullOrEmpty())
+            if (!user.bio.isNullOrEmpty())
                 preferences[PreferencesKey.bioKey] = user.bio
-            if(!user.photoUrl.isNullOrEmpty())
+            if (!user.photoUrl.isNullOrEmpty())
                 preferences[PreferencesKey.avatarKey] = user.photoUrl
         }
     }
@@ -105,6 +105,29 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
     override suspend fun clearUserInfo(): Unit = withContext(Dispatchers.IO) {
         dataStore.edit {
             it.clear()
+            it[PreferencesKey.onBoardingKey] = true
+        }
+    }
+
+    override fun getDataStoreValueByKey(key: String): Flow<String> {
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { preferences ->
+                preferences[stringPreferencesKey(key)] ?: ""
+            }
+    }
+
+    override suspend fun setDataStoreValueByKey(key: String?, value: String?)
+            : Unit = withContext(Dispatchers.IO) {
+        dataStore.edit { preferences ->
+            if (!key.isNullOrEmpty() && !value.isNullOrEmpty())
+                preferences[stringPreferencesKey(key)] = value
         }
     }
 }

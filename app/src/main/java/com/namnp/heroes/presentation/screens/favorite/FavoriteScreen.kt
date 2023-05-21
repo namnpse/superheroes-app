@@ -1,5 +1,9 @@
 package com.namnp.heroes.presentation.screens.favorite
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -24,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -47,6 +52,24 @@ fun FavoriteScreen(
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor
     )
+    val context = LocalContext.current
+
+    // on below line we are creating a new broad cast manager.
+    val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        // we will receive data updates in onReceive method.
+        override fun onReceive(context: Context?, intent: Intent) {
+            // Get extra data included in the Intent
+            val isClear = intent.getStringExtra("clear")
+            // on below line we are updating the data in our text view.
+            if(isClear == "true") {
+                viewModel.clearListFavoriteHeroes()
+            }
+        }
+    }
+    // on below line we are registering our local broadcast manager.
+    LocalBroadcastManager.getInstance(context).registerReceiver(
+        broadcastReceiver, IntentFilter("clear-list-favorite-heroes-local-broadcast")
+    )
 
     val favoriteHeroesResponse = viewModel.favoriteHeroes.collectAsState().value
     if (favoriteHeroesResponse is Response.Failure) {
@@ -61,7 +84,6 @@ fun FavoriteScreen(
         favoriteHeroesResponse.data?.let {
             favoriteHeroes = it
         }
-        println("RES::: ${favoriteHeroes.size}")
     }
     Column(
         modifier = Modifier

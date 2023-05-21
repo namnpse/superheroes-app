@@ -1,4 +1,4 @@
-package com.namnp.heroes.domain.use_cases
+package com.namnp.heroes.domain.use_cases.get_all_heroes
 
 import com.namnp.heroes.data.repository.Repository
 import com.namnp.heroes.domain.model.Hero

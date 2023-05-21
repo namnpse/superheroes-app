@@ -30,7 +30,6 @@ class UpdateProfileViewModel @Inject constructor(
     val storage = Firebase.storage
     val db = Firebase.firestore
     private val currentUser = repo.currentUser
-
     var updateUserInfoResponse by mutableStateOf<SaveUserResponse>(Response.Success(data = false))
         private set
 
@@ -44,13 +43,11 @@ class UpdateProfileViewModel @Inject constructor(
         getUser()
     }
 
-    fun getUser() {
-        println("getUser")
+    private fun getUser() {
         if(currentUser == null) return
         viewModelScope.launch(Dispatchers.IO) {
             val userLocal = useCases.readUserInfoUseCase().stateIn(viewModelScope).value
             _user.value = userLocal
-            println("userLocal avatar ${userLocal.photoUrl} ${userLocal.nickName} ${userLocal.phone} ${userLocal.bio}")
             _avatarUrl.value = userLocal.photoUrl
         }
     }
@@ -72,9 +69,9 @@ class UpdateProfileViewModel @Inject constructor(
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result
-                println("downloadUri ${downloadUri.toString()}")
                 updateUserInfo(user = User(photoUrl = downloadUri.toString()))
                 _avatarUrl.value = downloadUri.toString()
+                saveUserAvatarToFirestore(downloadUri.toString())
             } else {
                 // Handle failures
             }
@@ -102,23 +99,29 @@ class UpdateProfileViewModel @Inject constructor(
             "id" to (currentUser?.uid ?: ""),
             "email" to (currentUser?.email ?: ""),
             "nickName" to (user.nickName ?: ""),
-            "phoneNumber" to (user.phone ?: ""),
-//            "imageUrl" to (user.photoUrl ?: ""),
+            "phone" to (user.phone ?: ""),
             "bio" to (user.bio ?: ""),
         )
-        println("currentUser?.uid ${currentUser?.uid ?: ""}")
-        db.collection("users").document(currentUser?.uid ?: "")
+        db.collection("users")
+            .document(currentUser?.uid ?: "")
             .update(userMap)
             .addOnSuccessListener {
-                println("DocumentSnapshot successfully written!")
                 // save local
                 updateUserInfo(user)
                 updateUserInfoResponse = Response.Success(data = true)
             }
             .addOnFailureListener { e ->
-                println("Error writing document ${e.message}")
                 updateUserInfoResponse = Response.Failure(error = e)
             }
+    }
+
+    private fun saveUserAvatarToFirestore(photoUrl: String) {
+        val userMap: Map<String, String> = hashMapOf(
+            "photoUrl" to photoUrl,
+        )
+        db.collection("users")
+            .document(currentUser?.uid ?: "")
+            .update(userMap)
     }
 
     private fun updateUserInfo(user: User) {

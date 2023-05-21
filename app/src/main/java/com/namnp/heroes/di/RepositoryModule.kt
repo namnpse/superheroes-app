@@ -4,10 +4,12 @@ import android.content.Context
 import com.namnp.heroes.data.repository.DataStoreOperationsImpl
 import com.namnp.heroes.data.repository.Repository
 import com.namnp.heroes.domain.repository.DataStoreOperations
-import com.namnp.heroes.domain.use_cases.GetBannersUseCase
-import com.namnp.heroes.domain.use_cases.GetListFavoriteHeroesUseCase
-import com.namnp.heroes.domain.use_cases.LikeHeroUseCase
+import com.namnp.heroes.domain.use_cases.get_all_heroes.GetBannersUseCase
+import com.namnp.heroes.domain.use_cases.favorite.GetListFavoriteHeroesUseCase
+import com.namnp.heroes.domain.use_cases.favorite.LikeHeroUseCase
 import com.namnp.heroes.domain.use_cases.UseCases
+import com.namnp.heroes.domain.use_cases.common.GetDataStoreValueUseCase
+import com.namnp.heroes.domain.use_cases.common.SetDataStoreValueUseCase
 import com.namnp.heroes.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
 import com.namnp.heroes.domain.use_cases.get_all_heroes.GetMarvelHeroesUseCase
 import com.namnp.heroes.domain.use_cases.get_detail_hero.GetDetailsHeroUseCase
@@ -52,6 +54,8 @@ object RepositoryModule {
             clearUserInfoUseCase = ClearUserInfoUseCase(repository),
             likeHeroUseCase = LikeHeroUseCase(repository),
             getListFavoriteHeroesUseCase = GetListFavoriteHeroesUseCase(repository),
+            setDataStoreValueUseCase = SetDataStoreValueUseCase(repository),
+            getDataStoreValueUseCase = GetDataStoreValueUseCase(repository),
         )
     }
 
