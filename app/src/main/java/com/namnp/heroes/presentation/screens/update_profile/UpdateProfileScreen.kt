@@ -40,15 +40,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
-//@Preview(showBackground = true)
-//@Composable
-//fun UpdateProfileScreenPreview() {
-//    val navController = rememberNavController()
-//    UpdateProfileScreen(
-//        navController = navController,
-//    )
-//}
-
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

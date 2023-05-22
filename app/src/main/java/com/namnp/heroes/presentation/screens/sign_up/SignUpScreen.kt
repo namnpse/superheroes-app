@@ -35,7 +35,6 @@ import com.namnp.heroes.util.DarkThemTextFieldColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-//@Preview(showBackground = true)
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -236,11 +235,6 @@ fun SignUpScreen(
                 val saveUserResponse = signUpViewModel.saveUserResponse
                 if (signUpResponse is Response.Failure) {
                     signUpResponse.apply {
-//                        showSnackBar(
-//                            scaffoldState = scaffoldState,
-//                            coroutineScope = coroutineScope,
-//                            message = error.message
-//                        )
                         LaunchedEffect(error.message) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = error.message ?: "",
@@ -324,23 +318,4 @@ fun SignUpScreen(
             }
         },
     )
-}
-
-private fun showSnackBar(
-    scaffoldState: ScaffoldState,
-    coroutineScope: CoroutineScope,
-    message: String?,
-    label: String? = "",
-) {
-//    LaunchedEffect(key1 = true) {
-//        scaffoldState.snackbarHostState.showSnackbar(
-//            message = "Sign up successfully",
-//        )
-//    }
-//    coroutineScope.launch {
-//        scaffoldState.snackbarHostState.showSnackbar(
-//            message = message ?: "",
-//            actionLabel = label ?: "OK"
-//        )
-//    }
 }

@@ -119,7 +119,6 @@ fun FavoriteHeroItem(
                         .padding(start = 8.dp, end = 8.dp, top = 16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
     ) {
         Card(
             shape = RoundedCornerShape(10.dp),
@@ -127,12 +126,9 @@ fun FavoriteHeroItem(
         )
         {
             Column(
-                modifier = Modifier
-//                        .padding(8.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.End
             ) {
-//                    Spacer(modifier = Modifier.height(5.dp))
                 Box {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
