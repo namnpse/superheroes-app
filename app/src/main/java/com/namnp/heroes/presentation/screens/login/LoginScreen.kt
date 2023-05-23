@@ -13,7 +13,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,7 +31,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -165,8 +170,9 @@ fun LoginCard(
     showErrorMessage: (errorMessage: String?) -> Unit,
     onLoginSuccess: () -> Unit,
 ) {
-    val emailState = remember { mutableStateOf(TextFieldValue("nam123@gmail.com")) }
-    val passState = remember { mutableStateOf(TextFieldValue("123456")) }
+    val emailState = remember { mutableStateOf(TextFieldValue("")) }
+    val passState = remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val textFieldColors: TextFieldColors = if (MaterialTheme.colors.isLight)
         TextFieldDefaults.outlinedTextFieldColors()
     else DarkThemTextFieldColors()
@@ -192,6 +198,7 @@ fun LoginCard(
             Spacer(modifier = Modifier.padding(16.dp))
             OutlinedTextField(
                 value = emailState.value,
+                maxLines = 1,
                 colors = textFieldColors,
                 onValueChange = {
                     emailState.value = it
@@ -211,6 +218,7 @@ fun LoginCard(
             Spacer(modifier = Modifier.padding(6.dp))
             OutlinedTextField(
                 value = passState.value,
+                maxLines = 1,
                 colors = textFieldColors,
                 onValueChange = {
                     passState.value = it
@@ -225,7 +233,19 @@ fun LoginCard(
                     )
                 },
                 modifier = modifier,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = image, description)
+                    }
+                }
             )
             Spacer(modifier = Modifier.padding(vertical = 32.dp))
             val signInResponse = viewModel.signInResponse
