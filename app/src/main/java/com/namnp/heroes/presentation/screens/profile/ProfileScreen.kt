@@ -65,11 +65,11 @@ fun ProfileScreen(
         }
     }
 
+    // recevive event to update user info when updating changes in Edit Profile Screen
     LaunchedEffect(key1 = true) {
         navController.currentBackStackEntry
             ?.savedStateHandle
             ?.getLiveData<Boolean>("update")?.observeForever {
-                println("savedStateHandle $it")
                 if(it) {
                     profileViewModel.getUser()
                 }
@@ -307,6 +307,7 @@ fun ProfileScreen(
     }
 }
 
+// send local broadcast to clear local favorite heroes in Room (in Favorite Screen)
 private fun clearListFavoriteHero (context: Context) {
     val intent = Intent("clear-list-favorite-heroes-local-broadcast")
     // on below line we are passing data to our broad cast receiver with key and value pair.

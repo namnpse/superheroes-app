@@ -49,11 +49,9 @@ class SignUpViewModel @Inject constructor(
         db.collection("users").document(user.id ?: "")
             .set(userMap)
             .addOnSuccessListener {
-                println("DocumentSnapshot successfully written!")
                 saveUserResponse = Response.Success(data = true)
             }
             .addOnFailureListener { e ->
-                println("Error writing document ${e.message}")
                 saveUserResponse = Response.Failure(error = e)
             }
     }

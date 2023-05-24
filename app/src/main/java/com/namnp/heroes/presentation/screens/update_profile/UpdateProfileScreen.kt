@@ -50,7 +50,6 @@ fun UpdateProfileScreen(
 
     val keyboard = LocalSoftwareKeyboardController.current
     val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colors.statusBarColor

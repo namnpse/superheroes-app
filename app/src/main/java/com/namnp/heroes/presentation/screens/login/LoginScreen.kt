@@ -136,7 +136,6 @@ fun BackgroundCard(navController: NavHostController) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_fb),
                     contentDescription = stringResource(R.string.app_logo),
-//                    colorFilter = ColorFilter.tint(Color.White)
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                 Image(

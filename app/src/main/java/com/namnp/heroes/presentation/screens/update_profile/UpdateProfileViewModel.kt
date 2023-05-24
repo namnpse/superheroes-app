@@ -61,9 +61,6 @@ class UpdateProfileViewModel @Inject constructor(
         // Register observers to listen for when the download is done or if it fails
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
-//                task.exception?.let {
-//                    throw it
-//                }
             }
             avatarImageRef.downloadUrl
         }.addOnCompleteListener { task ->

@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val useCases: UseCases,
-    private val repo: AuthRepository
+    repo: AuthRepository
 ): ViewModel() {
 
     private val _onBoardingCompleted = MutableStateFlow(false)
