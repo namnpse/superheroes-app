@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.presentation.components.LikeAnimatedButton
 import com.namnp.heroes.presentation.image_slider.AutoSlidingCarousel
@@ -64,9 +65,7 @@ fun HomeScreen(
                     .padding(16.dp)
             ) {
                 Card(
-                    modifier = Modifier
-//                        .padding(16.dp)
-                        .height(200.dp),
+                    modifier = Modifier.height(200.dp),
                     shape = RoundedCornerShape(16.dp),
                 ) {
                     AutoSlidingCarousel(
@@ -84,7 +83,7 @@ fun HomeScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                HeroListView(LocalContext.current, homeViewModel, navController)
+                HeroListView(homeViewModel, navController)
             }
         }
     )
@@ -92,15 +91,13 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: NavHostController) {
+fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController) {
 
     val borutoHeroes =
         homeViewModel.getAllHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
     val marvelHeroes =
         homeViewModel.getMarvelHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
 
-    // in the below line, we are creating a
-    // lazy row for displaying a horizontal list view.
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -125,69 +122,20 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontFamily = fonts,
-//            fontWeight = FontWeight.W400,
-//            style = MaterialTheme.typography.h6
         )
     }
     Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(
-//        contentPadding = PaddingValues(16.dp)
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-        ) {
-        itemsIndexed(borutoHeroes) { index, hero ->
-            Column(
-                modifier = Modifier
-//                        .padding(8.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Card(
-                    shape = RoundedCornerShape(10.dp),
-                    onClick = {
-                        navController.navigate(Screen.HeroDetailsScreen.passHeroId(heroId = hero?.id ?: 0))
-                    },
+    ListHeroes(
+        heroes = borutoHeroes,
+        onClick = { hero ->
+            navController.navigate(
+                Screen.HeroDetailsScreen.passHeroId(
+                    heroId = hero?.id ?: 0
                 )
-                {
-                    Column(
-                        modifier = Modifier
-//                        .padding(8.dp)
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box {
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data("${Constants.BASE_URL}${hero?.image}")
-                                    .build(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .height(200.dp)
-                                    .width(120.dp)
-//                            .aspectRatio(0.5f)
-                            )
-                            LikeAnimatedButton(
-                                modifier = Modifier.align(Alignment.TopEnd)
-                                    .fillMaxWidth()
-                                    .size(40.dp)
-                                    .padding(8.dp),
-                                hero = hero,
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = borutoHeroes[index]?.name ?: "",
-                    modifier = Modifier
-                        .width(120.dp)
-                        .padding(4.dp),
-                    color = MaterialTheme.colors.contrastColor, textAlign = TextAlign.Center, fontFamily = fonts,
-                )
-            }
-        }
-    }
+            )
+        },
+        navController = navController,
+    )
     Spacer(modifier = Modifier.height(24.dp))
     Row(
         modifier = Modifier
@@ -196,9 +144,7 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
     ) {
         Text(
             text = "Marvel heroes",
-            modifier = Modifier
-//            .width(120.dp)
-                .padding(4.dp),
+            modifier = Modifier.padding(4.dp),
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
@@ -216,72 +162,19 @@ fun HeroListView(context: Context, homeViewModel: HomeViewModel, navController: 
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
             fontFamily = fonts,
-//            fontWeight = FontWeight.W400,
-//            style = MaterialTheme.typography.h6
         )
     }
+    ListHeroes(
+        heroes = marvelHeroes,
+        onClick = { hero ->
+            navController.navigate(
+                Screen.HeroDetailsScreen.passHeroId(
+                    heroId = hero?.id ?: 0
+                )
+            )
+        },
+        navController = navController,
+    )
     Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(
-//        contentPadding = PaddingValues(16.dp)
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
 
-        ) {
-        itemsIndexed(marvelHeroes) { index, hero ->
-            Column(
-                modifier = Modifier
-//                        .padding(8.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Card(
-                    shape = RoundedCornerShape(10.dp),
-                    onClick = {
-                        navController.navigate(
-                            Screen.HeroDetailsScreen.passHeroId(
-                                heroId = hero?.id ?: 0
-                            )
-                        )
-                    },
-                )
-                {
-                    Column(
-                        modifier = Modifier
-//                        .padding(8.dp)
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-//                    Spacer(modifier = Modifier.height(5.dp))
-                        Box {
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data("${Constants.BASE_URL}${marvelHeroes[index]?.image}")
-                                    .build(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .height(200.dp)
-                                    .width(120.dp)
-//                            .aspectRatio(0.5f)
-                            )
-                            LikeAnimatedButton(
-                                modifier = Modifier.align(Alignment.TopEnd)
-                                    .fillMaxWidth()
-                                    .size(40.dp)
-                                    .padding(8.dp),
-                                hero = hero,
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = marvelHeroes[index]?.name ?: "",
-                    modifier = Modifier
-                        .width(120.dp)
-                        .padding(4.dp),
-                    color = MaterialTheme.colors.contrastColor, textAlign = TextAlign.Center, fontFamily = fonts,
-                )
-            }
-        }
-    }
 }

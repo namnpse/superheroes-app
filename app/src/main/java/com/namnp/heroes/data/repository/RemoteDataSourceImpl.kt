@@ -47,7 +47,10 @@ class RemoteDataSourceImpl(
 
     override fun getHeroById(id: Int): Flow<Hero?> {
         return flow {
-            emit(heroApi.getHeroById(id).data?.toHero())
+            try {
+                emit(heroApi.getHeroById(id).data?.toHero())
+            }catch (e: Exception) { }
+
         }
     }
 
