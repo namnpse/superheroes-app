@@ -49,7 +49,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getUser() {
-        println("getUser")
         if(currentUser == null) return
         viewModelScope.launch(Dispatchers.IO) {
             _user.value = Response.Loading
@@ -59,18 +58,15 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserFromFirestore() = callbackFlow<UserProfileResponse> {
-        println("getUserFromFirestore")
         val collection = firestore
             .collection("users")
             .document(currentUser?.uid ?: "")
         val snapshotListener = collection.addSnapshotListener { value, error ->
             val response = if (error == null) {
                 val user = value?.toObject(User::class.java)
-                println("RES: ${value.toString()}")
                 saveRemoteUserToLocal(user)
                 Response.Success(data = user)
             } else {
-                println("ERROR: $error")
                 Response.Failure(error = error)
             }
             trySend(response)

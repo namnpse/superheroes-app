@@ -27,4 +27,12 @@
     <string name="dont_have_an_account">Don"'"t have an account? </string>
     <string name="already_have_an_account">Already have an account? </string>
     <string name="update">Update </string>
+    <string name="boruto_heroes">Boruto heroes</string>
+    <string name="see_more">See more</string>
+    <string name="marvel_heroes">Marvel heroes</string>
+    <string name="sign_up_successfully">Sign up successfully</string>
+    <string name="your_favorites">Your favorites</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log out</string>
 </resources>

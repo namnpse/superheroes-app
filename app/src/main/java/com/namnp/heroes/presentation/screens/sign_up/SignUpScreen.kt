@@ -32,8 +32,6 @@ import com.namnp.heroes.domain.model.Response
 import com.namnp.heroes.domain.model.User
 import com.namnp.heroes.ui.theme.*
 import com.namnp.heroes.util.DarkThemTextFieldColors
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -276,9 +274,10 @@ fun SignUpScreen(
                     signUpViewModel.saveUserToFirestore(userInfo)
                 }
                 if (saveUserResponse is Response.Success && saveUserResponse.data == true) {
+                    val message = stringResource(R.string.sign_up_successfully)
                     LaunchedEffect(saveUserResponse.data) {
                         scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Sign up successfully",
+                            message = message,
                         )
                         navController.popBackStack()
                     }

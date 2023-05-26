@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.namnp.heroes.R
 import com.namnp.heroes.domain.model.Hero
 import com.namnp.heroes.navigation.Screen
 import com.namnp.heroes.presentation.components.LikeAnimatedButton
@@ -104,7 +106,7 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
-            text = "Boruto heroes",
+            text = stringResource(R.string.boruto_heroes),
             modifier = Modifier.padding(4.dp),
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
@@ -113,7 +115,7 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
             fontFamily = fonts,
         )
         Text(
-            text = "See more",
+            text = stringResource(R.string.see_more),
             modifier = Modifier
                 .padding(4.dp)
                 .clickable {
@@ -143,7 +145,7 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
-            text = "Marvel heroes",
+            text = stringResource(R.string.marvel_heroes),
             modifier = Modifier.padding(4.dp),
             color = MaterialTheme.colors.contrastColor,
             textAlign = TextAlign.Center,
@@ -152,7 +154,7 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
             fontFamily = fonts,
         )
         Text(
-            text = "See more",
+            text = stringResource(R.string.see_more),
             modifier = Modifier
 //            .width(120.dp)
                 .padding(4.dp)

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_logo">App Logo</string>
+    <string name="app_name">HeroesApp</string>
+    <string name="app_logo">App logo</string>
     <string name="on_boarding_image">On Boarding Image</string>
     <string name="search_icon">Search Icon</string>
     <string name="star_path">M14,21.288,21.416,26l-1.968-8.88L26,11.145l-8.628-.771L14,2l-3.372,8.375L2,11.145,8.552,17.12,6.584,26Z</string>
@@ -15,4 +15,24 @@
     <string name="family">Family</string>
     <string name="abilities">Abilities</string>
     <string name="nature_types">Nature Types</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="nickname">Nickname</string>
+    <string name="bio">Bio</string>
+    <string name="create_an_account">Create An Account</string>
+    <string name="dont_have_an_account">Don"'"t have an account? </string>
+    <string name="already_have_an_account">Already have an account? </string>
+    <string name="update">Update </string>
+    <string name="boruto_heroes">Boruto heroes</string>
+    <string name="see_more">See more</string>
+    <string name="marvel_heroes">Marvel heroes</string>
+    <string name="sign_up_successfully">Sign up successfully</string>
+    <string name="your_favorites">Your favorites</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log out</string>
 </resources>

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -185,7 +186,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Your favorites",
+                text = stringResource(R.string.your_favorites),
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
@@ -207,7 +208,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Dark Theme",
+                text = stringResource(id = R.string.dark_theme),
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
@@ -241,7 +242,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Settings",
+                text = stringResource(id = R.string.settings),
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 fontWeight = FontWeight.Bold,
                 fontFamily = fonts,
@@ -273,7 +274,7 @@ fun ProfileScreen(
                 )
                 Spacer(modifier = Modifier.width(MEDIUM_PADDING))
                 Text(
-                    text = "Log out",
+                    text = stringResource(id = R.string.log_out),
                     modifier = Modifier.padding(vertical = MEDIUM_PADDING),
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontWeight = FontWeight.Bold,
@@ -299,7 +300,7 @@ fun ProfileScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = LARGE_PADDING, vertical = 4.dp),
-                    text = "Log In",
+                    text = stringResource(id = R.string.log_in),
                     fontFamily = fonts,
                     fontSize = MaterialTheme.typography.h6.fontSize,
                 )
