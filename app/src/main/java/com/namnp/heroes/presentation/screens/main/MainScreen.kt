@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -25,6 +27,8 @@ import com.namnp.heroes.presentation.screens.home.HomeScreen
 import com.namnp.heroes.presentation.screens.home.NavigationItem
 import com.namnp.heroes.presentation.screens.profile.ProfileScreen
 import com.namnp.heroes.ui.theme.ThemeState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -73,6 +77,14 @@ fun ViewPagerScreen(
     appNavController: NavHostController,
     themeState: MutableState<ThemeState>,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val onClickFavorite: () -> Unit = {
+        if(pagerState.currentPage != 1) {
+            coroutineScope.launch {
+                pagerState.animateScrollToPage(1)
+            }
+        }
+    }
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
@@ -84,7 +96,11 @@ fun ViewPagerScreen(
             when (page) {
                 0 -> HomeScreen(navController = appNavController)
                 1 -> FavoriteScreen()
-                2 -> ProfileScreen(appNavController, themeState = themeState)
+                2 -> ProfileScreen(
+                    appNavController,
+                    themeState = themeState,
+                    onClickFavorite = onClickFavorite,
+                )
             }
         }
     }

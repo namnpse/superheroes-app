@@ -43,6 +43,7 @@ fun ProfileScreen(
     navController: NavHostController,
     themeState: MutableState<ThemeState>,
     profileViewModel: ProfileViewModel = hiltViewModel(),
+    onClickFavorite: () -> Unit,
 ) {
 
     val systemUiController = rememberSystemUiController()
@@ -174,6 +175,9 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable {
+                    onClickFavorite()
+                }
                 .padding(MEDIUM_PADDING),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,

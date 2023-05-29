@@ -75,7 +75,9 @@ fun HomeScreen(
                         itemContent = { index ->
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data(images[index])
+                                    .data(data = "${images[index]}")
+                                    .placeholder(drawableResId = R.drawable.ic_placeholder)
+                                    .error(drawableResId = R.drawable.ic_placeholder)
                                     .build(),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
@@ -100,6 +102,46 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
     val marvelHeroes =
         homeViewModel.getMarvelHeroes.collectAsLazyPagingItems().itemSnapshotList.take(8)
 
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = stringResource(R.string.marvel_heroes),
+            modifier = Modifier.padding(4.dp),
+            color = MaterialTheme.colors.contrastColor,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.h6,
+            fontFamily = fonts,
+        )
+        Text(
+            text = stringResource(R.string.see_more),
+            modifier = Modifier
+//            .width(120.dp)
+                .padding(4.dp)
+                .clickable {
+                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Marvel"))
+                },
+            color = MaterialTheme.colors.contrastColor,
+            textAlign = TextAlign.Center,
+            fontFamily = fonts,
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    ListHeroes(
+        heroes = marvelHeroes,
+        onClick = { hero ->
+            navController.navigate(
+                Screen.HeroDetailsScreen.passHeroId(
+                    heroId = hero?.id ?: 0
+                )
+            )
+        },
+        navController = navController,
+    )
+    Spacer(modifier = Modifier.height(24.dp))
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -138,45 +180,4 @@ fun HeroListView(homeViewModel: HomeViewModel, navController: NavHostController)
         },
         navController = navController,
     )
-    Spacer(modifier = Modifier.height(24.dp))
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = stringResource(R.string.marvel_heroes),
-            modifier = Modifier.padding(4.dp),
-            color = MaterialTheme.colors.contrastColor,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6,
-            fontFamily = fonts,
-        )
-        Text(
-            text = stringResource(R.string.see_more),
-            modifier = Modifier
-//            .width(120.dp)
-                .padding(4.dp)
-                .clickable {
-                    navController.navigate(Screen.ListHeroesScreen.passCategoryId("Marvel"))
-                },
-            color = MaterialTheme.colors.contrastColor,
-            textAlign = TextAlign.Center,
-            fontFamily = fonts,
-        )
-    }
-    ListHeroes(
-        heroes = marvelHeroes,
-        onClick = { hero ->
-            navController.navigate(
-                Screen.HeroDetailsScreen.passHeroId(
-                    heroId = hero?.id ?: 0
-                )
-            )
-        },
-        navController = navController,
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-
 }
