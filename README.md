@@ -16,7 +16,7 @@ A superheroes app using Ktor Server, MVVM + Clean Architecture, Jetpack Compose,
 </p>
 
 Made by Nguyen Phuong Nam (namnpse)<br>
-Get it on Google Play [here](https://play.google.com/store/apps/details?id=com.namnp.heroes)
+Get it on Google Play [here](https://play.google.com/store/apps/details?id=com.namnp.heroes)<br>
 Check out the full source code [here](https://github.com/namnpse/superheroes-app/)
 
 ## Features
