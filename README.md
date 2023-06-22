@@ -19,16 +19,16 @@ Made by Nguyen Phuong Nam (namnpse)<br>
 Get it on Google Play [here](https://play.google.com/store/apps/details?id=com.namnp.heroes)<br>
 Check out the full source code [here](https://github.com/namnpse/superheroes-app/)
 
-## Features
+## 📱 Features
 
 • Login via email<br>
 • Display list heroes<br>
 • View heroes info: name, bio, power, original, author, etc...<br>
 • Login to add favorite heroes to your list<br>
 
-## Screenshots
+## 📸 Screenshots
 
-#### Light Theme
+####  Light Theme
 
 ![Light Theme](https://github.com/namnpse/superheroes-app/blob/dev/screenshots/heroes4u-light-theme.png)
 
@@ -37,7 +37,7 @@ Check out the full source code [here](https://github.com/namnpse/superheroes-app
 ![Dark Theme](https://github.com/namnpse/superheroes-app/blob/dev/screenshots/heroes4u-dark-theme.png)
 
 
-## Tech Stack
+## 🛠  Technologies
   * Ktor Server
   * Koin
   * MVVM + Clean Architecture
@@ -49,7 +49,7 @@ Check out the full source code [here](https://github.com/namnpse/superheroes-app
   * Dark Theme
   * Firebase
 
-## Project Structure
+## ⚙️ Project Structure
 #### Back End: Ktor 1.6.4
 
 * #### DI
@@ -125,6 +125,6 @@ Check out the full source code [here](https://github.com/namnpse/superheroes-app
   * Palette Generator
   * Utils
 
-## License
+## 📑 License
 
 MIT License, see the [LICENSE.md](https://github.com/namnpse/superheroes-app/blob/master/LICENSE) file for details.
